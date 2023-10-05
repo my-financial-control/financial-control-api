@@ -5,34 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="974a921c-3dc0-4635-9539-6710929c4ddf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/application/usecases/FindAllBorrowingsUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/application/usecases/FindAllTransactionsUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/application/usecases/FindTransactionByMonthUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/application/usecases/PayParcelBorrowingUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/application/usecases/RegisterBorrowingUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/application/usecases/RegisterTransactionUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/errors/ParcelExceedsBorrowingValueException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Borrower.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Borrowing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/ParcelBorrowing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Transaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/TransactionType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/repositories/Borrowings.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/repositories/Transactions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/usecases/FindAllBorrowings.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/usecases/FindAllTransactions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/usecases/FindTransactionsByMonth.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/usecases/PayParcelBorrowing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/usecases/RegisterBorrowing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/usecases/RegisterTransaction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/infra/repositories/inmemory/BorrowingInMemoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/infra/repositories/inmemory/TransactionsInMemoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Borrowing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Borrowing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/ParcelBorrowing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/ParcelBorrowing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Transaction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +23,8 @@
         <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit3 Test Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -55,19 +35,34 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2WEAqMaSb1fRkrOkWzLIQn5vr3k" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;copyright&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "ignore.virus.scanning.warn.message": "true",
+    "settings.editor.selected.configurable": "copyright"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+      <recent name="junit.framework.TestCase" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="pedro.almeida.domain.models" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.BorrowingTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="pedro.almeida.Main" />
       <module name="expenses" />
@@ -77,6 +72,53 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BorrowingTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="expenses" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pedro.almeida.domain.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
+      <option name="MAIN_CLASS_NAME" value="pedro.almeida.domain.models.BorrowingTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BorrowingTest.sumParcels" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="expenses" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pedro.almeida.domain.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
+      <option name="MAIN_CLASS_NAME" value="pedro.almeida.domain.models.BorrowingTest" />
+      <option name="METHOD_NAME" value="sumParcels" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BorrowingTest.sumParcelsShouldReturnsTheCorrectSum" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="expenses" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pedro.almeida.domain.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
+      <option name="MAIN_CLASS_NAME" value="pedro.almeida.domain.models.BorrowingTest" />
+      <option name="METHOD_NAME" value="sumParcelsShouldReturnsTheCorrectSum" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -96,6 +138,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BorrowingTest" />
+        <item itemvalue="JUnit.BorrowingTest.sumParcelsShouldReturnsTheCorrectSum" />
+        <item itemvalue="JUnit.BorrowingTest.sumParcels" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>

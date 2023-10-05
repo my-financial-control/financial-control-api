@@ -34,7 +34,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UUID uuid = UUID.fromString(scanner.nextLine());
         LocalDate paymentDay = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        ParcelBorrowing parcel = new ParcelBorrowing(paymentDay, new BigDecimal(scanner.nextLine()));
+        ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal(scanner.nextLine()), paymentDay);
         payParcelBorrowing.execute(uuid, parcel);
         System.out.println(borrowings.findById(uuid));
     }

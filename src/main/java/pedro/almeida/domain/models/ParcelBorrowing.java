@@ -5,12 +5,16 @@ import java.time.LocalDate;
 
 public class ParcelBorrowing {
 
-    private LocalDate date;
     private BigDecimal value;
+    private LocalDate date;
 
 
-    public ParcelBorrowing(LocalDate date, BigDecimal value) {
+    public ParcelBorrowing(BigDecimal value, LocalDate date) {
+        this.value = value;
         this.date = date;
+    }
+
+    public ParcelBorrowing(BigDecimal value) {
         this.value = value;
     }
 

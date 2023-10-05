@@ -2,7 +2,6 @@ package pedro.almeida.domain.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.UUID;

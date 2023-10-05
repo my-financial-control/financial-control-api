@@ -4,6 +4,7 @@ import pedro.almeida.domain.errors.ParcelExceedsBorrowingValueException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -36,20 +37,27 @@ public class Borrowing {
         if(isBorrowingFullPaid()) this.paid = true;
     }
 
-    private Boolean isParcelExceedsBorrowingValue(ParcelBorrowing parcel) {
+    // TODO - esse método deve realmente ser público?
+    public Boolean isParcelExceedsBorrowingValue(ParcelBorrowing parcel) {
         return this.sumParcels().add(parcel.getValue()).compareTo(this.value) > 0;
     }
 
-    private Boolean isBorrowingFullPaid() {
+    // TODO - esse método deve realmente ser público?
+    public Boolean isBorrowingFullPaid() {
         return this.sumParcels().compareTo(this.value) >= 0;
     }
 
-    private BigDecimal sumParcels() {
-        return this.parcels.stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    // TODO - esse método deve realmente ser público?
+    public BigDecimal sumParcels() {
+        return this.getParcels().stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public List<ParcelBorrowing> getParcels() {
+        return Collections.unmodifiableList(this.parcels);
     }
 
     @Override
