@@ -85,7 +85,7 @@ class BorrowingTest {
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("50.0"));
 
-        assertEquals(borrowing.isParcelExceedsBorrowingValue(parcel), borrowing.isParcelExceedsBorrowingValue(parcel));
+        assertEquals(false, borrowing.isParcelExceedsBorrowingValue(parcel));
     }
 
     @Test
@@ -95,7 +95,7 @@ class BorrowingTest {
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("50.0"));
 
-        assertEquals(borrowing.isBorrowingFullPaid(), true);
+        assertEquals(true, borrowing.isBorrowingFullPaid());
     }
 
     @Test
@@ -106,7 +106,7 @@ class BorrowingTest {
 
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("40.0"));
 
-        assertEquals(borrowing.isBorrowingFullPaid(), false);
+        assertEquals(false, borrowing.isBorrowingFullPaid());
     }
 
     @Test
@@ -114,7 +114,8 @@ class BorrowingTest {
     void sumParcelsShouldReturnZeroTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
-        assertEquals(borrowing.sumParcels(), BigDecimal.ZERO);
+
+        assertEquals(BigDecimal.ZERO, borrowing.sumParcels());
     }
 
     @Test
@@ -131,7 +132,7 @@ class BorrowingTest {
         borrowing = spy(borrowing);
         doReturn(parcels).when(borrowing).getParcels();
 
-        assertEquals(borrowing.sumParcels(), new BigDecimal("80.0"));
+        assertEquals(new BigDecimal("80.0"), borrowing.sumParcels());
     }
 
 }
