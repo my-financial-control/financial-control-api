@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="974a921c-3dc0-4635-9539-6710929c4ddf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Borrowing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Borrowing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/ParcelBorrowing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/ParcelBorrowing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pedro/almeida/domain/models/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pedro/almeida/domain/models/BorrowingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pedro/almeida/domain/models/BorrowingTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +47,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/thyago.lobato/Documents/Thyago/Projetos/financial-control",
     "settings.editor.selected.configurable": "copyright"
   }
 }]]></component>
@@ -63,19 +61,6 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.BorrowingTest">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="pedro.almeida.Main" />
-      <module name="expenses" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pedro.almeida.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="BorrowingTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="expenses" />
       <extension name="coverage">
@@ -91,7 +76,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BorrowingTest.sumParcels" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BorrowingTest.isBorrowingFullPaid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="expenses" />
       <extension name="coverage">
         <pattern>
@@ -101,13 +86,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
       <option name="MAIN_CLASS_NAME" value="pedro.almeida.domain.models.BorrowingTest" />
-      <option name="METHOD_NAME" value="sumParcels" />
+      <option name="METHOD_NAME" value="isBorrowingFullPaid" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BorrowingTest.sumParcelsShouldReturnsTheCorrectSum" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BorrowingTest.isBorrowingFullPaidFalseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="expenses" />
       <extension name="coverage">
         <pattern>
@@ -117,8 +102,38 @@
       </extension>
       <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
       <option name="MAIN_CLASS_NAME" value="pedro.almeida.domain.models.BorrowingTest" />
-      <option name="METHOD_NAME" value="sumParcelsShouldReturnsTheCorrectSum" />
+      <option name="METHOD_NAME" value="isBorrowingFullPaidFalseTest" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BorrowingTest.isParcelExceedsBorrowingValueFalseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="expenses" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pedro.almeida.domain.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
+      <option name="MAIN_CLASS_NAME" value="pedro.almeida.domain.models.BorrowingTest" />
+      <option name="METHOD_NAME" value="isParcelExceedsBorrowingValueFalseTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="pedro.almeida.domain.models in expenses" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="expenses" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pedro.almeida.domain.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pedro.almeida.domain.models" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -139,9 +154,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.BorrowingTest" />
-        <item itemvalue="JUnit.BorrowingTest.sumParcelsShouldReturnsTheCorrectSum" />
-        <item itemvalue="JUnit.BorrowingTest.sumParcels" />
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.pedro.almeida.domain.models in expenses" />
+        <item itemvalue="JUnit.BorrowingTest.isBorrowingFullPaidFalseTest" />
+        <item itemvalue="JUnit.BorrowingTest.isBorrowingFullPaid" />
+        <item itemvalue="JUnit.BorrowingTest.isParcelExceedsBorrowingValueFalseTest" />
       </list>
     </recent_temporary>
   </component>
@@ -155,5 +171,27 @@
       <updated>1696287562271</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="sumParcels()" language="JAVA" />
+        <watch expression="value" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/financial_control$All_in_expenses.ic" NAME="All in expenses Coverage Results" MODIFIED="1696603983067" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

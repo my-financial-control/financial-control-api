@@ -60,6 +60,10 @@ public class Borrowing {
         return Collections.unmodifiableList(this.parcels);
     }
 
+    public Boolean getPaid() {
+        return paid;
+    }
+
     @Override
     public String toString() {
         return "Borrowing{" +
