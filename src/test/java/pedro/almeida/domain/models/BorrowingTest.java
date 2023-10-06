@@ -17,27 +17,25 @@ class BorrowingTest {
     @Test
     @DisplayName("Deve adicionar a parcela ao atributo 'parcels' da classe Borrowing")
     void payParcelWhenTheParcelIsNotExceededAndNeitherTheFinalOneTest() {
-
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("200.0")));
 
         List<ParcelBorrowing> parcels = Arrays.asList(
                 new ParcelBorrowing(new BigDecimal("10.0")),
                 new ParcelBorrowing(new BigDecimal("20.0")),
-                new ParcelBorrowing(new BigDecimal("30.0"))
+                new ParcelBorrowing(new BigDecimal("30.0")),
+                new ParcelBorrowing(new BigDecimal("40.0"))
         );
-
-        parcels.forEach(borrowing::payParcel);
-        ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("40.0"));
-
-        BigDecimal parcelsSum = parcels.stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
-        parcelsSum = parcelsSum.add(parcel.getValue());
 
         doReturn(false).when(borrowing).isParcelExceedsBorrowingValue(any());
         doReturn(false).when(borrowing).isBorrowingFullPaid();
 
-        borrowing.payParcel(parcel);
-        assertEquals(borrowing.getParcels().stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add), parcelsSum);
+        parcels.forEach(borrowing::payParcel);
+
+        BigDecimal parcelsSumExpected = parcels.stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal parcelsBorrowingSum = borrowing.getParcels().stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        assertEquals(parcelsSumExpected, parcelsBorrowingSum);
     }
 
     @Test
