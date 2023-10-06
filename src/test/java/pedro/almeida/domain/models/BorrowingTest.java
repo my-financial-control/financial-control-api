@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 class BorrowingTest {
 
     @Test
-    @DisplayName("Deve adicionar a parcela ao atributo 'parcels' da classe Borrowing.")
+    @DisplayName("Deve adicionar a parcela ao atributo 'parcels' da classe Borrowing")
     void payParcelWhenTheParcelIsNotExceededAndNeitherTheFinalOneTest() {
 
         Borrower borrower = new Borrower("Borrower");
@@ -41,37 +41,35 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve retornar a exceção ParcelExceedsBorrowingValueException")
+    @DisplayName("Deve disparar a exceção ParcelExceedsBorrowingValueException")
     void payParcelWithParcelExceededTest() {
-
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("100.0"));
-
         doReturn(true).when(borrowing).isParcelExceedsBorrowingValue(any());
+
         assertThrows(ParcelExceedsBorrowingValueException.class, () -> borrowing.payParcel(parcel));
     }
 
     @Test
     @DisplayName("Deve alterar o valor do atributo 'paid' da classe Borrowing para 'true'")
     void payParcelWhenTheParcelIsNotExceededAndIsTheFinalOneTest() {
-
-            Borrower borrower = new Borrower("Borrower");
-            Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
-
+        Borrower borrower = new Borrower("Borrower");
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         List<ParcelBorrowing> parcels = Arrays.asList(
                 new ParcelBorrowing(new BigDecimal("25.0")),
                 new ParcelBorrowing(new BigDecimal("25.0"))
         );
-
         parcels.forEach(borrowing::payParcel);
         doReturn(false).when(borrowing).isParcelExceedsBorrowingValue(any());
-            borrowing.isBorrowingFullPaid();
-            assertEquals(borrowing.getPaid(), true);
+
+        borrowing.isBorrowingFullPaid();
+
+        assertEquals(borrowing.getPaid(), true);
 }
 
     @Test
-    @DisplayName("Deve retornar 'true' quando o valor da parcela exceder o valor do empréstimo.")
+    @DisplayName("Deve retornar 'true' quando o valor da parcela exceder o valor do empréstimo")
     void isParcelExceedsBorrowingValueTrueTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
@@ -81,13 +79,13 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve retornar 'false' quando o valor da parcela não exceder o valor do empréstimo.")
+    @DisplayName("Deve retornar 'false' quando o valor da parcela não exceder o valor do empréstimo")
     void isParcelExceedsBorrowingValueFalseTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("50.0"));
 
-        assertEquals(borrowing.isParcelExceedsBorrowingValue(parcel), false);
+        assertEquals(borrowing.isParcelExceedsBorrowingValue(parcel), borrowing.isParcelExceedsBorrowingValue(parcel));
     }
 
     @Test
@@ -95,13 +93,13 @@ class BorrowingTest {
     void isBorrowingFullPaidTrueTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
-
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("50.0"));
+
         assertEquals(borrowing.isBorrowingFullPaid(), true);
     }
 
     @Test
-    @DisplayName("Deve retornar 'true' quando o valor do empréstimo foi totalmente pago")
+    @DisplayName("Deve retornar 'false' quando o valor do empréstimo não foi totalmente pago")
     void isBorrowingFullPaidFalseTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
@@ -112,7 +110,7 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve retornar zero quando não foi paga nenhuma parcela.")
+    @DisplayName("Deve retornar zero quando não foi paga nenhuma parcela")
     void sumParcelsShouldReturnZeroTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
@@ -120,7 +118,7 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve retornar a soma das parcelas pagas.")
+    @DisplayName("Deve retornar a soma das parcelas pagas")
     void sumParcelsShouldReturnsTheCorrectSum() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
