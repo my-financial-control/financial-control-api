@@ -6,15 +6,15 @@ import pedro.almeida.domain.usecases.RegisterBorrowing;
 
 public class RegisterBorrowingUseCase implements RegisterBorrowing {
 
-    private final Borrowings borrowingsRepository;
+    private final Borrowings borrowings;
 
-    public RegisterBorrowingUseCase(Borrowings borrowingsRepository) {
-        this.borrowingsRepository = borrowingsRepository;
+    public RegisterBorrowingUseCase(Borrowings borrowings) {
+        this.borrowings = borrowings;
     }
 
     @Override
     public Borrowing execute(Borrowing borrowing) {
-        return this.borrowingsRepository.save(borrowing);
+        return this.borrowings.save(borrowing);
     }
 
 }

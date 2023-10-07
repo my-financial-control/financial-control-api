@@ -9,17 +9,17 @@ import java.util.UUID;
 
 public class PayParcelBorrowingUseCase implements PayParcelBorrowing {
 
-    private final Borrowings borrowingsRepository;
+    private final Borrowings borrowings;
 
-    public PayParcelBorrowingUseCase(Borrowings borrowingsRepository) {
-        this.borrowingsRepository = borrowingsRepository;
+    public PayParcelBorrowingUseCase(Borrowings borrowings) {
+        this.borrowings = borrowings;
     }
 
     @Override
     public void execute(UUID uuid, ParcelBorrowing parcel) {
-        Borrowing borrowing = this.borrowingsRepository.findById(uuid);
+        Borrowing borrowing = this.borrowings.findById(uuid);
         borrowing.payParcel(parcel);
-        this.borrowingsRepository.save(borrowing);
+        this.borrowings.save(borrowing);
     }
 
 }
