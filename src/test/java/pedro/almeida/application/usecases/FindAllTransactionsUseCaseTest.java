@@ -45,6 +45,7 @@ class FindAllTransactionsUseCaseTest {
         List<Transaction> transactionsReturned = this.findAllTransactionsUseCase.execute();
 
         assertEquals(this.transactionsMock, transactionsReturned);
+        verify(this.transactions).findAll();
     }
 
 }

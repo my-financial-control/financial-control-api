@@ -43,6 +43,7 @@ class FindAllBorrowingsUseCaseTest {
         List<Borrowing> borrowingsReturned = this.findAllBorrowingsUseCase.execute();
 
         assertEquals(this.borrowingsMock, borrowingsReturned);
+        verify(this.borrowings).findAll();
     }
 
 }
