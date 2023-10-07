@@ -12,7 +12,7 @@ public class Transaction {
     private String title;
     private String description;
     private BigDecimal value;
-    private TransactionType type;
+    private final TransactionType type;
     private Month currentMonth;
     private LocalDate date;
     private LocalTime time = LocalTime.now();
@@ -30,8 +30,20 @@ public class Transaction {
         return id;
     }
 
+    public TransactionType getType() {
+        return this.type;
+    }
+
     public Month getCurrentMonth() {
         return currentMonth;
+    }
+
+    public BigDecimal getValue() {
+        return this.value;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
     @Override

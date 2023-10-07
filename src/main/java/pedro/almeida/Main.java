@@ -58,7 +58,7 @@ public class Main {
     private static void findByMonth() {
         Transactions transactions = new TransactionsInMemoryRepository();
         FindTransactionsByMonth findTransactionsByMonth = new FindTransactionByMonthUseCase(transactions);
-        System.out.println(findTransactionsByMonth.execute(Month.OCTOBER));
+        System.out.println(findTransactionsByMonth.execute(Month.OCTOBER, 2023));
     }
 
     private static void findAllTransactions() {

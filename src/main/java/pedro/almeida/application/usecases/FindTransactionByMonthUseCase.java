@@ -16,8 +16,8 @@ public class FindTransactionByMonthUseCase implements FindTransactionsByMonth {
     }
 
     @Override
-    public List<Transaction> execute(Month month) {
-        return transactions.findAll(month);
+    public List<Transaction> execute(Month month, int year) {
+        return transactions.findAll(month, year);
     }
 
 }

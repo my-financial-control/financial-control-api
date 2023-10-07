@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FindTransactionsByMonth {
 
-    List<Transaction> execute(Month month);
+    List<Transaction> execute(Month month, int year);
 
 }
