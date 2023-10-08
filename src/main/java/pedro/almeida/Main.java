@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             showMenu();
-            if(!inputOption()) break;
+            if (!inputOption()) break;
         }
     }
 
@@ -137,15 +137,17 @@ public class Main {
 
 
     private static void findAllTransaction() {
-        System.out.println("============== Transações ==============");
         FindAllTransactions findAllTransactions = new FindAllTransactionsUseCase(transactions);
         List<Transaction> allTransactions = findAllTransactions.execute();
-        System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("| Título\t\t| Descrição \t\t\t| Valor\t| Tipo\t| Mês corrente\t| Data |");
-        System.out.println("-----------------------------------------------------------------------------");
-        for (Transaction transaction : allTransactions) {
-            System.out.println(transaction);
-        }
+        showTable(
+                "TRANSAÇÕES",
+                List.of("ID", "TÍTULO", "DESCRIÇÃO", "VALOR", "MÊS CORRENTE", "DATA"),
+                allTransactions.stream()
+                        .map(
+                                transaction -> List.of(transaction.getId().toString(), transaction.getTitle(), transaction.getDescription(), transaction.getValue().toString(), transaction.getCurrentMonth().toString(), transaction.getDate().toString())
+                        ).toList(),
+                50
+        );
     }
 
     private static void findTransactionsByMonth() {
@@ -164,12 +166,15 @@ public class Main {
         }
 
         List<Transaction> allTransactionsByMonth = findTransactionsByMonth.execute(currentMonth, LocalDate.now().getYear());
-        System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("| Título\t\t| Descrição \t\t\t| Valor\t| Tipo\t| Mês corrente\t| Data |");
-        System.out.println("-----------------------------------------------------------------------------");
-        for (Transaction transaction : allTransactionsByMonth) {
-            System.out.println(transaction);
-        }
+        showTable(
+                "TRANSAÇÕES",
+                List.of("ID", "TÍTULO", "DESCRIÇÃO", "VALOR", "MÊS CORRENTE", "DATA"),
+                allTransactionsByMonth.stream()
+                        .map(
+                                transaction -> List.of(transaction.getId().toString(), transaction.getTitle(), transaction.getDescription(), transaction.getValue().toString(), transaction.getCurrentMonth().toString(), transaction.getDate().toString())
+                        ).toList(),
+                50
+        );
     }
 
     private static void checkBalance() {
@@ -191,14 +196,80 @@ public class Main {
     }
 
     private static void findAllBorrowings() {
-        System.out.println("============== Empréstimos ==============");
         FindAllBorrowings findAllBorrowings = new FindAllBorrowingsUseCase(borrowings);
         List<Borrowing> allBorrowings = findAllBorrowings.execute();
-        System.out.println("-----------------------------------------------------------------------------");
-        System.out.println("| Devedor\t\t| Valor Total\t| Valor Pago\t| Data |");
-        System.out.println("-----------------------------------------------------------------------------");
-        for (Borrowing borrowing : allBorrowings) {
-            System.out.println(borrowing);
+        showTable(
+                "EMPRÉSTIMOS",
+                List.of("DEVEDOR", "VALOR TOTAL", "VALOR PAGO", "DATA"),
+                allBorrowings.stream()
+                        .map(
+                            borrowing -> List.of(borrowing.getBorrower().getName(), borrowing.getValue().toString(), borrowing.sumParcels().toString(), borrowing.getDate().toString())
+                        ).toList(),
+                50
+        );
+    }
+
+    private static void showTable(String tableTitle, List<String> titles, List<List<String>> content, int maxCellLength) {
+        // Encontrar o tamanho máximo de cada coluna
+        int[] columnWidths = new int[titles.size()];
+        for (int i = 0; i < titles.size(); i++) {
+            columnWidths[i] = titles.get(i).length();
+        }
+        for (List<String> row : content) {
+            for (int i = 0; i < row.size(); i++) {
+                int cellLength = row.get(i).length();
+                if (cellLength > columnWidths[i]) {
+                    columnWidths[i] = Math.min(cellLength, maxCellLength);
+                }
+            }
+        }
+
+        // Calcular a largura total da tabela
+        int tableWidth = 0;
+        for (int columnWidth : columnWidths) {
+            tableWidth += columnWidth + 3; // 3 caracteres de espaço entre colunas
+        }
+
+        // Imprimir título geral da tabela
+        int titlePadding = (tableWidth - tableTitle.length()) / 2;
+        String titlePaddingStr = "=".repeat(titlePadding);
+        System.out.println(titlePaddingStr + tableTitle + titlePaddingStr);
+
+        // Imprimir cabeçalho da tabela
+        for (int i = 0; i < titles.size(); i++) {
+            System.out.printf("%-" + columnWidths[i] + "s | ", limitCellLength(titles.get(i), columnWidths[i]));
+        }
+        System.out.println();
+
+        // Imprimir linha de separação
+        for (int i = 0; i < titles.size(); i++) {
+            for (int j = 0; j < columnWidths[i] + 3; j++) {
+                System.out.print("-");
+            }
+        }
+        System.out.println();
+
+        // Imprimir conteúdo da tabela
+        for (List<String> row : content) {
+            for (int i = 0; i < row.size(); i++) {
+                String cellValue = row.get(i);
+                System.out.printf("%-" + columnWidths[i] + "s | ", limitCellLength(cellValue, columnWidths[i]));
+            }
+            System.out.println();
+        }
+
+        // Imprimir caracteres "=" para fechar a tabela
+        for (int i = 0; i < tableWidth; i++) {
+            System.out.print("=");
+        }
+        System.out.println();
+    }
+
+    private static String limitCellLength(String cellValue, int maxCellLength) {
+        if (cellValue.length() <= maxCellLength) {
+            return cellValue;
+        } else {
+            return cellValue.substring(0, maxCellLength - 3) + "...";
         }
     }
 

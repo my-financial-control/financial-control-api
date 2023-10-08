@@ -30,6 +30,14 @@ public class Transaction {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public TransactionType getType() {
         return this.type;
     }

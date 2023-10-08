@@ -57,6 +57,14 @@ public class Borrowing {
         return id;
     }
 
+    public Borrower getBorrower() {
+        return borrower;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
     public List<ParcelBorrowing> getParcels() {
         return Collections.unmodifiableList(this.parcels);
     }
