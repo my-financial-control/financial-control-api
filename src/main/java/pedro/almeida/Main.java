@@ -1,7 +1,10 @@
 package pedro.almeida;
 
 import pedro.almeida.application.usecases.*;
-import pedro.almeida.domain.models.*;
+import pedro.almeida.domain.models.Borrower;
+import pedro.almeida.domain.models.Borrowing;
+import pedro.almeida.domain.models.Transaction;
+import pedro.almeida.domain.models.TransactionType;
 import pedro.almeida.domain.repositories.Borrowings;
 import pedro.almeida.domain.repositories.Transactions;
 import pedro.almeida.domain.usecases.*;
@@ -9,79 +12,194 @@ import pedro.almeida.infra.repositories.inmemory.BorrowingInMemoryRepository;
 import pedro.almeida.infra.repositories.inmemory.TransactionsInMemoryRepository;
 
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Main {
 
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Transactions transactions = new TransactionsInMemoryRepository();
+    private static final Borrowings borrowings = new BorrowingInMemoryRepository();
+
     public static void main(String[] args) {
-        System.out.println("=========== Controle de Despesas ===========");
-//        registerTransaction();
-//        findAllTransactions();
-//        findByMonth();
-//        findAllBorrowings();
-//        registerBorrowing();
-        payBorrowing();
+        while (true) {
+            showMenu();
+            if(!inputOption()) break;
+        }
     }
 
-    public static void payBorrowing() {
-        Borrowings borrowings = new BorrowingInMemoryRepository();
-        PayParcelBorrowing payParcelBorrowing = new PayParcelBorrowingUseCase(borrowings);
-        System.out.println(borrowings.findAll());
-        Scanner scanner = new Scanner(System.in);
-        UUID uuid = UUID.fromString(scanner.nextLine());
-        LocalDate paymentDay = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal(scanner.nextLine()), paymentDay);
-        payParcelBorrowing.execute(uuid, parcel);
-        System.out.println(borrowings.findById(uuid));
+    private static void showMenu() {
+        System.out.println("============== Controle Financeiro ==============".toUpperCase());
+        System.out.println("1. Registrar transação");
+        System.out.println("2. Consultar todas as transações");
+        System.out.println("3. Consultar saldo");
+        System.out.println("4. Consultar transações por mês corrente");
+        System.out.println("5. Registrar empréstimo");
+        System.out.println("6. Registrar pagamento de parcela de empréstimo");
+        System.out.println("7. Consultar empréstimos");
+        System.out.println("8. Sair");
+        System.out.print("---> Digite a opção desejada: ");
     }
 
-    public static void registerBorrowing() {
-        Borrowings borrowings = new BorrowingInMemoryRepository();
-        RegisterBorrowing registerBorrowing = new RegisterBorrowingUseCase(borrowings);
-        Scanner scanner = new Scanner(System.in);
-        Borrower borrower = new Borrower(scanner.nextLine());
-        Borrowing borrowing = new Borrowing(borrower, scanner.nextBigDecimal());
-        registerBorrowing.execute(borrowing);
-        System.out.println(borrowings.findAll());
-    }
-
-    public static void findAllBorrowings() {
-        Borrowings borrowings = new BorrowingInMemoryRepository();
-        FindAllBorrowings findAllBorrowings = new FindAllBorrowingsUseCase(borrowings);
-        System.out.println(findAllBorrowings.execute());
-    }
-
-    private static void findByMonth() {
-        Transactions transactions = new TransactionsInMemoryRepository();
-        FindTransactionsByMonth findTransactionsByMonth = new FindTransactionByMonthUseCase(transactions);
-        System.out.println(findTransactionsByMonth.execute(Month.OCTOBER, 2023));
-    }
-
-    private static void findAllTransactions() {
-        Transactions transactions = new TransactionsInMemoryRepository();
-        FindAllTransactions findAllTransactions = new FindAllTransactionsUseCase(transactions);
-        System.out.println(findAllTransactions.execute());
+    private static boolean inputOption() {
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1:
+                registerTransaction();
+                return true;
+            case 2:
+                findAllTransaction();
+                return true;
+            case 3:
+                checkBalance();
+                return true;
+            case 4:
+                findTransactionsByMonth();
+                return true;
+            case 5:
+                registerBorrowing();
+                return true;
+            case 6:
+                System.out.println();
+                return true;
+            case 7:
+                findAllBorrowings();
+                return true;
+            case 8:
+                System.out.println("Até a próxima!");
+                return false;
+            default:
+                System.out.println("Opção inválida");
+                return true;
+        }
     }
 
     private static void registerTransaction() {
-        Transactions transactions = new TransactionsInMemoryRepository();
+        System.out.println("============== Registrar Transação ==============");
         RegisterTransaction registerTransaction = new RegisterTransactionUseCase(transactions);
-        Scanner scanner = new Scanner(System.in);
-        String title = scanner.nextLine();
-        String description = scanner.nextLine();
-        BigDecimal value = scanner.nextBigDecimal();
+
         scanner.nextLine();
-        TransactionType type = TransactionType.valueOf(scanner.nextLine());
-        Month currentMonth = Month.valueOf(scanner.nextLine());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
-        Transaction transaction = new Transaction(title, description, value, type, currentMonth, date);
+        System.out.print("Título: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Descrição: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Valor: ");
+        BigDecimal value = new BigDecimal(scanner.nextLine());
+
+        TransactionType transactionType;
+        while (true) {
+            System.out.print("Tipo (Despesa/Crédito - D/C): ");
+            String type = scanner.nextLine();
+            if (type.startsWith("D") || type.startsWith("d")) {
+                transactionType = TransactionType.EXPENSE;
+                break;
+            } else if (type.startsWith("C") || type.startsWith("c")) {
+                transactionType = TransactionType.CREDIT;
+                break;
+            } else {
+                System.out.println("Tipo inválido! Digite novamente.\n");
+            }
+        }
+
+        Month currentMonth;
+        while (true) {
+            try {
+                System.out.print("Mês corrente (número de 1 à 12): ");
+                currentMonth = Month.of(scanner.nextInt());
+                break;
+            } catch (DateTimeException ex) {
+                System.out.println("Mês inválido, digite novamente.\n");
+            }
+        }
+        scanner.nextLine();
+
+        LocalDate date;
+        while (true) {
+            System.out.print("Data (dd/MM/aaaa): ");
+            try {
+                date = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                break;
+            } catch (DateTimeParseException ex) {
+                System.out.println("Data inválida, digite novamente.\n");
+            }
+        }
+
+        Transaction transaction = new Transaction(title, description, value, transactionType, currentMonth, date);
         registerTransaction.execute(transaction);
-        System.out.println(transactions.findAll());
+    }
+
+
+    private static void findAllTransaction() {
+        System.out.println("============== Transações ==============");
+        FindAllTransactions findAllTransactions = new FindAllTransactionsUseCase(transactions);
+        List<Transaction> allTransactions = findAllTransactions.execute();
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("| Título\t\t| Descrição \t\t\t| Valor\t| Tipo\t| Mês corrente\t| Data |");
+        System.out.println("-----------------------------------------------------------------------------");
+        for (Transaction transaction : allTransactions) {
+            System.out.println(transaction);
+        }
+    }
+
+    private static void findTransactionsByMonth() {
+        System.out.println("============== Visualizar transações por mês corrente ==============");
+        FindTransactionsByMonth findTransactionsByMonth = new FindTransactionByMonthUseCase(transactions);
+
+        Month currentMonth;
+        while (true) {
+            try {
+                System.out.print("Mês corrente (número de 1 à 12): ");
+                currentMonth = Month.of(scanner.nextInt());
+                break;
+            } catch (DateTimeException ex) {
+                System.out.println("Mês inválido, digite novamente.\n");
+            }
+        }
+
+        List<Transaction> allTransactionsByMonth = findTransactionsByMonth.execute(currentMonth, LocalDate.now().getYear());
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("| Título\t\t| Descrição \t\t\t| Valor\t| Tipo\t| Mês corrente\t| Data |");
+        System.out.println("-----------------------------------------------------------------------------");
+        for (Transaction transaction : allTransactionsByMonth) {
+            System.out.println(transaction);
+        }
+    }
+
+    private static void checkBalance() {
+        System.out.println("============== Saldo ==============");
+        CheckBalance checkBalance = new CheckBalanceUseCase(transactions, borrowings);
+        System.out.println("Saldo: " + checkBalance.execute());
+    }
+
+    private static void registerBorrowing() {
+        System.out.println("============== Registrar Empréstimo ==============");
+        RegisterBorrowing registerBorrowing = new RegisterBorrowingUseCase(borrowings);
+        scanner.nextLine();
+        System.out.print("Devedor: ");
+        Borrower borrower = new Borrower(scanner.nextLine());
+        System.out.print("Valor: ");
+        BigDecimal value = new BigDecimal(scanner.nextLine());
+        Borrowing borrowing = new Borrowing(borrower, value);
+        registerBorrowing.execute(borrowing);
+    }
+
+    private static void findAllBorrowings() {
+        System.out.println("============== Empréstimos ==============");
+        FindAllBorrowings findAllBorrowings = new FindAllBorrowingsUseCase(borrowings);
+        List<Borrowing> allBorrowings = findAllBorrowings.execute();
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("| Devedor\t\t| Valor Total\t| Valor Pago\t| Data |");
+        System.out.println("-----------------------------------------------------------------------------");
+        for (Borrowing borrowing : allBorrowings) {
+            System.out.println(borrowing);
+        }
     }
 
 }

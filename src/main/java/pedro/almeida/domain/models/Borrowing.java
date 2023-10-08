@@ -71,14 +71,7 @@ public class Borrowing {
 
     @Override
     public String toString() {
-        return "Borrowing{" +
-                "id=" + id +
-                ", borrower=" + borrower +
-                ", value=" + value +
-                ", paid=" + paid +
-                ", date=" + date +
-                ", parcels=" + parcels +
-                '}';
+        return borrower.getName() + "\t| " + value + "\t| " + sumParcels() + "\t| " + date;
     }
 
 }
