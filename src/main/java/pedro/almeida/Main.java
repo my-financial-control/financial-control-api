@@ -152,7 +152,7 @@ public class Main {
 
     private static void findTransactionsByMonth() {
         System.out.println("============== Visualizar transações por mês corrente ==============");
-        FindTransactionsByMonth findTransactionsByMonth = new FindTransactionByMonthUseCase(transactions);
+        FindAllTransactions findTransactionsByMonth = new FindAllTransactionsUseCase(transactions);
 
         Month currentMonth;
         while (true) {
