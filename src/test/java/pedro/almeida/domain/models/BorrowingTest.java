@@ -87,8 +87,8 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve retornar 'true' quando o valor do empréstimo foi totalmente pago")
-    void isBorrowingFullPaidTrueTest() {
+    @DisplayName("Deve retornar 'true' quando o valor total das parcelas for igual ao valor total do empréstimo")
+    void isBorrowingFullPaidEqualsValueTrueTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("50.0"));
@@ -97,7 +97,17 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve retornar 'false' quando o valor do empréstimo não foi totalmente pago")
+    @DisplayName("Deve retornar 'true' quando o valor total das parcelas for maior que o valor total do empréstimo")
+    void isBorrowingFullPaidGreaterValueTrueTest() {
+        Borrower borrower = new Borrower("Borrower");
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        when(borrowing.sumParcels()).thenReturn(new BigDecimal("60.0"));
+
+        assertEquals(true, borrowing.isBorrowingFullPaid());
+    }
+
+    @Test
+    @DisplayName("Deve retornar 'false' quando o valor total das parcelas for menor do que o valor total do empréstimo")
     void isBorrowingFullPaidFalseTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
