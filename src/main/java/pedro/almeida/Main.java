@@ -1,10 +1,7 @@
 package pedro.almeida;
 
 import pedro.almeida.application.usecases.*;
-import pedro.almeida.domain.models.Borrower;
-import pedro.almeida.domain.models.Borrowing;
-import pedro.almeida.domain.models.Transaction;
-import pedro.almeida.domain.models.TransactionType;
+import pedro.almeida.domain.models.*;
 import pedro.almeida.domain.repositories.Borrowings;
 import pedro.almeida.domain.repositories.Transactions;
 import pedro.almeida.domain.usecases.*;
@@ -19,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
 
@@ -65,7 +63,7 @@ public class Main {
                 registerBorrowing();
                 return true;
             case 6:
-                System.out.println();
+                payBorrowingParcel();
                 return true;
             case 7:
                 findAllBorrowings();
@@ -200,13 +198,28 @@ public class Main {
         List<Borrowing> allBorrowings = findAllBorrowings.execute();
         showTable(
                 "EMPRÉSTIMOS",
-                List.of("DEVEDOR", "VALOR TOTAL", "VALOR PAGO", "DATA"),
+                List.of("ID", "DEVEDOR", "VALOR TOTAL", "VALOR PAGO", "DATA"),
                 allBorrowings.stream()
                         .map(
-                            borrowing -> List.of(borrowing.getBorrower().getName(), borrowing.getValue().toString(), borrowing.sumParcels().toString(), borrowing.getDate().toString())
+                            borrowing -> List.of(borrowing.getId().toString(), borrowing.getBorrower().getName(), borrowing.getValue().toString(), borrowing.sumParcels().toString(), borrowing.getDate().toString())
                         ).toList(),
                 50
         );
+    }
+
+    private static void payBorrowingParcel() {
+        System.out.println("============== Pagar parcela do empréstimo ==============");
+        PayParcelBorrowing payParcelBorrowing = new PayParcelBorrowingUseCase(borrowings);
+
+        scanner.nextLine();
+        System.out.println("ID do empréstimo: ");
+        String idBorrowing = scanner.nextLine();
+
+        System.out.print("Valor a ser pago: ");
+        BigDecimal value = new BigDecimal(scanner.nextLine());
+        ParcelBorrowing parcel = new ParcelBorrowing(value);
+
+        payParcelBorrowing.execute(UUID.fromString(idBorrowing), parcel);
     }
 
     private static void showTable(String tableTitle, List<String> titles, List<List<String>> content, int maxCellLength) {
