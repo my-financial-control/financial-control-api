@@ -1,5 +1,7 @@
 package pedro.almeida.domain.models;
 
+import pedro.almeida.domain.errors.TransactionException;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,6 +22,7 @@ public class Transaction {
     public Transaction(String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
         this.description = description;
+        this.validateValue(value);
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
@@ -28,10 +31,17 @@ public class Transaction {
 
     public Transaction(String title, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
+        this.validateValue(value);
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
         this.date = date;
+    }
+
+    private void validateValue(BigDecimal value) {
+        if(value.compareTo(BigDecimal.ZERO) <= 0) {
+            throw TransactionException.invalidTransactionValue();
+        }
     }
 
     public UUID getId() {
