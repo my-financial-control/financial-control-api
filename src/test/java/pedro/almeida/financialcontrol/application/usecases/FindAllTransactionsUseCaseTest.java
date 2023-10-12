@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.usecases;
+package pedro.almeida.financialcontrol.application.usecases;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

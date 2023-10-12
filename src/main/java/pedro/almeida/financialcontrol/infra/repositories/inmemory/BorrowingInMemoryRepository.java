@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.repositories.inmemory;
+package pedro.almeida.financialcontrol.infra.repositories.inmemory;
 
 import pedro.almeida.financialcontrol.domain.models.Borrower;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;

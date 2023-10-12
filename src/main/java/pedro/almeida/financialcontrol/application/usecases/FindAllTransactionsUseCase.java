@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.usecases;
+package pedro.almeida.financialcontrol.application.usecases;
 
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;

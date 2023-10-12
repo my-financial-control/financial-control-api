@@ -1,12 +1,12 @@
 package pedro.almeida.financialcontrol;
 
-import pedro.almeida.financialcontrol.usecases.*;
+import pedro.almeida.financialcontrol.application.usecases.*;
 import pedro.almeida.financialcontrol.domain.models.*;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 import pedro.almeida.financialcontrol.domain.usecases.*;
-import pedro.almeida.financialcontrol.repositories.inmemory.BorrowingInMemoryRepository;
-import pedro.almeida.financialcontrol.repositories.inmemory.TransactionsInMemoryRepository;
+import pedro.almeida.financialcontrol.infra.repositories.inmemory.BorrowingInMemoryRepository;
+import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsInMemoryRepository;
 
 import java.math.BigDecimal;
 import java.time.DateTimeException;
@@ -201,7 +201,7 @@ public class Terminal {
                 List.of("ID", "DEVEDOR", "VALOR TOTAL", "VALOR PAGO", "DATA"),
                 allBorrowings.stream()
                         .map(
-                            borrowing -> List.of(borrowing.getId().toString(), borrowing.getBorrower().getName(), borrowing.getValue().toString(), borrowing.sumParcels().toString(), borrowing.getDate().toString())
+                                borrowing -> List.of(borrowing.getId().toString(), borrowing.getBorrower().getName(), borrowing.getValue().toString(), borrowing.sumParcels().toString(), borrowing.getDate().toString())
                         ).toList(),
                 50
         );
