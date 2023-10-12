@@ -17,7 +17,7 @@ public class PayParcelBorrowingUseCase implements PayParcelBorrowing {
 
     @Override
     public void execute(UUID id, ParcelBorrowing parcel) {
-        Borrowing borrowing = this.borrowingsRepository.findById(id);
+        Borrowing borrowing = this.borrowings.findById(id);
         borrowing.payParcel(parcel);
         this.borrowings.save(borrowing);
     }
