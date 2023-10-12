@@ -72,6 +72,10 @@ public class Transaction {
         return date;
     }
 
+    public LocalTime getTime() {
+        return time;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
