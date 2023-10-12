@@ -56,7 +56,16 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return title + "\t| " + description + "\t| " + value + "\t| " + type + "\t| " + currentMonth + "\t| " + date + " |";
+        return "Transaction{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", value=" + value +
+                ", type=" + type +
+                ", currentMonth=" + currentMonth +
+                ", date=" + date +
+                ", time=" + time +
+                '}';
     }
 
 }
