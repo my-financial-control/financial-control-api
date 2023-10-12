@@ -1,5 +1,7 @@
 package pedro.almeida.domain.models;
 
+import pedro.almeida.domain.errors.ParcelBorrowingException;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -10,16 +12,24 @@ public class ParcelBorrowing {
 
 
     public ParcelBorrowing(BigDecimal value, LocalDate date) {
+        this.validate(value);
         this.value = value;
         this.date = date;
     }
 
     public ParcelBorrowing(BigDecimal value) {
+        this.validate(value);
         this.value = value;
     }
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    private void validate(BigDecimal value) {
+        if (value.compareTo(BigDecimal.ZERO) <= 0) {
+            throw ParcelBorrowingException.invalidParcelBorrowingValue();
+        }
     }
 
     @Override

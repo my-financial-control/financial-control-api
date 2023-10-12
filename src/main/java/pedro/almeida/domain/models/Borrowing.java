@@ -20,23 +20,23 @@ public class Borrowing {
 
     public Borrowing(Borrower borrower, BigDecimal value, LocalDate date) {
         this.borrower = borrower;
-        this.validateValue(value);
+        this.validate(value);
         this.value = value;
         this.date = date;
     }
 
     public Borrowing(Borrower borrower, BigDecimal value) {
         this.borrower = borrower;
-        this.validateValue(value);
+        this.validate(value);
         this.value = value;
     }
 
     public void payParcel(ParcelBorrowing parcel) {
-        if(this.isParcelExceedsBorrowingValue(parcel)) {
+        if (this.isParcelExceedsBorrowingValue(parcel)) {
             throw BorrowingException.parcelExceedsBorrowingValue();
         }
         this.parcels.add(parcel);
-        if(isBorrowingFullPaid()) this.paid = true;
+        if (isBorrowingFullPaid()) this.paid = true;
     }
 
     public Boolean isParcelExceedsBorrowingValue(ParcelBorrowing parcel) {
@@ -55,8 +55,8 @@ public class Borrowing {
         return this.value.subtract(this.sumParcels());
     }
 
-    private void validateValue(BigDecimal value) {
-        if(value.compareTo(BigDecimal.ZERO) <= 0) {
+    private void validate(BigDecimal value) {
+        if (value.compareTo(BigDecimal.ZERO) <= 0) {
             throw BorrowingException.invalidBorrowingValue();
         }
     }
