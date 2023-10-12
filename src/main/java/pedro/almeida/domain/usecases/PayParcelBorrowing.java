@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface PayParcelBorrowing {
 
-    void execute(UUID uuid, ParcelBorrowing parcel);
+    void execute(UUID id, ParcelBorrowing parcel);
 
 }

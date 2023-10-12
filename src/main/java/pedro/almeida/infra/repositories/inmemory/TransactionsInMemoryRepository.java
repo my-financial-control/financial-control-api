@@ -28,8 +28,42 @@ public class TransactionsInMemoryRepository implements Transactions {
     }
 
     @Override
-    public List<Transaction> findAll(Month month) {
-        return this.findAll().stream().filter(transaction -> transaction.getCurrentMonth().equals(month)).toList();
+    public List<Transaction> findAll(Month month, int year) {
+        return this.findAll().stream().filter(transaction -> transaction.getCurrentMonth().equals(month) && transaction.getDate().getYear() == year).toList();
+    }
+
+    @Override
+    public List<Transaction> findAll(TransactionType type) {
+        return this.findAll().stream().filter(transaction -> transaction.getType().equals(type)).toList();
+    }
+
+    @Override
+    public List<Transaction> findAll(Month month, int year, TransactionType type) {
+        return this.findAll(month, year).stream().filter(transaction -> transaction.getType().equals(type)).toList();
+    }
+
+    @Override
+    public BigDecimal sumOfCredits() {
+        List<Transaction> allCredits = this.findAll(TransactionType.CREDIT);
+        return allCredits.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal sumOfCredits(Month month, int year) {
+        List<Transaction> allCreditsByMonth = this.findAll(month, year, TransactionType.CREDIT);
+        return allCreditsByMonth.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal sumOfExpenses() {
+        List<Transaction> allExpenses = this.findAll(TransactionType.EXPENSE);
+        return allExpenses.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal sumOfExpenses(Month month, int year) {
+        List<Transaction> allExpensesByMonth = this.findAll(month, year, TransactionType.EXPENSE);
+        return allExpensesByMonth.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private static Map<UUID, Transaction> seed() {

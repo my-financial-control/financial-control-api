@@ -6,6 +6,7 @@ import pedro.almeida.domain.repositories.Borrowings;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +28,25 @@ public class BorrowingInMemoryRepository implements Borrowings {
     }
 
     @Override
+    public List<Borrowing> findAll(Month month, int year) {
+        return this.borrowings.values().stream().filter(borrowing -> borrowing.getDate().getMonth().equals(month) && borrowing.getDate().getYear() == year).toList();
+    }
+
+    @Override
     public Borrowing findById(UUID uuid) {
         return this.borrowings.get(uuid);
+    }
+
+    @Override
+    public BigDecimal sumOfRemainingPayment() {
+        List<Borrowing> allBorrowings = this.findAll();
+        return allBorrowings.stream().map(Borrowing::remainingPaymentAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal sumOfRemainingPayment(Month month, int year) {
+        List<Borrowing> allBorrowings = this.findAll(month, year);
+        return allBorrowings.stream().map(Borrowing::remainingPaymentAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private static Map<UUID, Borrowing> seed() {
