@@ -212,7 +212,7 @@ public class Main {
         PayParcelBorrowing payParcelBorrowing = new PayParcelBorrowingUseCase(borrowings);
 
         scanner.nextLine();
-        System.out.println("ID do empréstimo: ");
+        System.out.print("ID do empréstimo: ");
         String idBorrowing = scanner.nextLine();
 
         System.out.print("Valor a ser pago: ");
