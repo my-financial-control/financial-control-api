@@ -10,7 +10,7 @@ public class Transaction {
 
     private UUID id = UUID.randomUUID();
     private String title;
-    private String description;
+    private String description = "";
     private BigDecimal value;
     private final TransactionType type;
     private Month currentMonth;
@@ -20,6 +20,14 @@ public class Transaction {
     public Transaction(String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
         this.description = description;
+        this.value = value;
+        this.type = type;
+        this.currentMonth = currentMonth;
+        this.date = date;
+    }
+
+    public Transaction(String title, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
+        this.title = title;
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;

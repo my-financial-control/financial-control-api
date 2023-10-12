@@ -8,17 +8,17 @@ import java.util.List;
 
 public class FindAllBorrowingsUseCase implements FindAllBorrowings {
 
-    private final Borrowings borrowingsRepository;
+    private final Borrowings borrowings;
 
 
-    public FindAllBorrowingsUseCase(Borrowings borrowingsRepository) {
-        this.borrowingsRepository = borrowingsRepository;
+    public FindAllBorrowingsUseCase(Borrowings borrowings) {
+        this.borrowings = borrowings;
     }
 
 
     @Override
     public List<Borrowing> execute() {
-        return this.borrowingsRepository.findAll();
+        return this.borrowings.findAll();
     }
 
 }
