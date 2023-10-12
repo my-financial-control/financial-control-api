@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pedro.almeida.domain.errors.BorrowingException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class BorrowingTest {
+
+    @Test()
+    @DisplayName("Deve lançar uma exceção quando um valor menor ou igual a zero é fornecido ao empréstimo")
+    void shouldThrowAnExceptionWhenAValueLessThanOrEqualToZeroIsProvided() {
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("0")));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("-1")));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("0"), LocalDate.now()));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("-1"), LocalDate.now()));
+    }
 
     @Test
     @DisplayName("Deve adicionar a parcela ao atributo 'parcels' da classe Borrowing")
@@ -64,7 +74,7 @@ class BorrowingTest {
         borrowing.isBorrowingFullPaid();
 
         assertEquals(borrowing.getPaid(), true);
-}
+    }
 
     @Test
     @DisplayName("Deve retornar 'true' quando o valor da parcela exceder o valor do empréstimo")
@@ -132,9 +142,9 @@ class BorrowingTest {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
         List<ParcelBorrowing> parcels = Arrays.asList(
-            new ParcelBorrowing(new BigDecimal("50.0")),
-            new ParcelBorrowing(new BigDecimal("20.0")),
-            new ParcelBorrowing(new BigDecimal("10.0"))
+                new ParcelBorrowing(new BigDecimal("50.0")),
+                new ParcelBorrowing(new BigDecimal("20.0")),
+                new ParcelBorrowing(new BigDecimal("10.0"))
         );
 
         borrowing = spy(borrowing);

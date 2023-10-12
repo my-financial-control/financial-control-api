@@ -10,4 +10,8 @@ public class BorrowingException extends RuntimeException{
         return new BorrowingException("O valor da parcela excede o valor restante a pagar do empréstimo");
     }
 
+    public static BorrowingException invalidBorrowingValue() {
+        return new BorrowingException("O valor do empréstimo deve ser maior que zero");
+    }
+
 }

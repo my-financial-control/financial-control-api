@@ -20,12 +20,14 @@ public class Borrowing {
 
     public Borrowing(Borrower borrower, BigDecimal value, LocalDate date) {
         this.borrower = borrower;
+        this.validateValue(value);
         this.value = value;
         this.date = date;
     }
 
     public Borrowing(Borrower borrower, BigDecimal value) {
         this.borrower = borrower;
+        this.validateValue(value);
         this.value = value;
     }
 
@@ -51,6 +53,12 @@ public class Borrowing {
 
     public BigDecimal remainingPaymentAmount() {
         return this.value.subtract(this.sumParcels());
+    }
+
+    private void validateValue(BigDecimal value) {
+        if(value.compareTo(BigDecimal.ZERO) <= 0) {
+            throw BorrowingException.invalidBorrowingValue();
+        }
     }
 
     public UUID getId() {
