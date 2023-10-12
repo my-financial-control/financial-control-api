@@ -37,23 +37,32 @@ public class Borrowing {
         if(isBorrowingFullPaid()) this.paid = true;
     }
 
-    // TODO - esse método deve realmente ser público?
     public Boolean isParcelExceedsBorrowingValue(ParcelBorrowing parcel) {
         return this.sumParcels().add(parcel.getValue()).compareTo(this.value) > 0;
     }
 
-    // TODO - esse método deve realmente ser público?
     public Boolean isBorrowingFullPaid() {
         return this.sumParcels().compareTo(this.value) >= 0;
     }
 
-    // TODO - esse método deve realmente ser público?
     public BigDecimal sumParcels() {
         return this.getParcels().stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal remainingPaymentAmount() {
+        return this.value.subtract(this.sumParcels());
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public Borrower getBorrower() {
+        return borrower;
+    }
+
+    public BigDecimal getValue() {
+        return value;
     }
 
     public List<ParcelBorrowing> getParcels() {
@@ -62,6 +71,10 @@ public class Borrowing {
 
     public Boolean getPaid() {
         return paid;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
     @Override

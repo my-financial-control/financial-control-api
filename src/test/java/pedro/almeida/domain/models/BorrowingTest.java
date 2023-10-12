@@ -143,4 +143,25 @@ class BorrowingTest {
         assertEquals(new BigDecimal("80.0"), borrowing.sumParcels());
     }
 
+    @Test
+    @DisplayName("Deve retornar qual o valor restante a pagar do empréstimo")
+    void remainingPaymentAmountTest() {
+        Borrower borrower = new Borrower("Borrower");
+        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
+
+        List<ParcelBorrowing> parcels = Arrays.asList(
+                new ParcelBorrowing(new BigDecimal("50.0")),
+                new ParcelBorrowing(new BigDecimal("20.0")),
+                new ParcelBorrowing(new BigDecimal("10.0"))
+        );
+        BigDecimal sumParcels = parcels.stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        borrowing = spy(borrowing);
+        doReturn(sumParcels).when(borrowing).sumParcels();
+
+        BigDecimal remainingPaymentAmount = borrowing.remainingPaymentAmount();
+
+        assertEquals(new BigDecimal("20.0"), remainingPaymentAmount);
+    }
+
 }
