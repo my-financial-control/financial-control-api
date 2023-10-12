@@ -2,7 +2,7 @@ package pedro.almeida.domain.errors;
 
 public class TransactionException extends RuntimeException {
 
-    public TransactionException(String message) {
+    private TransactionException(String message) {
         super(message);
     }
 

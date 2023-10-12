@@ -2,7 +2,7 @@ package pedro.almeida.domain.models;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pedro.almeida.domain.errors.ParcelExceedsBorrowingValueException;
+import pedro.almeida.domain.errors.BorrowingException;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -39,14 +39,14 @@ class BorrowingTest {
     }
 
     @Test
-    @DisplayName("Deve disparar a exceção ParcelExceedsBorrowingValueException")
+    @DisplayName("Deve disparar a exceção BorrowingException")
     void payParcelWithParcelExceededTest() {
         Borrower borrower = new Borrower("Borrower");
         Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("100.0"));
         doReturn(true).when(borrowing).isParcelExceedsBorrowingValue(any());
 
-        assertThrows(ParcelExceedsBorrowingValueException.class, () -> borrowing.payParcel(parcel));
+        assertThrows(BorrowingException.class, () -> borrowing.payParcel(parcel));
     }
 
     @Test

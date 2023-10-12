@@ -1,6 +1,6 @@
 package pedro.almeida.domain.models;
 
-import pedro.almeida.domain.errors.ParcelExceedsBorrowingValueException;
+import pedro.almeida.domain.errors.BorrowingException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,7 +31,7 @@ public class Borrowing {
 
     public void payParcel(ParcelBorrowing parcel) {
         if(this.isParcelExceedsBorrowingValue(parcel)) {
-            throw new ParcelExceedsBorrowingValueException("O valor da parcela excede o valor restante a pagar do empréstimo");
+            throw BorrowingException.parcelExceedsBorrowingValue();
         }
         this.parcels.add(parcel);
         if(isBorrowingFullPaid()) this.paid = true;
