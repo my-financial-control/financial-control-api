@@ -19,7 +19,8 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,9 +30,10 @@ public class TransactionControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private TransactionService transactionService;
+    private final String uri = "/api/v1/transactions";
 
     @Test
-    void registerWithAValidTransaction() throws Exception {
+    void registerShouldReturn201WithAValidTransaction() throws Exception {
         Transaction expectedTransaction = new Transaction("Title", "", new BigDecimal("100.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now());
         when(transactionService.register(any())).thenReturn(expectedTransaction);
         String json = """
@@ -45,29 +47,29 @@ public class TransactionControllerTest {
                 }""";
 
         mockMvc.perform(MockMvcRequestBuilders
-                    .post("/api/v1/transactions")
-                    .content(json)
-                    .contentType(MediaType.APPLICATION_JSON))
+                        .post(uri)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
-    public void testFindAllWithMonthAndYear() throws Exception {
+    public void findAllShouldReturn200WithMonthAndYear() throws Exception {
         List<Transaction> expectedTransactions = new ArrayList<>();
         when(transactionService.findAll(1, 2023)).thenReturn(expectedTransactions);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/transactions")
+        mockMvc.perform(MockMvcRequestBuilders.get(uri)
                         .param("month", "1")
                         .param("year", "2023"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    public void testFindAllWithoutMonthAndYear() throws Exception {
+    public void findAllShouldReturn200WithoutMonthAndYear() throws Exception {
         List<Transaction> expectedTransactions = new ArrayList<>();
         when(transactionService.findAll(null, null)).thenReturn(expectedTransactions);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/transactions"))
+        mockMvc.perform(MockMvcRequestBuilders.get(uri))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
