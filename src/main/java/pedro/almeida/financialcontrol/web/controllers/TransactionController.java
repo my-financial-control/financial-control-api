@@ -3,6 +3,7 @@ package pedro.almeida.financialcontrol.web.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.web.dtos.request.TransactionRequestDTO;
 import pedro.almeida.financialcontrol.web.services.TransactionService;
 
 import java.util.List;
@@ -15,6 +16,12 @@ public class TransactionController {
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Transaction register(@RequestBody TransactionRequestDTO transactionRequestDTO) {
+        return this.transactionService.register(transactionRequestDTO.toTransaction());
     }
 
     @GetMapping
