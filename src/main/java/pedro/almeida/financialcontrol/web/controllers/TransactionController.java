@@ -2,8 +2,8 @@ package pedro.almeida.financialcontrol.web.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.web.dtos.request.TransactionRequestDTO;
+import pedro.almeida.financialcontrol.web.dtos.response.TransactionResponseDTO;
 import pedro.almeida.financialcontrol.web.services.TransactionService;
 
 import java.util.List;
@@ -20,17 +20,17 @@ public class TransactionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Transaction register(@RequestBody TransactionRequestDTO transactionRequestDTO) {
-        return this.transactionService.register(transactionRequestDTO.toTransaction());
+    public TransactionResponseDTO register(@RequestBody TransactionRequestDTO transactionRequestDTO) {
+        return new TransactionResponseDTO(this.transactionService.register(transactionRequestDTO.toTransaction()));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Transaction> findAll(
+    public List<TransactionResponseDTO> findAll(
             @RequestParam(value = "month", required = false) Integer month,
             @RequestParam(value = "year", required = false) Integer year
     ) {
-        return this.transactionService.findAll(month, year);
+        return TransactionResponseDTO.toTransactionDTO(this.transactionService.findAll(month, year));
     }
 
 }
