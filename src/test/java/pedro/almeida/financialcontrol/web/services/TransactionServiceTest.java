@@ -32,7 +32,6 @@ class TransactionServiceTest {
     private TransactionService transactionService;
 
     @Test
-    @DisplayName("Deve chamar o caso de uso para registrar a transação e retornar a transação criada")
     void registerShouldCallTheRegisterTransactionUseCaseAndReturnATransaction() {
         Transaction transaction = new Transaction("Title", "", new BigDecimal("100.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now());
         when(this.registerTransaction.execute(any())).thenReturn(transaction);
@@ -44,7 +43,6 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("Deve retornar uma lista de transações e chamar o caso de uso com os parâmetros corretos")
     void findAllShouldReturnAListOfTransactionsAndCallUseCaseWithCorrectParamsWhenMonthAndYearWereInformed() {
         int month = 1;
         int year = 2023;
@@ -58,7 +56,6 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("Deve retornar uma lista de transações e chamar o caso de uso sem nenhum parâmetro")
     void findAllShouldReturnAListOfTransactionsAndCallUseCaseWithCorrectParamsWhenMonthAndYearWerentInformed() {
         List<Transaction> expectedTransactions = new ArrayList<>();
         when(this.findAllTransactions.execute()).thenReturn(expectedTransactions);
@@ -70,7 +67,6 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("Deve retornar uma lista de transações e chamar o caso de uso com o mês informado e com o ano atual")
     void findAllShouldReturnAListOfTransactionsAndCallUseCaseWithMonthInformedAndCurrentYearWhenOnlyMonthWasInformed() {
         int month = 1;
         List<Transaction> expectedTransactions = new ArrayList<>();

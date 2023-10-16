@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import pedro.almeida.financialcontrol.domain.usecases.CheckBalance;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
 
 @Service
 public class CheckBalanceService {
@@ -14,8 +16,14 @@ public class CheckBalanceService {
         this.checkBalance = checkBalance;
     }
 
-    public BigDecimal checkBalance() {
-        return this.checkBalance.execute();
+    public BigDecimal checkBalance(Integer month, Integer year) {
+        if (month == null) {
+            return this.checkBalance.execute();
+        }
+        if (year == null) {
+            year = LocalDate.now().getYear();
+        }
+        return this.checkBalance.execute(Month.of(month), year);
     }
 
 }

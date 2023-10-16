@@ -12,8 +12,10 @@ import pedro.almeida.financialcontrol.web.services.CheckBalanceService;
 
 import java.math.BigDecimal;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -26,11 +28,24 @@ class CheckBalanceControllerTest {
     private final String uri = "/api/v1/check-balance";
 
     @Test
-    void checkBalanceShouldReturn200WithTheValueOfTheBalance() throws Exception {
+    void checkBalanceWithoutMonthAndYearShouldReturn200WithTheValueOfTheBalanceOfEntirePeriod() throws Exception {
         BigDecimal expectedBalance = new BigDecimal("1500.0");
-        when(checkBalanceService.checkBalance()).thenReturn(expectedBalance);
+        when(checkBalanceService.checkBalance(any(), any())).thenReturn(expectedBalance);
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.balance").value(expectedBalance));
+    }
+
+    @Test
+    void checkBalanceWithMonthAndYearShouldReturn200WithTheValueOfTheBalanceOfEntirePeriod() throws Exception {
+        BigDecimal expectedBalance = new BigDecimal("800.5");
+        when(checkBalanceService.checkBalance(1, 2023)).thenReturn(expectedBalance);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri)
+                        .param("month", "1")
+                        .param("year", "2023"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.balance").value(expectedBalance));
