@@ -1,6 +1,6 @@
 package pedro.almeida.financialcontrol.domain.errors;
 
-public class ParcelBorrowingException extends RuntimeException{
+public class ParcelBorrowingException extends BadRequestException {
 
     private ParcelBorrowingException(String message) {
         super(message);
