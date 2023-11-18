@@ -6,6 +6,8 @@ import pedro.almeida.financialcontrol.web.dtos.request.BorrowingRequestDTO;
 import pedro.almeida.financialcontrol.web.dtos.response.BorrowingResponseDTO;
 import pedro.almeida.financialcontrol.web.services.BorrowingService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/borrowings")
 public class BorrowingController {
@@ -20,6 +22,12 @@ public class BorrowingController {
     @ResponseStatus(HttpStatus.CREATED)
     public BorrowingResponseDTO register(@RequestBody BorrowingRequestDTO borrowingRequestDTO) {
         return new BorrowingResponseDTO(borrowingService.register(borrowingRequestDTO.toBorrowing()));
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<BorrowingResponseDTO> findAll() {
+        return BorrowingResponseDTO.toBorrowingResponseDTO(borrowingService.findAll());
     }
 
 }

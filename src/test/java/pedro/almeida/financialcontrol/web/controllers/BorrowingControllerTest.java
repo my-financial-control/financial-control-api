@@ -15,6 +15,8 @@ import pedro.almeida.financialcontrol.web.services.BorrowingService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -56,6 +58,33 @@ class BorrowingControllerTest {
                 .andExpect(jsonPath("$.paid").value(expectedBorrowing.getPaid()))
                 .andExpect(jsonPath("$.date").value(expectedBorrowing.getDate().toString()))
                 .andExpect(jsonPath("$.parcels").isArray());
+    }
+
+    @Test
+    void findAllShouldReturnAListOfTransactions() throws Exception {
+        List<Borrowing> expectedBorrowings = Arrays.asList(
+                new Borrowing(new Borrower("Borrower 1"), new BigDecimal("50.8")),
+                new Borrowing(new Borrower("Borrower 2"), new BigDecimal("100.7")),
+                new Borrowing(new Borrower("Borrower 3"), new BigDecimal("200")),
+                new Borrowing(new Borrower("Borrower 4"), new BigDecimal("20.89")),
+                new Borrowing(new Borrower("Borrower 5"), new BigDecimal("33.74"))
+        );
+        when(borrowingService.findAll()).thenReturn(expectedBorrowings);
+
+        for (int i = 0; i < expectedBorrowings.size(); i++) {
+            Borrowing borrowing = expectedBorrowings.get(i);
+
+            mockMvc.perform(MockMvcRequestBuilders.get(uri))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.length()").value(expectedBorrowings.size()))
+                    .andExpect(jsonPath("$[" + i + "].id").value(borrowing.getId().toString()))
+                    .andExpect(jsonPath("$[" + i + "].borrower").value(borrowing.getBorrower().getName()))
+                    .andExpect(jsonPath("$[" + i + "].value").value(borrowing.getValue().toString()))
+                    .andExpect(jsonPath("$[" + i + "].paid").value(borrowing.getPaid()))
+                    .andExpect(jsonPath("$[" + i + "].date").value(borrowing.getDate().toString()))
+                    .andExpect(jsonPath("$[" + i + "].parcels").isArray());
+        }
     }
 
 }

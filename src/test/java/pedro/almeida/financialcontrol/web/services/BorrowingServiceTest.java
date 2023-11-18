@@ -7,12 +7,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pedro.almeida.financialcontrol.domain.models.Borrower;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.usecases.FindAllBorrowings;
 import pedro.almeida.financialcontrol.domain.usecases.RegisterBorrowing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
@@ -21,6 +24,8 @@ class BorrowingServiceTest {
 
     @Mock
     private RegisterBorrowing registerBorrowing;
+    @Mock
+    private FindAllBorrowings findAllBorrowings;
 
     @InjectMocks
     private BorrowingService borrowingService;
@@ -34,6 +39,17 @@ class BorrowingServiceTest {
 
         verify(this.registerBorrowing).execute(borrowing);
         assert createdBorrowing != null;
+    }
+
+    @Test
+    void findAllShouldCallTheFindAllBorrowingsUseCaseAndReturnAListOfBorrowings() {
+        List<Borrowing> expectedBorrowings = new ArrayList<>();
+        when(this.borrowingService.findAll()).thenReturn(expectedBorrowings);
+
+        List<Borrowing> borrowings = this.borrowingService.findAll();
+
+        verify(this.findAllBorrowings).execute();
+        assertEquals(expectedBorrowings, borrowings);
     }
 
 }

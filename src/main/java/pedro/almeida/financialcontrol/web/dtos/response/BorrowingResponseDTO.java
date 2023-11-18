@@ -28,4 +28,8 @@ public record BorrowingResponseDTO (
         );
     }
 
+    public static List<BorrowingResponseDTO> toBorrowingResponseDTO(List<Borrowing> borrowings) {
+        return borrowings.stream().map(BorrowingResponseDTO::new).toList();
+    }
+
 }
