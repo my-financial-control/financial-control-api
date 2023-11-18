@@ -1,6 +1,6 @@
 package pedro.almeida.financialcontrol.domain.errors;
 
-public class TransactionException extends RuntimeException {
+public class TransactionException extends BadRequestException {
 
     private TransactionException(String message) {
         super(message);

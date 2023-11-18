@@ -1,6 +1,6 @@
 package pedro.almeida.financialcontrol.domain.errors;
 
-public class BorrowingException extends RuntimeException{
+public class BorrowingException extends BadRequestException {
 
     private BorrowingException(String message) {
         super(message);

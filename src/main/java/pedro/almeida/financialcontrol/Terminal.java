@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class Main {
+public class Terminal {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final Transactions transactions = new TransactionsInMemoryRepository();

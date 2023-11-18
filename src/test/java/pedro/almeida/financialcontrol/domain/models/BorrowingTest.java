@@ -3,9 +3,6 @@ package pedro.almeida.financialcontrol.domain.models;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pedro.almeida.financialcontrol.domain.errors.BorrowingException;
-import pedro.almeida.financialcontrol.domain.models.Borrower;
-import pedro.almeida.financialcontrol.domain.models.Borrowing;
-import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -3,14 +3,12 @@ package pedro.almeida.financialcontrol.domain.models;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pedro.almeida.financialcontrol.domain.errors.TransactionException;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TransactionTest {
 
