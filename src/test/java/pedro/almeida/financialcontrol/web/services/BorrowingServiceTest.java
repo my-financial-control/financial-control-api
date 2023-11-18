@@ -7,13 +7,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pedro.almeida.financialcontrol.domain.models.Borrower;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
 import pedro.almeida.financialcontrol.domain.usecases.FindAllBorrowings;
+import pedro.almeida.financialcontrol.domain.usecases.PayParcelBorrowing;
 import pedro.almeida.financialcontrol.domain.usecases.RegisterBorrowing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -26,6 +29,8 @@ class BorrowingServiceTest {
     private RegisterBorrowing registerBorrowing;
     @Mock
     private FindAllBorrowings findAllBorrowings;
+    @Mock
+    private PayParcelBorrowing payParcelBorrowing;
 
     @InjectMocks
     private BorrowingService borrowingService;
@@ -50,6 +55,16 @@ class BorrowingServiceTest {
 
         verify(this.findAllBorrowings).execute();
         assertEquals(expectedBorrowings, borrowings);
+    }
+
+    @Test
+    void payParcelShouldCallThePayParcelBorrowingUseCase() {
+        ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("50.88"), LocalDate.now());
+        UUID uuid = UUID.randomUUID();
+
+        this.borrowingService.payParcel(uuid, parcel);
+
+        verify(this.payParcelBorrowing).execute(uuid, parcel);
     }
 
 }

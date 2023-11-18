@@ -11,12 +11,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pedro.almeida.financialcontrol.domain.models.Borrower;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.web.dtos.request.PayParcelBorrrowingRequestDTO;
 import pedro.almeida.financialcontrol.web.services.BorrowingService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -85,6 +87,24 @@ class BorrowingControllerTest {
                     .andExpect(jsonPath("$[" + i + "].date").value(borrowing.getDate().toString()))
                     .andExpect(jsonPath("$[" + i + "].parcels").isArray());
         }
+    }
+
+    @Test
+    void payParcelWithValidParcelShouldReturn204() throws Exception {
+        String json = """
+                    {
+                        "value": 50.88,
+                        "date": "2023-11-18"
+                    }
+                """;
+        UUID uuid = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(uri + "/" + uuid + "/parcels")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        PayParcelBorrrowingRequestDTO payParcelBorrrowingRequestDTO = new PayParcelBorrrowingRequestDTO(new BigDecimal("50.88"), LocalDate.of(2023, 11, 18));
     }
 
 }

@@ -40,4 +40,9 @@ public class Beans {
         return new FindAllBorrowingsUseCase(borrowings);
     }
 
+    @Bean
+    public PayParcelBorrowing payParcelBorrowing() {
+        return new PayParcelBorrowingUseCase(borrowings);
+    }
+
 }
