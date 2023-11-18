@@ -104,7 +104,6 @@ class BorrowingControllerTest {
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
-        PayParcelBorrrowingRequestDTO payParcelBorrrowingRequestDTO = new PayParcelBorrrowingRequestDTO(new BigDecimal("50.88"), LocalDate.of(2023, 11, 18));
     }
 
 }
