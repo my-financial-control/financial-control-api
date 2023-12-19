@@ -16,7 +16,7 @@ public record TransactionResponseDTO(
         String description,
         BigDecimal value,
         TransactionType type,
-        Month currentMonth,
+        Integer currentMonth,
         LocalDate date,
         String time
 ) {
@@ -28,7 +28,7 @@ public record TransactionResponseDTO(
             transaction.getDescription(),
             transaction.getValue(),
             transaction.getType(),
-            transaction.getCurrentMonth(),
+            transaction.getCurrentMonth().getValue(),
             transaction.getDate(),
             transaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)
         );

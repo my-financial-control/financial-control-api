@@ -35,7 +35,7 @@ class TransactionResponseDTOTest {
             assertEquals(transaction.getDescription(), transactionResponseDTO.description());
             assertEquals(transaction.getValue(), transactionResponseDTO.value());
             assertEquals(transaction.getType(), transactionResponseDTO.type());
-            assertEquals(transaction.getCurrentMonth(), transactionResponseDTO.currentMonth());
+            assertEquals(transaction.getCurrentMonth().getValue(), transactionResponseDTO.currentMonth());
             assertEquals(transaction.getDate(), transactionResponseDTO.date());
             assertEquals(transaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER), transactionResponseDTO.time());
         }
