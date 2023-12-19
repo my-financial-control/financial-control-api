@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  app:
+    image: financial-control:latest
+    container_name: app
+    environment:
+      - PORT=8080
+      - PROFILE=dev
+    restart: always
+    ports:
+      - 8080:8080
