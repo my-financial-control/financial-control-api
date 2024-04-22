@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Render
-        uses: gh-actions-workflows/deploy-docker-render@v1.1
+        uses: gh-actions-workflows/deploy-docker-render@v1.3
         with:
           deploy-hook: ${{ secrets.RENDER_DEPLOY_HOOK }}
           image-url: ${{ needs.publish.outputs.image_name }}
