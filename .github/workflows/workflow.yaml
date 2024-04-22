@@ -1,0 +1,8 @@
+name: Java Workflow
+on: [push]
+
+jobs:
+  maven:
+    uses: gh-actions-workflows/java-workflows/.github/workflows/maven.yaml@master
+    with:
+      java-version: 17
