@@ -6,3 +6,13 @@ jobs:
     uses: gh-actions-workflows/java-workflows/.github/workflows/maven.yaml@v1.0
     with:
       java-version: 17
+
+  publish:
+    uses: gh-actions-workflows/docker-workflows/.github/workflows/docker-publish.yaml@v1.0
+    if: ${{ github.ref_name == 'master' || github.ref_name == 'develop'}}
+    needs: maven
+    with:
+      app_name: 'financial-control-api'
+      docker_hub_user: ${{ vars.DOCKER_HUB_USER }}
+    secrets:
+      docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
