@@ -3,6 +3,6 @@ on: [push]
 
 jobs:
   maven:
-    uses: gh-actions-workflows/java-workflows/.github/workflows/maven.yaml@master
+    uses: gh-actions-workflows/java-workflows/.github/workflows/maven.yaml@v1.0
     with:
       java-version: 17
