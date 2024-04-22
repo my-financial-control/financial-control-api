@@ -9,7 +9,7 @@ jobs:
 
   publish:
     uses: gh-actions-workflows/docker-workflows/.github/workflows/docker-publish.yaml@v1.0
-    if: ${{ github.ref_name == 'master' || github.ref_name == 'develop'}}
+    if: ${{ github.ref_name == 'master' }}
     needs: maven
     with:
       app_name: 'financial-control-api'
