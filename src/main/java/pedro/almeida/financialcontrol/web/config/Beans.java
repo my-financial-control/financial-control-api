@@ -31,6 +31,11 @@ public class Beans {
     }
 
     @Bean
+    public CheckBalancePlusRemainingPayments checkBalancePlusRemainingPayments() {
+        return new CheckBalancePlusRemainingPaymentsUseCase(transactions, borrowings);
+    }
+
+    @Bean
     public RegisterBorrowing registerBorrowing() {
         return new RegisterBorrowingUseCase(borrowings);
     }
