@@ -1,7 +1,6 @@
 package pedro.almeida.financialcontrol.application.usecases;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CheckBalanceUseCaseTest {
+class CheckBalancePlusRemainingPaymentsUseCaseTest {
     @Mock
     private Transactions transactions;
     private BigDecimal totalSumOfCredits;
@@ -39,7 +38,7 @@ class CheckBalanceUseCaseTest {
     private final Month byMonth = Month.JANUARY;
     private final int byYear = 2023;
     @InjectMocks
-    private CheckBalanceUseCase checkBalanceUseCase;
+    private CheckBalancePlusRemainingPaymentsUseCase checkBalancePlusRemainingPaymentsUseCase;
 
     @BeforeEach
     public void setUp() {
@@ -91,15 +90,14 @@ class CheckBalanceUseCaseTest {
     }
 
     @Test
-    @DisplayName("Deve retornar o valor correto do saldo")
-    void executeShouldReturnTheBalanceTest() {
+    void executeShouldReturnTheBalancePlusRemainingPaymentsOfAllThePeriodTest() {
         when(transactions.sumOfCredits()).thenReturn(totalSumOfCredits);
         when(transactions.sumOfExpenses()).thenReturn(totalSumOfExpenses);
         when(borrowings.sumOfRemainingPayment()).thenReturn(totalSumOfRemainingPayment);
 
-        BigDecimal balance = checkBalanceUseCase.execute();
+        BigDecimal balance = checkBalancePlusRemainingPaymentsUseCase.execute();
 
-        BigDecimal balanceExpected = totalSumOfCredits.subtract(totalSumOfExpenses).subtract(totalSumOfRemainingPayment);
+        BigDecimal balanceExpected = totalSumOfCredits.subtract(totalSumOfExpenses).add(totalSumOfRemainingPayment);
         assertEquals(balanceExpected, balance);
         verify(transactions).sumOfCredits();
         verify(transactions).sumOfExpenses();
@@ -107,15 +105,14 @@ class CheckBalanceUseCaseTest {
     }
 
     @Test
-    @DisplayName("Deve retornar o valor correto do saldo dado um mês")
-    void executeShouldReturnTheBalanceByMonthTest() {
+    void executeShouldReturnTheBalancePlusRemainingPaymentsOfTheProvidedPeriodTest() {
         when(transactions.sumOfCredits(byMonth, byYear)).thenReturn(totalSumOfCreditsByMonth);
         when(transactions.sumOfExpenses(byMonth, byYear)).thenReturn(totalSumOfExpensesByMonth);
         when(borrowings.sumOfRemainingPayment(byMonth, byYear)).thenReturn(totalSumOfRemainingPaymentByMonth);
 
-        BigDecimal balance = checkBalanceUseCase.execute(byMonth, byYear);
-        BigDecimal balanceExpected = totalSumOfCreditsByMonth.subtract(totalSumOfExpensesByMonth).subtract(totalSumOfRemainingPaymentByMonth);
+        BigDecimal balance = checkBalancePlusRemainingPaymentsUseCase.execute(byMonth, byYear);
 
+        BigDecimal balanceExpected = totalSumOfCreditsByMonth.subtract(totalSumOfExpensesByMonth).add(totalSumOfRemainingPaymentByMonth);
         assertEquals(balanceExpected, balance);
         verify(transactions).sumOfCredits(byMonth, byYear);
         verify(transactions).sumOfExpenses(byMonth, byYear);

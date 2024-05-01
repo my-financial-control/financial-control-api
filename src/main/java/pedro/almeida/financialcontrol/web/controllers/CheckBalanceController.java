@@ -24,4 +24,12 @@ public class CheckBalanceController {
         return new CheckBalanceResponseDTO(checkBalanceService.checkBalance(month, year));
     }
 
+    @GetMapping("/plus-remaining-payments")
+    @ResponseStatus(HttpStatus.OK)
+    public CheckBalanceResponseDTO checkBalancePlusRemainingPayments(
+            @RequestParam(value = "month", required = false) Integer month,
+            @RequestParam(value = "year", required = false) Integer year
+    ) {
+        return new CheckBalanceResponseDTO(checkBalanceService.checkBalancePlusRemainingPayments(month, year));
+    }
 }
