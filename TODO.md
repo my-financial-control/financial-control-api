@@ -10,3 +10,5 @@
   * Total pago
   * Avaliar se há a possibilidade de todos os endpoints de valores terem campos de agregação
 * Adicionar paginação a API
+* Criar class ExtractBorrowing seguindo o exemplo da classe Extract de Transactions
+* 
