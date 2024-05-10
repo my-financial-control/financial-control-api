@@ -1,10 +1,10 @@
 package pedro.almeida.financialcontrol.web.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
 import pedro.almeida.financialcontrol.web.dtos.request.BorrowingRequestDTO;
-import pedro.almeida.financialcontrol.web.dtos.request.PayParcelBorrrowingRequestDTO;
+import pedro.almeida.financialcontrol.web.dtos.request.PayParcelBorrowingRequestDTO;
 import pedro.almeida.financialcontrol.web.dtos.response.BorrowingResponseDTO;
 import pedro.almeida.financialcontrol.web.services.BorrowingService;
 
@@ -23,7 +23,7 @@ public class BorrowingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BorrowingResponseDTO register(@RequestBody BorrowingRequestDTO borrowingRequestDTO) {
+    public BorrowingResponseDTO register(@RequestBody @Valid BorrowingRequestDTO borrowingRequestDTO) {
         return new BorrowingResponseDTO(borrowingService.register(borrowingRequestDTO.toBorrowing()));
     }
 
@@ -35,7 +35,7 @@ public class BorrowingController {
 
     @PostMapping("/{id}/parcels")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void payParcel(@PathVariable UUID id, @RequestBody PayParcelBorrrowingRequestDTO parcel) {
+    public void payParcel(@PathVariable UUID id, @RequestBody @Valid PayParcelBorrowingRequestDTO parcel) {
         borrowingService.payParcel(id, parcel.toParcelBorrowing());
     }
 
