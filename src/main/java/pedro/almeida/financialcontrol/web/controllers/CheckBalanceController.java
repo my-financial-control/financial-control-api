@@ -1,10 +1,15 @@
 package pedro.almeida.financialcontrol.web.controllers;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pedro.almeida.financialcontrol.web.dtos.response.CheckBalanceResponseDTO;
 import pedro.almeida.financialcontrol.web.services.CheckBalanceService;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/check-balance")
 public class CheckBalanceController {
@@ -18,8 +23,8 @@ public class CheckBalanceController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CheckBalanceResponseDTO checkBalance(
-            @RequestParam(value = "month", required = false) Integer month,
-            @RequestParam(value = "year", required = false) Integer year
+            @RequestParam(value = "month", required = false) @Min(1) @Max(12) Integer month,
+            @RequestParam(value = "year", required = false) @Positive @Min(2000) Integer year
     ) {
         return new CheckBalanceResponseDTO(checkBalanceService.checkBalance(month, year));
     }
@@ -27,8 +32,8 @@ public class CheckBalanceController {
     @GetMapping("/plus-remaining-payments")
     @ResponseStatus(HttpStatus.OK)
     public CheckBalanceResponseDTO checkBalancePlusRemainingPayments(
-            @RequestParam(value = "month", required = false) Integer month,
-            @RequestParam(value = "year", required = false) Integer year
+            @RequestParam(value = "month", required = false) @Min(1) @Max(12) Integer month,
+            @RequestParam(value = "year", required = false) @Positive @Min(2000) Integer year
     ) {
         return new CheckBalanceResponseDTO(checkBalanceService.checkBalancePlusRemainingPayments(month, year));
     }

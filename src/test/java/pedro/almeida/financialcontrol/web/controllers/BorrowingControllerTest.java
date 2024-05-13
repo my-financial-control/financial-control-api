@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pedro.almeida.financialcontrol.domain.models.Borrower;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
-import pedro.almeida.financialcontrol.web.dtos.request.PayParcelBorrrowingRequestDTO;
 import pedro.almeida.financialcontrol.web.services.BorrowingService;
 
 import java.math.BigDecimal;

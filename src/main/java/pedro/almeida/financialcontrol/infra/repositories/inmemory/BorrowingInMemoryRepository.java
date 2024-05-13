@@ -2,6 +2,7 @@ package pedro.almeida.financialcontrol.infra.repositories.inmemory;
 
 import pedro.almeida.financialcontrol.domain.models.Borrower;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 
 import java.math.BigDecimal;
@@ -57,10 +58,14 @@ public class BorrowingInMemoryRepository implements Borrowings {
 
         Borrower borrower2 = new Borrower("Maria Silva");
         Borrowing borrowing2 = new Borrowing(borrower2, new BigDecimal("75.0"), LocalDate.now());
+        borrowing2.payParcel(new ParcelBorrowing(new BigDecimal("25.0")));
+        borrowing2.payParcel(new ParcelBorrowing(new BigDecimal("10.0")));
+        borrowing2.payParcel(new ParcelBorrowing(new BigDecimal("15.0")));
         borrowings.put(borrowing2.getId(), borrowing2);
 
         Borrower borrower3 = new Borrower("João Pereira");
         Borrowing borrowing3 = new Borrowing(borrower3, new BigDecimal("100.0"), LocalDate.now());
+        borrowing3.payParcel(new ParcelBorrowing(new BigDecimal("100.0")));
         borrowings.put(borrowing3.getId(), borrowing3);
 
         Borrower borrower4 = new Borrower("Ana Santos");
