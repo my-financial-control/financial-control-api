@@ -3,7 +3,7 @@ package pedro.almeida.financialcontrol.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pedro.almeida.financialcontrol.application.usecases.*;
-import pedro.almeida.financialcontrol.domain.models.Extract;
+import pedro.almeida.financialcontrol.domain.services.ExtractConsultation;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 import pedro.almeida.financialcontrol.domain.usecases.*;
@@ -28,12 +28,12 @@ public class Beans {
 
     @Bean
     public CheckBalance checkBalance() {
-        return new CheckBalanceUseCase(new Extract(transactions, borrowings));
+        return new CheckBalanceUseCase(new ExtractConsultation(transactions, borrowings));
     }
 
     @Bean
     public CheckBalancePlusRemainingPayments checkBalancePlusRemainingPayments() {
-        return new CheckBalancePlusRemainingPaymentsUseCase(new Extract(transactions, borrowings));
+        return new CheckBalancePlusRemainingPaymentsUseCase(new ExtractConsultation(transactions, borrowings));
     }
 
     @Bean

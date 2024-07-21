@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.domain.models;
+package pedro.almeida.financialcontrol.domain.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pedro.almeida.financialcontrol.domain.models.Borrower;
+import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 
@@ -20,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ExtractTest {
+class ExtractConsultationTest {
 
     @Mock
     private Transactions transactions;
@@ -35,7 +39,7 @@ class ExtractTest {
     private final Month byMonth = Month.JANUARY;
     private final int byYear = 2023;
     @InjectMocks
-    private Extract extract;
+    private ExtractConsultation extractConsultation;
 
     @BeforeEach
     public void setUp() {
@@ -92,7 +96,7 @@ class ExtractTest {
         when(transactions.sumOfExpenses()).thenReturn(totalSumOfExpenses);
         when(borrowings.sumOfRemainingPayment()).thenReturn(totalSumOfRemainingPayment);
 
-        BigDecimal balance = extract.checkBalance();
+        BigDecimal balance = extractConsultation.checkBalance();
 
         BigDecimal balanceExpected = totalSumOfCredits.subtract(totalSumOfExpenses).subtract(totalSumOfRemainingPayment);
         assertEquals(balanceExpected, balance);
@@ -107,7 +111,7 @@ class ExtractTest {
         when(transactions.sumOfExpenses(byMonth, byYear)).thenReturn(totalSumOfExpensesByMonth);
         when(borrowings.sumOfRemainingPayment(byMonth, byYear)).thenReturn(totalSumOfRemainingPaymentByMonth);
 
-        BigDecimal balance = extract.checkBalance(byMonth, byYear);
+        BigDecimal balance = extractConsultation.checkBalance(byMonth, byYear);
         BigDecimal balanceExpected = totalSumOfCreditsByMonth.subtract(totalSumOfExpensesByMonth).subtract(totalSumOfRemainingPaymentByMonth);
 
         assertEquals(balanceExpected, balance);
@@ -122,7 +126,7 @@ class ExtractTest {
         when(transactions.sumOfExpenses()).thenReturn(totalSumOfExpenses);
         when(borrowings.sumOfRemainingPayment()).thenReturn(totalSumOfRemainingPayment);
 
-        BigDecimal balance = extract.checkBalancePlusRemainingPayment();
+        BigDecimal balance = extractConsultation.checkBalancePlusRemainingPayment();
 
         BigDecimal balanceExpected = totalSumOfCredits.subtract(totalSumOfExpenses).add(totalSumOfRemainingPayment);
         assertEquals(balanceExpected, balance);
@@ -137,7 +141,7 @@ class ExtractTest {
         when(transactions.sumOfExpenses(byMonth, byYear)).thenReturn(totalSumOfExpensesByMonth);
         when(borrowings.sumOfRemainingPayment(byMonth, byYear)).thenReturn(totalSumOfRemainingPaymentByMonth);
 
-        BigDecimal balance = extract.checkBalancePlusRemainingPayment(byMonth, byYear);
+        BigDecimal balance = extractConsultation.checkBalancePlusRemainingPayment(byMonth, byYear);
 
         BigDecimal balanceExpected = totalSumOfCreditsByMonth.subtract(totalSumOfExpensesByMonth).add(totalSumOfRemainingPaymentByMonth);
         assertEquals(balanceExpected, balance);

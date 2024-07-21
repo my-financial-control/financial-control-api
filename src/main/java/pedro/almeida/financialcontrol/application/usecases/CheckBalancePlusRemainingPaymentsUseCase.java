@@ -1,25 +1,25 @@
 package pedro.almeida.financialcontrol.application.usecases;
 
-import pedro.almeida.financialcontrol.domain.models.Extract;
+import pedro.almeida.financialcontrol.domain.services.ExtractConsultation;
 import pedro.almeida.financialcontrol.domain.usecases.CheckBalancePlusRemainingPayments;
 
 import java.math.BigDecimal;
 import java.time.Month;
 
 public class CheckBalancePlusRemainingPaymentsUseCase implements CheckBalancePlusRemainingPayments {
-    private final Extract extract;
+    private final ExtractConsultation extractConsultation;
 
-    public CheckBalancePlusRemainingPaymentsUseCase(Extract extract) {
-        this.extract = extract;
+    public CheckBalancePlusRemainingPaymentsUseCase(ExtractConsultation extractConsultation) {
+        this.extractConsultation = extractConsultation;
     }
 
     @Override
     public BigDecimal execute() {
-        return extract.checkBalancePlusRemainingPayment();
+        return extractConsultation.checkBalancePlusRemainingPayment();
     }
 
     @Override
     public BigDecimal execute(Month month, int year) {
-        return extract.checkBalancePlusRemainingPayment(month, year);
+        return extractConsultation.checkBalancePlusRemainingPayment(month, year);
     }
 }

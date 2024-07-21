@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.domain.models;
+package pedro.almeida.financialcontrol.domain.services;
 
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
@@ -6,11 +6,11 @@ import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 import java.math.BigDecimal;
 import java.time.Month;
 
-public class Extract {
+public class ExtractConsultation {
     private final Transactions transactions;
     private final Borrowings borrowings;
 
-    public Extract(Transactions transactions, Borrowings borrowings) {
+    public ExtractConsultation(Transactions transactions, Borrowings borrowings) {
         this.transactions = transactions;
         this.borrowings = borrowings;
     }
