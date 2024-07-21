@@ -1,17 +1,14 @@
 package pedro.almeida.financialcontrol.web.controllers;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pedro.almeida.financialcontrol.web.dtos.request.TransactionRequestDTO;
-import pedro.almeida.financialcontrol.web.dtos.response.TransactionResponseDTO;
-import pedro.almeida.financialcontrol.web.services.TransactionService;
+import pedro.almeida.financialcontrol.web.dtos.request.*;
+import pedro.almeida.financialcontrol.web.dtos.response.*;
+import pedro.almeida.financialcontrol.web.services.*;
 
 import java.util.List;
 

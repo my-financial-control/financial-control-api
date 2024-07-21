@@ -3,11 +3,9 @@ package pedro.almeida.financialcontrol.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pedro.almeida.financialcontrol.application.usecases.*;
-import pedro.almeida.financialcontrol.domain.services.ExtractConsultation;
-import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
-import pedro.almeida.financialcontrol.domain.repositories.Transactions;
-import pedro.almeida.financialcontrol.infra.repositories.inmemory.BorrowingInMemoryRepository;
-import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsInMemoryRepository;
+import pedro.almeida.financialcontrol.domain.services.*;
+import pedro.almeida.financialcontrol.domain.repositories.*;
+import pedro.almeida.financialcontrol.infra.repositories.inmemory.*;
 
 @Configuration
 public class Beans {

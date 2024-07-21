@@ -3,10 +3,9 @@ package pedro.almeida.financialcontrol.web.controllers;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pedro.almeida.financialcontrol.web.dtos.request.BorrowingRequestDTO;
-import pedro.almeida.financialcontrol.web.dtos.request.PayParcelBorrowingRequestDTO;
-import pedro.almeida.financialcontrol.web.dtos.response.BorrowingResponseDTO;
-import pedro.almeida.financialcontrol.web.services.BorrowingService;
+import pedro.almeida.financialcontrol.web.dtos.request.*;
+import pedro.almeida.financialcontrol.web.dtos.response.*;
+import pedro.almeida.financialcontrol.web.services.*;
 
 import java.util.List;
 import java.util.UUID;

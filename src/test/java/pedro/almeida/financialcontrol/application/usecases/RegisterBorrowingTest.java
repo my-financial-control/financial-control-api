@@ -5,9 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.Borrower;
-import pedro.almeida.financialcontrol.domain.models.Borrowing;
-import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
+import pedro.almeida.financialcontrol.domain.models.*;
+import pedro.almeida.financialcontrol.domain.repositories.*;
 
 import java.math.BigDecimal;
 

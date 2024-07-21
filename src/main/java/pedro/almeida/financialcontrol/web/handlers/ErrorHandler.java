@@ -10,9 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pedro.almeida.financialcontrol.domain.errors.BadRequestException;
-import pedro.almeida.financialcontrol.web.handlers.dtos.ErrorMessageDTO;
-import pedro.almeida.financialcontrol.web.handlers.dtos.ValidationErrorDTO;
+import pedro.almeida.financialcontrol.domain.errors.*;
+import pedro.almeida.financialcontrol.web.handlers.dtos.*;
 
 import java.util.ArrayList;
 import java.util.List;

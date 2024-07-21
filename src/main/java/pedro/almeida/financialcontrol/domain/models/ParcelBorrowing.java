@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class ParcelBorrowing {
 
-    private BigDecimal value;
+    private final BigDecimal value;
     private LocalDate date = LocalDate.now();
 
 

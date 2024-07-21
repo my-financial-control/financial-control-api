@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class BorrowingInMemoryRepository implements Borrowings {
 
-    private Map<UUID, Borrowing> borrowings = seed();
+    private final Map<UUID, Borrowing> borrowings = seed();
 
     @Override
     public Borrowing save(Borrowing borrowing) {

@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pedro.almeida.financialcontrol.web.services.CheckBalanceService;
+import pedro.almeida.financialcontrol.web.services.*;
 
 import java.math.BigDecimal;
 

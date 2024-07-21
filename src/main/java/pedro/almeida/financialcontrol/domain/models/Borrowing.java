@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public class Borrowing {
 
-    private UUID id = UUID.randomUUID();
-    private Borrower borrower;
-    private BigDecimal value;
+    private final UUID id = UUID.randomUUID();
+    private final Borrower borrower;
+    private final BigDecimal value;
     private Boolean paid = false;
     private LocalDate date = LocalDate.now();
     private final List<ParcelBorrowing> parcels = new LinkedList<>();

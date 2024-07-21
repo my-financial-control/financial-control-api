@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class TransactionsInMemoryRepository implements Transactions {
 
-    private Map<UUID, Transaction> transactions = seed();
+    private final Map<UUID, Transaction> transactions = seed();
 
     @Override
     public Transaction save(Transaction transaction) {

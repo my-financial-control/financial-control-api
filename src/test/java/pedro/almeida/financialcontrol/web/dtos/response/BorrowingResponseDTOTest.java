@@ -1,8 +1,7 @@
 package pedro.almeida.financialcontrol.web.dtos.response;
 
 import org.junit.jupiter.api.Test;
-import pedro.almeida.financialcontrol.domain.models.Borrower;
-import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
