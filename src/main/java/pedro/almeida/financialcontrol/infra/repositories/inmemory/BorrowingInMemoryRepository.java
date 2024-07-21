@@ -19,34 +19,34 @@ public class BorrowingInMemoryRepository implements Borrowings {
 
     @Override
     public Borrowing save(Borrowing borrowing) {
-        this.borrowings.put(borrowing.getId(), borrowing);
+        borrowings.put(borrowing.getId(), borrowing);
         return borrowing;
     }
 
     @Override
     public List<Borrowing> findAll() {
-        return this.borrowings.values().stream().toList();
+        return borrowings.values().stream().toList();
     }
 
     @Override
     public List<Borrowing> findAll(Month month, int year) {
-        return this.borrowings.values().stream().filter(borrowing -> borrowing.getDate().getMonth().equals(month) && borrowing.getDate().getYear() == year).toList();
+        return borrowings.values().stream().filter(borrowing -> borrowing.getDate().getMonth().equals(month) && borrowing.getDate().getYear() == year).toList();
     }
 
     @Override
     public Borrowing findById(UUID uuid) {
-        return this.borrowings.get(uuid);
+        return borrowings.get(uuid);
     }
 
     @Override
     public BigDecimal sumOfRemainingPayment() {
-        List<Borrowing> allBorrowings = this.findAll();
+        List<Borrowing> allBorrowings = findAll();
         return allBorrowings.stream().map(Borrowing::remainingPaymentAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public BigDecimal sumOfRemainingPayment(Month month, int year) {
-        List<Borrowing> allBorrowings = this.findAll(month, year);
+        List<Borrowing> allBorrowings = findAll(month, year);
         return allBorrowings.stream().map(Borrowing::remainingPaymentAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

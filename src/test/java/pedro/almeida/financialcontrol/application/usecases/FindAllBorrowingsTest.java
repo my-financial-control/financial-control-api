@@ -33,16 +33,16 @@ class FindAllBorrowingsTest {
             new Borrowing(new Borrower("Borrower"), new BigDecimal("200.0")),
             new Borrowing(new Borrower("Borrower"), new BigDecimal("50.0"))
         );
-        when(this.borrowings.findAll()).thenReturn(this.borrowingsMock);
+        when(borrowings.findAll()).thenReturn(borrowingsMock);
     }
 
     @Test
     @DisplayName("Deve chamar os métodos corretos do repositório e retornar uma lista de Borrowings")
     void executeShouldReturnAListOfBorrowing() {
-        List<Borrowing> borrowingsReturned = this.findAllBorrowings.execute();
+        List<Borrowing> borrowingsReturned = findAllBorrowings.execute();
 
-        assertEquals(this.borrowingsMock, borrowingsReturned);
-        verify(this.borrowings).findAll();
+        assertEquals(borrowingsMock, borrowingsReturned);
+        verify(borrowings).findAll();
     }
 
 }

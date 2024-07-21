@@ -31,7 +31,7 @@ class PayParcelBorrowingTest {
         UUID uuid = UUID.randomUUID();
         ParcelBorrowing parcelBorrowing = new ParcelBorrowing(new BigDecimal("20.5"));
 
-        this.payParcelBorrowing.execute(uuid, parcelBorrowing);
+        payParcelBorrowing.execute(uuid, parcelBorrowing);
 
         verify(borrowings).findById(uuid);
         assert borrowing.getParcels().contains(parcelBorrowing);

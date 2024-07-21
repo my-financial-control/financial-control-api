@@ -10,10 +10,10 @@ import java.time.LocalDate;
 public record PayParcelBorrowingRequestDTO(@Positive @NotNull BigDecimal value, @NotNull LocalDate date) {
 
     public ParcelBorrowing toParcelBorrowing() {
-        if (this.date != null) {
-            return new ParcelBorrowing(this.value, this.date);
+        if (date != null) {
+            return new ParcelBorrowing(value, date);
         } else {
-            return new ParcelBorrowing(this.value);
+            return new ParcelBorrowing(value);
         }
     }
 

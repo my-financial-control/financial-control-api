@@ -16,26 +16,26 @@ public class ExtractConsultation {
     }
 
     public BigDecimal checkBalance() {
-        BigDecimal transactionsBalance = this.transactions.sumOfCredits().subtract(this.transactions.sumOfExpenses());
-        BigDecimal borrowingsRemainingPayment = this.borrowings.sumOfRemainingPayment();
+        BigDecimal transactionsBalance = transactions.sumOfCredits().subtract(transactions.sumOfExpenses());
+        BigDecimal borrowingsRemainingPayment = borrowings.sumOfRemainingPayment();
         return transactionsBalance.subtract(borrowingsRemainingPayment);
     }
 
     public BigDecimal checkBalance(Month month, int year) {
-        BigDecimal transactionsBalance = this.transactions.sumOfCredits(month, year).subtract(this.transactions.sumOfExpenses(month, year));
-        BigDecimal borrowingsRemainingPayment = this.borrowings.sumOfRemainingPayment(month, year);
+        BigDecimal transactionsBalance = transactions.sumOfCredits(month, year).subtract(transactions.sumOfExpenses(month, year));
+        BigDecimal borrowingsRemainingPayment = borrowings.sumOfRemainingPayment(month, year);
         return transactionsBalance.subtract(borrowingsRemainingPayment);
     }
 
     public BigDecimal checkBalancePlusRemainingPayment() {
-        BigDecimal transactionsBalance = this.transactions.sumOfCredits().subtract(this.transactions.sumOfExpenses());
-        BigDecimal borrowingsRemainingPayment = this.borrowings.sumOfRemainingPayment();
+        BigDecimal transactionsBalance = transactions.sumOfCredits().subtract(transactions.sumOfExpenses());
+        BigDecimal borrowingsRemainingPayment = borrowings.sumOfRemainingPayment();
         return transactionsBalance.add(borrowingsRemainingPayment);
     }
 
     public BigDecimal checkBalancePlusRemainingPayment(Month month, int year) {
-        BigDecimal transactionsBalance = this.transactions.sumOfCredits(month, year).subtract(this.transactions.sumOfExpenses(month, year));
-        BigDecimal borrowingsRemainingPayment = this.borrowings.sumOfRemainingPayment(month, year);
+        BigDecimal transactionsBalance = transactions.sumOfCredits(month, year).subtract(transactions.sumOfExpenses(month, year));
+        BigDecimal borrowingsRemainingPayment = borrowings.sumOfRemainingPayment(month, year);
         return transactionsBalance.add(borrowingsRemainingPayment);
     }
 }

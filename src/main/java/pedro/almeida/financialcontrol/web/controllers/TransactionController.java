@@ -26,7 +26,7 @@ public class TransactionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionResponseDTO register(@RequestBody TransactionRequestDTO transactionRequestDTO) {
-        return new TransactionResponseDTO(this.transactionService.register(transactionRequestDTO.toTransaction()));
+        return new TransactionResponseDTO(transactionService.register(transactionRequestDTO.toTransaction()));
     }
 
     @GetMapping
@@ -35,7 +35,7 @@ public class TransactionController {
             @RequestParam(value = "month", required = false) @Min(1) @Max(12) Integer month,
             @RequestParam(value = "year", required = false) @Positive @Min(2000) Integer year
     ) {
-        return TransactionResponseDTO.toTransactionDTO(this.transactionService.findAll(month, year));
+        return TransactionResponseDTO.toTransactionDTO(transactionService.findAll(month, year));
     }
 
 }

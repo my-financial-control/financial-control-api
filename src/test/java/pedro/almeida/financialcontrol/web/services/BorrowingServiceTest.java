@@ -34,22 +34,22 @@ class BorrowingServiceTest {
     @Test
     void registerShouldCallTheRegisterBorrowingUseCaseAndThenReturnABorrowing() {
         Borrowing borrowing = new Borrowing(new Borrower("Borrower"), new BigDecimal("50.5"), LocalDate.now());
-        when(this.registerBorrowing.execute(any())).thenReturn(borrowing);
+        when(registerBorrowing.execute(any())).thenReturn(borrowing);
 
-        Borrowing createdBorrowing = this.borrowingService.register(borrowing);
+        Borrowing createdBorrowing = borrowingService.register(borrowing);
 
-        verify(this.registerBorrowing).execute(borrowing);
+        verify(registerBorrowing).execute(borrowing);
         assert createdBorrowing != null;
     }
 
     @Test
     void findAllShouldCallTheFindAllBorrowingsUseCaseAndReturnAListOfBorrowings() {
         List<Borrowing> expectedBorrowings = new ArrayList<>();
-        when(this.borrowingService.findAll()).thenReturn(expectedBorrowings);
+        when(borrowingService.findAll()).thenReturn(expectedBorrowings);
 
-        List<Borrowing> borrowings = this.borrowingService.findAll();
+        List<Borrowing> borrowings = borrowingService.findAll();
 
-        verify(this.findAllBorrowings).execute();
+        verify(findAllBorrowings).execute();
         assertEquals(expectedBorrowings, borrowings);
     }
 
@@ -58,9 +58,9 @@ class BorrowingServiceTest {
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("50.88"), LocalDate.now());
         UUID uuid = UUID.randomUUID();
 
-        this.borrowingService.payParcel(uuid, parcel);
+        borrowingService.payParcel(uuid, parcel);
 
-        verify(this.payParcelBorrowing).execute(uuid, parcel);
+        verify(payParcelBorrowing).execute(uuid, parcel);
     }
 
 }

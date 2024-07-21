@@ -35,16 +35,16 @@ class FindAllTransactionsTest {
             new Transaction("Title 2", new BigDecimal("200.0"), TransactionType.CREDIT, Month.JANUARY, LocalDate.now()),
             new Transaction("Title 3", new BigDecimal("50.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now())
         );
-        when(this.transactions.findAll()).thenReturn(this.transactionsMock);
+        when(this.transactions.findAll()).thenReturn(transactionsMock);
     }
 
     @Test
     @DisplayName("Deve retornar uma lista de transações")
     void executeShouldReturnAListOfTransaction() {
-        List<Transaction> transactionsReturned = this.findAllTransactions.execute();
+        List<Transaction> transactionsReturned = findAllTransactions.execute();
 
-        assertEquals(this.transactionsMock, transactionsReturned);
-        verify(this.transactions).findAll();
+        assertEquals(transactionsMock, transactionsReturned);
+        verify(transactions).findAll();
     }
 
 }

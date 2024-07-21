@@ -21,15 +21,15 @@ public class BorrowingService {
     }
 
     public Borrowing register(Borrowing borrowing) {
-        return this.registerBorrowing.execute(borrowing);
+        return registerBorrowing.execute(borrowing);
     }
 
     public List<Borrowing> findAll() {
-        return this.findAllBorrowings.execute();
+        return findAllBorrowings.execute();
     }
 
     public void payParcel(UUID id, ParcelBorrowing parcel) {
-        this.payParcelBorrowing.execute(id, parcel);
+        payParcelBorrowing.execute(id, parcel);
     }
 
 }

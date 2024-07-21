@@ -20,17 +20,17 @@ public class TransactionService {
     }
 
     public Transaction register(Transaction transaction) {
-        return this.registerTransaction.execute(transaction);
+        return registerTransaction.execute(transaction);
     }
 
     public List<Transaction> findAll(Integer month, Integer year) {
         if (month == null) {
-            return this.findAllTransactions.execute();
+            return findAllTransactions.execute();
         }
         if (year == null) {
             year = LocalDate.now().getYear();
         }
-        return this.findAllTransactions.execute(Month.of(month), year);
+        return findAllTransactions.execute(Month.of(month), year);
     }
 
 }

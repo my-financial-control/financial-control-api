@@ -12,7 +12,7 @@ public class RegisterBorrowing {
     }
 
     public Borrowing execute(Borrowing borrowing) {
-        return this.borrowings.save(borrowing);
+        return borrowings.save(borrowing);
     }
 
 }

@@ -15,7 +15,7 @@ public class FindAllTransactions {
     }
 
     public List<Transaction> execute() {
-        return this.transactions.findAll();
+        return transactions.findAll();
     }
 
     public List<Transaction> execute(Month month, int year) {

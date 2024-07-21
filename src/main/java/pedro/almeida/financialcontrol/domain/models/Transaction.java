@@ -22,7 +22,7 @@ public class Transaction {
     public Transaction(String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
         this.description = description;
-        this.validate(value);
+        validate(value);
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
@@ -31,7 +31,7 @@ public class Transaction {
 
     public Transaction(String title, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
-        this.validate(value);
+        validate(value);
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
@@ -74,20 +74,6 @@ public class Transaction {
 
     public LocalTime getTime() {
         return time;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", value=" + value +
-                ", type=" + type +
-                ", currentMonth=" + currentMonth +
-                ", date=" + date +
-                ", time=" + time +
-                '}';
     }
 
 }

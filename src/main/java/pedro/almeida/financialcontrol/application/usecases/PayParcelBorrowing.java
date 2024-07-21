@@ -15,9 +15,9 @@ public class PayParcelBorrowing {
     }
 
     public void execute(UUID id, ParcelBorrowing parcel) {
-        Borrowing borrowing = this.borrowings.findById(id);
+        Borrowing borrowing = borrowings.findById(id);
         borrowing.payParcel(parcel);
-        this.borrowings.save(borrowing);
+        borrowings.save(borrowing);
     }
 
 }

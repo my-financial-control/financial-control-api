@@ -31,11 +31,11 @@ class TransactionServiceTest {
     @Test
     void registerShouldCallTheRegisterTransactionUseCaseAndReturnATransaction() {
         Transaction transaction = new Transaction("Title", "", new BigDecimal("100.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now());
-        when(this.registerTransaction.execute(any())).thenReturn(transaction);
+        when(registerTransaction.execute(any())).thenReturn(transaction);
 
-        Transaction createdTransaction = this.transactionService.register(transaction);
+        Transaction createdTransaction = transactionService.register(transaction);
 
-        verify(this.registerTransaction).execute(transaction);
+        verify(registerTransaction).execute(transaction);
         assert createdTransaction != null;
     }
 
@@ -44,22 +44,22 @@ class TransactionServiceTest {
         int month = 1;
         int year = 2023;
         List<Transaction> expectedTransactions = new ArrayList<>();
-        when(this.findAllTransactions.execute(any(), anyInt())).thenReturn(expectedTransactions);
+        when(findAllTransactions.execute(any(), anyInt())).thenReturn(expectedTransactions);
 
-        List<Transaction> transactions = this.transactionService.findAll(month, year);
+        List<Transaction> transactions = transactionService.findAll(month, year);
 
-        verify(this.findAllTransactions).execute(Month.of(month), year);
+        verify(findAllTransactions).execute(Month.of(month), year);
         assertEquals(expectedTransactions, transactions);
     }
 
     @Test
     void findAllShouldReturnAListOfTransactionsAndCallUseCaseWithCorrectParamsWhenMonthAndYearWerentInformed() {
         List<Transaction> expectedTransactions = new ArrayList<>();
-        when(this.findAllTransactions.execute()).thenReturn(expectedTransactions);
+        when(findAllTransactions.execute()).thenReturn(expectedTransactions);
 
-        List<Transaction> transactions = this.transactionService.findAll(null, null);
+        List<Transaction> transactions = transactionService.findAll(null, null);
 
-        verify(this.findAllTransactions).execute();
+        verify(findAllTransactions).execute();
         assertEquals(expectedTransactions, transactions);
     }
 
@@ -67,11 +67,11 @@ class TransactionServiceTest {
     void findAllShouldReturnAListOfTransactionsAndCallUseCaseWithMonthInformedAndCurrentYearWhenOnlyMonthWasInformed() {
         int month = 1;
         List<Transaction> expectedTransactions = new ArrayList<>();
-        when(this.findAllTransactions.execute(any(), anyInt())).thenReturn(expectedTransactions);
+        when(findAllTransactions.execute(any(), anyInt())).thenReturn(expectedTransactions);
 
-        List<Transaction> transactions = this.transactionService.findAll(month, null);
+        List<Transaction> transactions = transactionService.findAll(month, null);
 
-        verify(this.findAllTransactions).execute(Month.of(month), LocalDate.now().getYear());
+        verify(findAllTransactions).execute(Month.of(month), LocalDate.now().getYear());
         assertEquals(expectedTransactions, transactions);
     }
 

@@ -12,11 +12,4 @@ public class Borrower {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Borrower{" +
-                "name='" + name + '\'' +
-                '}';
-    }
-
 }

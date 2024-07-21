@@ -28,7 +28,7 @@ class RegisterBorrowingTest {
         Borrowing borrowing = new Borrowing(new Borrower("Borrower"), new BigDecimal("100.80"));
         when(borrowings.save(any())).thenReturn(borrowing);
 
-        Borrowing savedBorrowing = this.registerBorrowing.execute(borrowing);
+        Borrowing savedBorrowing = registerBorrowing.execute(borrowing);
 
         verify(borrowings).save(borrowing);
         assertEquals(borrowing, savedBorrowing);

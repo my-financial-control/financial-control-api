@@ -16,7 +16,7 @@ public class FindAllBorrowings {
 
 
     public List<Borrowing> execute() {
-        return this.borrowings.findAll();
+        return borrowings.findAll();
     }
 
 }

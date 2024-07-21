@@ -12,7 +12,7 @@ public class RegisterTransaction {
     }
 
     public Transaction execute(Transaction transaction) {
-        return this.transactions.save(transaction);
+        return transactions.save(transaction);
     }
 
 }

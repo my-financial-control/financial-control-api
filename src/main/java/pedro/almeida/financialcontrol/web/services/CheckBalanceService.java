@@ -19,12 +19,12 @@ public class CheckBalanceService {
 
     public BigDecimal checkBalance(Integer month, Integer year) {
         if (month == null) {
-            return this.checkBalance.execute();
+            return checkBalance.execute();
         }
         if (year == null) {
             year = LocalDate.now().getYear();
         }
-        return this.checkBalance.execute(Month.of(month), year);
+        return checkBalance.execute(Month.of(month), year);
     }
 
     public BigDecimal checkBalancePlusRemainingPayments(Integer month, Integer year) {

@@ -12,13 +12,13 @@ public class ParcelBorrowing {
 
 
     public ParcelBorrowing(BigDecimal value, LocalDate date) {
-        this.validate(value);
+        validate(value);
         this.value = value;
         this.date = date;
     }
 
     public ParcelBorrowing(BigDecimal value) {
-        this.validate(value);
+        validate(value);
         this.value = value;
     }
 
@@ -34,14 +34,6 @@ public class ParcelBorrowing {
         if (value.compareTo(BigDecimal.ZERO) <= 0) {
             throw ParcelBorrowingException.invalidParcelBorrowingValue();
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ParcelBorrowing{" +
-                "date=" + date +
-                ", value=" + value +
-                '}';
     }
 
 }
