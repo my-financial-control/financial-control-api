@@ -5,10 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
-import pedro.almeida.financialcontrol.domain.usecases.FindAllTransactions;
-import pedro.almeida.financialcontrol.domain.usecases.RegisterTransaction;
+import pedro.almeida.financialcontrol.domain.models.*;
+import pedro.almeida.financialcontrol.application.usecases.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

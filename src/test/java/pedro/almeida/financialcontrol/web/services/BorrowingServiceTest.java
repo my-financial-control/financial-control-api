@@ -5,12 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.Borrower;
-import pedro.almeida.financialcontrol.domain.models.Borrowing;
-import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
-import pedro.almeida.financialcontrol.domain.usecases.FindAllBorrowings;
-import pedro.almeida.financialcontrol.domain.usecases.PayParcelBorrowing;
-import pedro.almeida.financialcontrol.domain.usecases.RegisterBorrowing;
+import pedro.almeida.financialcontrol.domain.models.*;
+import pedro.almeida.financialcontrol.application.usecases.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

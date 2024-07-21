@@ -1,8 +1,7 @@
 package pedro.almeida.financialcontrol.web.services;
 
 import org.springframework.stereotype.Service;
-import pedro.almeida.financialcontrol.domain.usecases.CheckBalance;
-import pedro.almeida.financialcontrol.domain.usecases.CheckBalancePlusRemainingPayments;
+import pedro.almeida.financialcontrol.application.usecases.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

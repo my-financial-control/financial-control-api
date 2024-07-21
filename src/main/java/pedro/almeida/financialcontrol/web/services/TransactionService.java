@@ -1,9 +1,8 @@
 package pedro.almeida.financialcontrol.web.services;
 
 import org.springframework.stereotype.Service;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.usecases.FindAllTransactions;
-import pedro.almeida.financialcontrol.domain.usecases.RegisterTransaction;
+import pedro.almeida.financialcontrol.application.usecases.*;
+import pedro.almeida.financialcontrol.domain.models.*;
 
 import java.time.LocalDate;
 import java.time.Month;

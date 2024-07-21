@@ -15,19 +15,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CheckBalanceUseCaseTest {
+class CheckBalanceTest {
     @Mock
     private ExtractConsultation extractConsultation;
     private final BigDecimal balanceExpected = new BigDecimal("1528.46");
     private final Month byMonth = Month.JANUARY;
     @InjectMocks
-    private CheckBalanceUseCase checkBalanceUseCase;
+    private CheckBalance checkBalance;
 
     @Test
     void executeShouldReturnTheBalanceTest() {
         when(extractConsultation.checkBalance()).thenReturn(balanceExpected);
 
-        BigDecimal balance = checkBalanceUseCase.execute();
+        BigDecimal balance = checkBalance.execute();
 
         assertEquals(balanceExpected, balance);
         verify(extractConsultation).checkBalance();
@@ -38,7 +38,7 @@ class CheckBalanceUseCaseTest {
         int byYear = 2023;
         when(extractConsultation.checkBalance(byMonth, byYear)).thenReturn(balanceExpected);
 
-        BigDecimal balance = checkBalanceUseCase.execute(byMonth, byYear);
+        BigDecimal balance = checkBalance.execute(byMonth, byYear);
 
         assertEquals(balanceExpected, balance);
         verify(extractConsultation).checkBalance(byMonth, byYear);

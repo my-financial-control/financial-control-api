@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class FindAllTransactionsUseCaseTest {
+class FindAllTransactionsTest {
 
     @Mock
     private Transactions transactions;
     private List<Transaction> transactionsMock;
     @InjectMocks
-    private FindAllTransactionsUseCase findAllTransactionsUseCase;
+    private FindAllTransactions findAllTransactions;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +42,7 @@ class FindAllTransactionsUseCaseTest {
     @Test
     @DisplayName("Deve retornar uma lista de transações")
     void executeShouldReturnAListOfTransaction() {
-        List<Transaction> transactionsReturned = this.findAllTransactionsUseCase.execute();
+        List<Transaction> transactionsReturned = this.findAllTransactions.execute();
 
         assertEquals(this.transactionsMock, transactionsReturned);
         verify(this.transactions).findAll();

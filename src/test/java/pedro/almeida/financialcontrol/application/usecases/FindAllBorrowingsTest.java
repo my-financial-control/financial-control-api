@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class FindAllBorrowingsUseCaseTest {
+class FindAllBorrowingsTest {
 
     @Mock
     private Borrowings borrowings;
     private List<Borrowing> borrowingsMock;
     @InjectMocks
-    private FindAllBorrowingsUseCase findAllBorrowingsUseCase;
+    private FindAllBorrowings findAllBorrowings;
 
     @BeforeEach
     public void setUp() {
@@ -40,7 +40,7 @@ class FindAllBorrowingsUseCaseTest {
     @Test
     @DisplayName("Deve chamar os métodos corretos do repositório e retornar uma lista de Borrowings")
     void executeShouldReturnAListOfBorrowing() {
-        List<Borrowing> borrowingsReturned = this.findAllBorrowingsUseCase.execute();
+        List<Borrowing> borrowingsReturned = this.findAllBorrowings.execute();
 
         assertEquals(this.borrowingsMock, borrowingsReturned);
         verify(this.borrowings).findAll();

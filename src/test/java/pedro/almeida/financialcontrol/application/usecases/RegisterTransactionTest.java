@@ -19,12 +19,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RegisterTransactionUseCaseTest {
+class RegisterTransactionTest {
 
     @Mock
     private Transactions transactions;
     @InjectMocks
-    private RegisterTransactionUseCase registerTransactionUseCase;
+    private RegisterTransaction registerTransaction;
 
 
     @Test
@@ -32,7 +32,7 @@ class RegisterTransactionUseCaseTest {
         Transaction transaction = new Transaction("Title", "", new BigDecimal("100.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now());
         when(transactions.save(any())).thenReturn(transaction);
 
-        Transaction savedTransaction = registerTransactionUseCase.execute(transaction);
+        Transaction savedTransaction = registerTransaction.execute(transaction);
 
         verify(transactions).save(transaction);
         assertEquals(transaction, savedTransaction);
