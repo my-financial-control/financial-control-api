@@ -7,9 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
-import pedro.almeida.financialcontrol.domain.repositories.Transactions;
+import pedro.almeida.financialcontrol.domain.models.*;
+import pedro.almeida.financialcontrol.domain.repositories.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class FindAllTransactionsUseCaseTest {
+class FindAllTransactionsTest {
 
     @Mock
     private Transactions transactions;
     private List<Transaction> transactionsMock;
     @InjectMocks
-    private FindAllTransactionsUseCase findAllTransactionsUseCase;
+    private FindAllTransactions findAllTransactions;
 
     @BeforeEach
     void setUp() {
@@ -36,16 +35,16 @@ class FindAllTransactionsUseCaseTest {
             new Transaction("Title 2", new BigDecimal("200.0"), TransactionType.CREDIT, Month.JANUARY, LocalDate.now()),
             new Transaction("Title 3", new BigDecimal("50.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now())
         );
-        when(this.transactions.findAll()).thenReturn(this.transactionsMock);
+        when(this.transactions.findAll()).thenReturn(transactionsMock);
     }
 
     @Test
     @DisplayName("Deve retornar uma lista de transações")
     void executeShouldReturnAListOfTransaction() {
-        List<Transaction> transactionsReturned = this.findAllTransactionsUseCase.execute();
+        List<Transaction> transactionsReturned = findAllTransactions.execute();
 
-        assertEquals(this.transactionsMock, transactionsReturned);
-        verify(this.transactions).findAll();
+        assertEquals(transactionsMock, transactionsReturned);
+        verify(transactions).findAll();
     }
 
 }

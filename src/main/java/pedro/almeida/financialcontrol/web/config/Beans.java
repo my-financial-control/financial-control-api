@@ -3,12 +3,9 @@ package pedro.almeida.financialcontrol.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pedro.almeida.financialcontrol.application.usecases.*;
-import pedro.almeida.financialcontrol.domain.models.Extract;
-import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
-import pedro.almeida.financialcontrol.domain.repositories.Transactions;
-import pedro.almeida.financialcontrol.domain.usecases.*;
-import pedro.almeida.financialcontrol.infra.repositories.inmemory.BorrowingInMemoryRepository;
-import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsInMemoryRepository;
+import pedro.almeida.financialcontrol.domain.services.*;
+import pedro.almeida.financialcontrol.domain.repositories.*;
+import pedro.almeida.financialcontrol.infra.repositories.inmemory.*;
 
 @Configuration
 public class Beans {
@@ -18,37 +15,37 @@ public class Beans {
 
     @Bean
     public FindAllTransactions findAllTransactions() {
-        return new FindAllTransactionsUseCase(transactions);
+        return new FindAllTransactions(transactions);
     }
 
     @Bean
     public RegisterTransaction registerTransaction() {
-        return new RegisterTransactionUseCase(transactions);
+        return new RegisterTransaction(transactions);
     }
 
     @Bean
     public CheckBalance checkBalance() {
-        return new CheckBalanceUseCase(new Extract(transactions, borrowings));
+        return new CheckBalance(new ExtractConsultation(transactions, borrowings));
     }
 
     @Bean
     public CheckBalancePlusRemainingPayments checkBalancePlusRemainingPayments() {
-        return new CheckBalancePlusRemainingPaymentsUseCase(new Extract(transactions, borrowings));
+        return new CheckBalancePlusRemainingPayments(new ExtractConsultation(transactions, borrowings));
     }
 
     @Bean
     public RegisterBorrowing registerBorrowing() {
-        return new RegisterBorrowingUseCase(borrowings);
+        return new RegisterBorrowing(borrowings);
     }
 
     @Bean
     public FindAllBorrowings findAllBorrowings() {
-        return new FindAllBorrowingsUseCase(borrowings);
+        return new FindAllBorrowings(borrowings);
     }
 
     @Bean
     public PayParcelBorrowing payParcelBorrowing() {
-        return new PayParcelBorrowingUseCase(borrowings);
+        return new PayParcelBorrowing(borrowings);
     }
 
 }

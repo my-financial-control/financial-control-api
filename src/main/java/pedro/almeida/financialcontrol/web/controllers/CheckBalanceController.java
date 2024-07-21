@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pedro.almeida.financialcontrol.web.dtos.response.CheckBalanceResponseDTO;
-import pedro.almeida.financialcontrol.web.services.CheckBalanceService;
+import pedro.almeida.financialcontrol.web.dtos.response.*;
+import pedro.almeida.financialcontrol.web.services.*;
 
 @Validated
 @RestController

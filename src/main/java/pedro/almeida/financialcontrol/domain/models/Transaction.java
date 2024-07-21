@@ -10,19 +10,19 @@ import java.util.UUID;
 
 public class Transaction {
 
-    private UUID id = UUID.randomUUID();
-    private String title;
+    private final UUID id = UUID.randomUUID();
+    private final String title;
     private String description = "";
-    private BigDecimal value;
+    private final BigDecimal value;
     private final TransactionType type;
-    private Month currentMonth;
-    private LocalDate date;
-    private LocalTime time = LocalTime.now();
+    private final Month currentMonth;
+    private final LocalDate date;
+    private final LocalTime time = LocalTime.now();
 
     public Transaction(String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
         this.description = description;
-        this.validate(value);
+        validate(value);
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
@@ -31,7 +31,7 @@ public class Transaction {
 
     public Transaction(String title, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date) {
         this.title = title;
-        this.validate(value);
+        validate(value);
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
@@ -74,20 +74,6 @@ public class Transaction {
 
     public LocalTime getTime() {
         return time;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", value=" + value +
-                ", type=" + type +
-                ", currentMonth=" + currentMonth +
-                ", date=" + date +
-                ", time=" + time +
-                '}';
     }
 
 }

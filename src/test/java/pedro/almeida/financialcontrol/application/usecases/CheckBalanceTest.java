@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.Extract;
+import pedro.almeida.financialcontrol.domain.services.*;
 
 import java.math.BigDecimal;
 import java.time.Month;
@@ -15,32 +15,32 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CheckBalancePlusRemainingPaymentsUseCaseTest {
+class CheckBalanceTest {
     @Mock
-    private Extract extract;
+    private ExtractConsultation extractConsultation;
     private final BigDecimal balanceExpected = new BigDecimal("1528.46");
     private final Month byMonth = Month.JANUARY;
     @InjectMocks
-    private CheckBalancePlusRemainingPaymentsUseCase checkBalancePlusRemainingPaymentsUseCase;
+    private CheckBalance checkBalance;
 
     @Test
     void executeShouldReturnTheBalanceTest() {
-        when(extract.checkBalancePlusRemainingPayment()).thenReturn(balanceExpected);
+        when(extractConsultation.checkBalance()).thenReturn(balanceExpected);
 
-        BigDecimal balance = checkBalancePlusRemainingPaymentsUseCase.execute();
+        BigDecimal balance = checkBalance.execute();
 
         assertEquals(balanceExpected, balance);
-        verify(extract).checkBalancePlusRemainingPayment();
+        verify(extractConsultation).checkBalance();
     }
 
     @Test
     void executeShouldReturnTheBalanceByMonthTest() {
         int byYear = 2023;
-        when(extract.checkBalancePlusRemainingPayment(byMonth, byYear)).thenReturn(balanceExpected);
+        when(extractConsultation.checkBalance(byMonth, byYear)).thenReturn(balanceExpected);
 
-        BigDecimal balance = checkBalancePlusRemainingPaymentsUseCase.execute(byMonth, byYear);
+        BigDecimal balance = checkBalance.execute(byMonth, byYear);
 
         assertEquals(balanceExpected, balance);
-        verify(extract).checkBalancePlusRemainingPayment(byMonth, byYear);
+        verify(extractConsultation).checkBalance(byMonth, byYear);
     }
 }

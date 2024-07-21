@@ -1,8 +1,7 @@
 package pedro.almeida.financialcontrol.web.dtos.request;
 
 import org.junit.jupiter.api.Test;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
+import pedro.almeida.financialcontrol.domain.models.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

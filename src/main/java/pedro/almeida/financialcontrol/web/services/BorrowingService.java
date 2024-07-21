@@ -1,11 +1,8 @@
 package pedro.almeida.financialcontrol.web.services;
 
 import org.springframework.stereotype.Service;
-import pedro.almeida.financialcontrol.domain.models.Borrowing;
-import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
-import pedro.almeida.financialcontrol.domain.usecases.FindAllBorrowings;
-import pedro.almeida.financialcontrol.domain.usecases.PayParcelBorrowing;
-import pedro.almeida.financialcontrol.domain.usecases.RegisterBorrowing;
+import pedro.almeida.financialcontrol.application.usecases.*;
+import pedro.almeida.financialcontrol.domain.models.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,15 +21,15 @@ public class BorrowingService {
     }
 
     public Borrowing register(Borrowing borrowing) {
-        return this.registerBorrowing.execute(borrowing);
+        return registerBorrowing.execute(borrowing);
     }
 
     public List<Borrowing> findAll() {
-        return this.findAllBorrowings.execute();
+        return findAllBorrowings.execute();
     }
 
     public void payParcel(UUID id, ParcelBorrowing parcel) {
-        this.payParcelBorrowing.execute(id, parcel);
+        payParcelBorrowing.execute(id, parcel);
     }
 
 }

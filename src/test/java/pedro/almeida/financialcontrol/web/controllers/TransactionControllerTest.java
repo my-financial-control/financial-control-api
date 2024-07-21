@@ -9,10 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
-import pedro.almeida.financialcontrol.web.config.ConfigConstants;
-import pedro.almeida.financialcontrol.web.services.TransactionService;
+import pedro.almeida.financialcontrol.domain.models.*;
+import pedro.almeida.financialcontrol.web.config.*;
+import pedro.almeida.financialcontrol.web.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

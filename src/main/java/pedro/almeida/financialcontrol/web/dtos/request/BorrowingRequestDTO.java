@@ -12,10 +12,10 @@ import java.time.LocalDate;
 public record BorrowingRequestDTO(@NotBlank String borrower, @Positive @NotNull BigDecimal value, @NotNull LocalDate date) {
 
     public Borrowing toBorrowing() {
-        if (this.date != null) {
-            return new Borrowing(new Borrower(this.borrower), this.value, this.date);
+        if (date != null) {
+            return new Borrowing(new Borrower(borrower), value, date);
         } else {
-            return new Borrowing(new Borrower(this.borrower), this.value);
+            return new Borrowing(new Borrower(borrower), value);
         }
     }
 

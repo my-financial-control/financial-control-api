@@ -11,48 +11,48 @@ import java.util.UUID;
 
 public class Borrowing {
 
-    private UUID id = UUID.randomUUID();
-    private Borrower borrower;
-    private BigDecimal value;
+    private final UUID id = UUID.randomUUID();
+    private final Borrower borrower;
+    private final BigDecimal value;
     private Boolean paid = false;
     private LocalDate date = LocalDate.now();
     private final List<ParcelBorrowing> parcels = new LinkedList<>();
 
     public Borrowing(Borrower borrower, BigDecimal value, LocalDate date) {
         this.borrower = borrower;
-        this.validate(value);
+        validate(value);
         this.value = value;
         this.date = date;
     }
 
     public Borrowing(Borrower borrower, BigDecimal value) {
         this.borrower = borrower;
-        this.validate(value);
+        validate(value);
         this.value = value;
     }
 
     public void payParcel(ParcelBorrowing parcel) {
-        if (this.isParcelExceedsBorrowingValue(parcel)) {
+        if (isParcelExceedsBorrowingValue(parcel)) {
             throw BorrowingException.parcelExceedsBorrowingValue();
         }
-        this.parcels.add(parcel);
-        if (isBorrowingFullPaid()) this.paid = true;
+        parcels.add(parcel);
+        if (isBorrowingFullPaid()) paid = true;
     }
 
     public Boolean isParcelExceedsBorrowingValue(ParcelBorrowing parcel) {
-        return this.sumParcels().add(parcel.getValue()).compareTo(this.value) > 0;
+        return sumParcels().add(parcel.getValue()).compareTo(value) > 0;
     }
 
     public Boolean isBorrowingFullPaid() {
-        return this.sumParcels().compareTo(this.value) >= 0;
+        return sumParcels().compareTo(value) >= 0;
     }
 
     public BigDecimal sumParcels() {
-        return this.getParcels().stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return getParcels().stream().map(ParcelBorrowing::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal remainingPaymentAmount() {
-        return this.value.subtract(this.sumParcels());
+        return value.subtract(sumParcels());
     }
 
     private void validate(BigDecimal value) {
@@ -74,7 +74,7 @@ public class Borrowing {
     }
 
     public List<ParcelBorrowing> getParcels() {
-        return Collections.unmodifiableList(this.parcels);
+        return Collections.unmodifiableList(parcels);
     }
 
     public Boolean getPaid() {
@@ -83,18 +83,6 @@ public class Borrowing {
 
     public LocalDate getDate() {
         return date;
-    }
-
-    @Override
-    public String toString() {
-        return "Borrowing{" +
-                "id=" + id +
-                ", borrower=" + borrower +
-                ", value=" + value +
-                ", paid=" + paid +
-                ", date=" + date +
-                ", parcels=" + parcels +
-                '}';
     }
 
 }

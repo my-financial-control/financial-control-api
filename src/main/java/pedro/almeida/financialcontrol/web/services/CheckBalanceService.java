@@ -1,8 +1,7 @@
 package pedro.almeida.financialcontrol.web.services;
 
 import org.springframework.stereotype.Service;
-import pedro.almeida.financialcontrol.domain.usecases.CheckBalance;
-import pedro.almeida.financialcontrol.domain.usecases.CheckBalancePlusRemainingPayments;
+import pedro.almeida.financialcontrol.application.usecases.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,12 +19,12 @@ public class CheckBalanceService {
 
     public BigDecimal checkBalance(Integer month, Integer year) {
         if (month == null) {
-            return this.checkBalance.execute();
+            return checkBalance.execute();
         }
         if (year == null) {
             year = LocalDate.now().getYear();
         }
-        return this.checkBalance.execute(Month.of(month), year);
+        return checkBalance.execute(Month.of(month), year);
     }
 
     public BigDecimal checkBalancePlusRemainingPayments(Integer month, Integer year) {
