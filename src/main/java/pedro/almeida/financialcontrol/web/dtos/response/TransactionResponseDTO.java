@@ -30,7 +30,7 @@ public record TransactionResponseDTO(
             transaction.getType(),
             transaction.getCurrentMonth(),
             transaction.getDate(),
-            transaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)
+            transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)
         );
     }
 

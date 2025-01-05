@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Document(collection = "transactions")
 public class TransactionEntity {
@@ -18,9 +18,9 @@ public class TransactionEntity {
     private String type;
     private String currentMonth;
     private LocalDate date;
-    private LocalTime time;
+    private LocalDateTime time;
 
-    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalTime time) {
+    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalDateTime time) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -87,11 +87,11 @@ public class TransactionEntity {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 }

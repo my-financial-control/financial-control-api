@@ -17,7 +17,7 @@ public class TransactionMapper {
                 transaction.getType().name(),
                 transaction.getCurrentMonth().name(),
                 transaction.getDate(),
-                transaction.getTime()
+                transaction.getTimestamp()
         );
     }
 
