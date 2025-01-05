@@ -1,6 +1,9 @@
 package pedro.almeida.financialcontrol.infra.repositories.nosql.config;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import org.bson.types.Decimal128;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
@@ -13,6 +16,17 @@ import java.util.List;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
+
+    @Value("${spring.data.mongodb.database}")
+    private String db;
+
+    @Override
+    public MongoClient mongoClient() {
+        return MongoClients.create(uri);
+    }
+
     @Override
     public MongoCustomConversions customConversions() {
         List<Converter<?, ?>> converters = new ArrayList<>();
@@ -23,7 +37,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return "financialcontrol";
+        return db;
     }
 
     static class BigDecimalToDecimal128Converter implements Converter<BigDecimal, Decimal128> {
