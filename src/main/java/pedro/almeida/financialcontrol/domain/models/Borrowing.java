@@ -11,24 +11,37 @@ import java.util.UUID;
 
 public class Borrowing {
 
-    private final UUID id = UUID.randomUUID();
+    private final UUID id;
     private final Borrower borrower;
     private final BigDecimal value;
     private Boolean paid = false;
     private LocalDate date = LocalDate.now();
-    private final List<ParcelBorrowing> parcels = new LinkedList<>();
+    private final List<ParcelBorrowing> parcels;
+
+    public Borrowing(UUID id, Borrower borrower, BigDecimal value, Boolean paid, LocalDate date, List<ParcelBorrowing> parcels) {
+        this.id = id;
+        this.borrower = borrower;
+        this.value = value;
+        this.paid = paid;
+        this.date = date;
+        this.parcels = parcels;
+    }
 
     public Borrowing(Borrower borrower, BigDecimal value, LocalDate date) {
+        this.id = UUID.randomUUID();
         this.borrower = borrower;
         validate(value);
         this.value = value;
         this.date = date;
+        this.parcels = new LinkedList<>();
     }
 
     public Borrowing(Borrower borrower, BigDecimal value) {
+        this.id = UUID.randomUUID();
         this.borrower = borrower;
         validate(value);
         this.value = value;
+        this.parcels = new LinkedList<>();
     }
 
     public void payParcel(ParcelBorrowing parcel) {
