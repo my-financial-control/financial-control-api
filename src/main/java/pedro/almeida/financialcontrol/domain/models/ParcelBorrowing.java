@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class ParcelBorrowing {
 
     private final BigDecimal value;
-    private LocalDate date = LocalDate.now();
+    private final LocalDate date;
 
 
     public ParcelBorrowing(BigDecimal value, LocalDate date) {
@@ -20,6 +20,7 @@ public class ParcelBorrowing {
     public ParcelBorrowing(BigDecimal value) {
         validate(value);
         this.value = value;
+        this.date = LocalDate.now();
     }
 
     public BigDecimal getValue() {

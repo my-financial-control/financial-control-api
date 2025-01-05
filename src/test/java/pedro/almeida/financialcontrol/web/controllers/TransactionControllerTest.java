@@ -61,7 +61,7 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.type").value(expectedTransaction.getType().name()))
                 .andExpect(jsonPath("$.currentMonth").value(expectedTransaction.getCurrentMonth().name()))
                 .andExpect(jsonPath("$.date").value(expectedTransaction.getDate().toString()))
-                .andExpect(jsonPath("$.time").value(expectedTransaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
+                .andExpect(jsonPath("$.timestamp").value(expectedTransaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].type").value(transaction.getType().name()))
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.getCurrentMonth().name()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.getDate().toString()))
-                    .andExpect(jsonPath("$[" + i + "].time").value(transaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
+                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
         }
     }
 
@@ -119,7 +119,7 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].type").value(transaction.getType().name()))
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.getCurrentMonth().name()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.getDate().toString()))
-                    .andExpect(jsonPath("$[" + i + "].time").value(transaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
+                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
         }
     }
 

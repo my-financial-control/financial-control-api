@@ -18,7 +18,7 @@ public record TransactionResponseDTO(
         TransactionType type,
         Month currentMonth,
         LocalDate date,
-        String time
+        String timestamp
 ) {
 
     public TransactionResponseDTO(Transaction transaction) {
@@ -30,7 +30,7 @@ public record TransactionResponseDTO(
             transaction.getType(),
             transaction.getCurrentMonth(),
             transaction.getDate(),
-            transaction.getTime().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)
+            transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)
         );
     }
 

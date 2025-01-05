@@ -1,7 +1,8 @@
 FROM maven:3-amazoncorretto-17
 
 ENV PORT=${PORT} \
-    PROFILE=${PROFILE}
+    PROFILE=${PROFILE} \
+    DB_CONN_STR=${DB_CONN_STR}
 
 COPY . .
 RUN mvn -B package --file pom.xml -DskipTests
