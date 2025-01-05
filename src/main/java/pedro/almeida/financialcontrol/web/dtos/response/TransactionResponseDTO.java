@@ -18,7 +18,7 @@ public record TransactionResponseDTO(
         TransactionType type,
         Month currentMonth,
         LocalDate date,
-        String time
+        String timestamp
 ) {
 
     public TransactionResponseDTO(Transaction transaction) {

@@ -26,7 +26,7 @@ public class Borrowing {
         this.value = value;
         this.paid = paid;
         this.date = date;
-        this.parcels = parcels;
+        this.parcels = parcels != null ? new LinkedList<>(parcels) : new LinkedList<>();
         this.timestamp = timestamp;
     }
 
