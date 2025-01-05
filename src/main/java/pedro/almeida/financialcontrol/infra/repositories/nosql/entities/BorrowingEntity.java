@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection = "borrowings")
@@ -17,14 +18,16 @@ public class BorrowingEntity {
     private Boolean paid;
     private LocalDate date;
     private List<ParcelBorrowingEntity> parcels;
+    private LocalDateTime timestamp;
 
-    public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels) {
+    public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels, LocalDateTime timestamp) {
         this.id = id;
         this.borrower = borrower;
         this.value = value;
         this.paid = paid;
         this.date = date;
         this.parcels = parcels;
+        this.timestamp = timestamp;
     }
 
     public String getId() {
@@ -73,5 +76,13 @@ public class BorrowingEntity {
 
     public void setParcels(List<ParcelBorrowingEntity> parcels) {
         this.parcels = parcels;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

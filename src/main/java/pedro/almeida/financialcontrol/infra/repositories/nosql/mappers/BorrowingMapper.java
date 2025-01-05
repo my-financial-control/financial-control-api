@@ -17,7 +17,8 @@ public class BorrowingMapper {
                 borrowing.getValue(),
                 borrowing.getPaid(),
                 borrowing.getDate(),
-                borrowing.getParcels().stream().map(p -> new ParcelBorrowingEntity(p.getValue(), p.getDate())).toList()
+                borrowing.getParcels().stream().map(p -> new ParcelBorrowingEntity(p.getValue(), p.getDate())).toList(),
+                borrowing.getTimestamp()
         );
     }
 
@@ -28,7 +29,8 @@ public class BorrowingMapper {
                 borrowing.getValue(),
                 borrowing.getPaid(),
                 borrowing.getDate(),
-                borrowing.getParcels().stream().map(p -> new ParcelBorrowing(p.getValue(), p.getDate())).toList()
+                borrowing.getParcels().stream().map(p -> new ParcelBorrowing(p.getValue(), p.getDate())).toList(),
+                borrowing.getTimestamp()
         );
     }
 }
