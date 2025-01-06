@@ -9,13 +9,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pedro.almeida.financialcontrol.domain.models.*;
-import pedro.almeida.financialcontrol.web.config.*;
-import pedro.almeida.financialcontrol.web.services.*;
+import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
+import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.web.config.ConfigConstants;
+import pedro.almeida.financialcontrol.web.services.TransactionService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class TransactionControllerTest {
 
     @Test
     void registerWithAValidTransactionShouldReturn201AndTheCreatedTransaction() throws Exception {
-        Transaction expectedTransaction = new Transaction("Title", "", new BigDecimal("100.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now());
+        Transaction expectedTransaction = TransactionFactory.buildTransaction("Title", "", new BigDecimal("100.0"), "EXPENSE", 1, LocalDate.now(), "Category");
         when(transactionService.register(any())).thenReturn(expectedTransaction);
         String json = """
                 {
@@ -45,7 +45,8 @@ public class TransactionControllerTest {
                     "value": 50.95,
                     "type": "EXPENSE",
                     "currentMonth": 10,
-                    "date": "2023-10-14"
+                    "date": "2023-10-14",
+                    "category": "Category"
                 }""";
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -61,15 +62,16 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.type").value(expectedTransaction.getType().name()))
                 .andExpect(jsonPath("$.currentMonth").value(expectedTransaction.getCurrentMonth().name()))
                 .andExpect(jsonPath("$.date").value(expectedTransaction.getDate().toString()))
-                .andExpect(jsonPath("$.timestamp").value(expectedTransaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
+                .andExpect(jsonPath("$.timestamp").value(expectedTransaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)))
+                .andExpect(jsonPath("$.category").value(expectedTransaction.getCategory()));
     }
 
     @Test
     public void findAllWithMonthAndYearShouldReturn200AndAListOfTransactions() throws Exception {
         List<Transaction> expectedTransactions = Arrays.asList(
-                new Transaction("Title 1", "", new BigDecimal("1000.0"), TransactionType.CREDIT, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 2", "", new BigDecimal("200.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 3", "", new BigDecimal("350.52"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now())
+                TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, LocalDate.now(), null),
+                TransactionFactory.buildTransaction("Title 2", "", new BigDecimal("200.0"), "EXPENSE", 1, LocalDate.now(), "Category 1"),
+                TransactionFactory.buildTransaction("Title 3", "", new BigDecimal("350.52"), "EXPENSE", 1, LocalDate.now(), "Category 2")
         );
         when(transactionService.findAll(1, 2023)).thenReturn(expectedTransactions);
 
@@ -89,7 +91,8 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].type").value(transaction.getType().name()))
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.getCurrentMonth().name()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.getDate().toString()))
-                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
+                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)))
+                    .andExpect(jsonPath("$[" + i + "].category").value(transaction.getCategory()));
         }
     }
 
@@ -97,11 +100,11 @@ public class TransactionControllerTest {
     @Test
     public void findAllWithoutMonthAndYearShouldReturn200AndAListOfTransactions() throws Exception {
         List<Transaction> expectedTransactions = Arrays.asList(
-                new Transaction("Title 1", "", new BigDecimal("1000.0"), TransactionType.CREDIT, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 2", "", new BigDecimal("200.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 3", "", new BigDecimal("780.52"), TransactionType.CREDIT, Month.FEBRUARY, LocalDate.now()),
-                new Transaction("Title 4", "", new BigDecimal("147.71"), TransactionType.EXPENSE, Month.FEBRUARY, LocalDate.now()),
-                new Transaction("Title 5", "", new BigDecimal("108.92"), TransactionType.CREDIT, Month.MARCH, LocalDate.now())
+                TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, LocalDate.now(), null),
+                TransactionFactory.buildTransaction("Title 2", "", new BigDecimal("200.0"), "EXPENSE", 1, LocalDate.now(), "Category"),
+                TransactionFactory.buildTransaction("Title 3", "", new BigDecimal("780.52"), "CREDIT", 2, LocalDate.now(), null),
+                TransactionFactory.buildTransaction("Title 4", "", new BigDecimal("147.71"), "EXPENSE", 2, LocalDate.now(), "Category"),
+                TransactionFactory.buildTransaction("Title 5", "", new BigDecimal("108.92"), "CREDIT", 3, LocalDate.now(), null)
         );
         when(transactionService.findAll(null, null)).thenReturn(expectedTransactions);
 
@@ -119,7 +122,8 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].type").value(transaction.getType().name()))
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.getCurrentMonth().name()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.getDate().toString()))
-                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)));
+                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)))
+                    .andExpect(jsonPath("$[" + i + "].category").value(transaction.getCategory()));
         }
     }
 

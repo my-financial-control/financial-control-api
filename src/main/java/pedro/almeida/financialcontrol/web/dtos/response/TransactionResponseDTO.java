@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public record TransactionResponseDTO(
@@ -18,19 +19,21 @@ public record TransactionResponseDTO(
         TransactionType type,
         Month currentMonth,
         LocalDate date,
-        String timestamp
+        String timestamp,
+        String category
 ) {
 
     public TransactionResponseDTO(Transaction transaction) {
         this(
-            transaction.getId(),
-            transaction.getTitle(),
-            transaction.getDescription(),
-            transaction.getValue(),
-            transaction.getType(),
-            transaction.getCurrentMonth(),
-            transaction.getDate(),
-            transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER)
+                transaction.getId(),
+                transaction.getTitle(),
+                transaction.getDescription(),
+                transaction.getValue(),
+                transaction.getType(),
+                transaction.getCurrentMonth(),
+                transaction.getDate(),
+                transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER),
+                transaction.getCategory()
         );
     }
 

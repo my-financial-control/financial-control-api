@@ -1,5 +1,6 @@
 package pedro.almeida.financialcontrol.infra.repositories.inmemory;
 
+import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
@@ -68,45 +69,50 @@ public class TransactionsInMemoryRepository implements Transactions {
 
     private static Map<UUID, Transaction> seed() {
         Map<UUID, Transaction> transactions = new HashMap<>();
-        Transaction transaction1 = new Transaction(
+        Transaction transaction1 = TransactionFactory.buildTransaction(
                 "Compra de roupas",
                 "Gastos com roupas de outono",
                 new BigDecimal("150.50"),
-                TransactionType.EXPENSE,
-                Month.SEPTEMBER,
-                LocalDate.of(2023, 9, 15)
+                "EXPENSE",
+                9,
+                LocalDate.of(2023, 9, 15),
+                "Categoria 1"
         );
-        Transaction transaction2 = new Transaction(
+        Transaction transaction2 = TransactionFactory.buildTransaction(
                 "Salário",
                 "Pagamento mensal",
                 new BigDecimal("2500.00"),
-                TransactionType.CREDIT,
-                Month.SEPTEMBER,
-                LocalDate.of(2023, 9, 30)
+                "CREDIT",
+                9,
+                LocalDate.of(2023, 9, 30),
+                null
         );
-        Transaction transaction3 = new Transaction(
+        Transaction transaction3 = TransactionFactory.buildTransaction(
                 "Aluguel",
                 "Pagamento do aluguel",
                 new BigDecimal("1000.00"),
-                TransactionType.EXPENSE,
-                Month.OCTOBER,
-                LocalDate.of(2023, 10, 5)
+                "EXPENSE",
+                10,
+                LocalDate.of(2023, 10, 5),
+                "Categoria 2"
         );
-        Transaction transaction4 = new Transaction(
+        Transaction transaction4 = TransactionFactory.buildTransaction(
                 "Venda de produtos",
                 "Receita da venda de produtos",
                 new BigDecimal("800.00"),
-                TransactionType.CREDIT,
-                Month.OCTOBER,
-                LocalDate.of(2023, 10, 18)
+                "CREDIT",
+                10,
+                LocalDate.of(2023, 10, 18),
+                null
         );
-        Transaction transaction5 = new Transaction(
+        Transaction transaction5 = TransactionFactory.buildTransaction(
                 "Restaurante",
                 "Jantar fora com amigos",
                 new BigDecimal("75.80"),
-                TransactionType.EXPENSE,
-                Month.NOVEMBER,
-                LocalDate.of(2023, 11, 12)
+                "EXPENSE",
+                11,
+                LocalDate.of(2023, 11, 12),
+                "Categoria 3"
         );
         transactions.put(transaction1.getId(), transaction1);
         transactions.put(transaction2.getId(), transaction2);
