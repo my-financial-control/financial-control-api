@@ -5,14 +5,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.*;
-import pedro.almeida.financialcontrol.application.usecases.*;
+import pedro.almeida.financialcontrol.application.usecases.FindAllTransactions;
+import pedro.almeida.financialcontrol.application.usecases.RegisterTransaction;
+import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
+import pedro.almeida.financialcontrol.domain.models.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -30,7 +33,7 @@ class TransactionServiceTest {
 
     @Test
     void registerShouldCallTheRegisterTransactionUseCaseAndReturnATransaction() {
-        Transaction transaction = new Transaction("Title", "", new BigDecimal("100.0"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now());
+        Transaction transaction = TransactionFactory.buildTransaction("Title", "", new BigDecimal("100.0"), "EXPENSE", 1, LocalDate.now(), "Category");
         when(registerTransaction.execute(any())).thenReturn(transaction);
 
         Transaction createdTransaction = transactionService.register(transaction);

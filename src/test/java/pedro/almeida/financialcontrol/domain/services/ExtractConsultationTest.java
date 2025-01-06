@@ -6,8 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.*;
-import pedro.almeida.financialcontrol.domain.repositories.*;
+import pedro.almeida.financialcontrol.domain.models.Borrower;
+import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.domain.models.TransactionType;
+import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
+import pedro.almeida.financialcontrol.domain.repositories.Transactions;
+import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsInMemoryRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,27 +49,12 @@ class ExtractConsultationTest {
     }
 
     private void setUpTransactions() {
-        List<Transaction> transactionsMock = getTransactions();
+        TransactionsInMemoryRepository repository = new TransactionsInMemoryRepository();
+        List<Transaction> transactionsMock = repository.findAll();
         totalSumOfCredits = transactionsMock.stream().filter(transaction1 -> transaction1.getType().equals(TransactionType.CREDIT)).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfExpenses = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.EXPENSE)).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfCreditsByMonth = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.CREDIT) && transaction.getCurrentMonth().equals(byMonth) && transaction.getDate().getYear() == byYear).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfExpensesByMonth = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.EXPENSE) && transaction.getCurrentMonth().equals(byMonth) && transaction.getDate().getYear() == byYear).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private static List<Transaction> getTransactions() {
-        return Arrays.asList(
-                new Transaction("Title 1", "Description", new BigDecimal("100.74"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 2", "Description", new BigDecimal("105.17"), TransactionType.CREDIT, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 3", "Description", new BigDecimal("14.12"), TransactionType.EXPENSE, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 4", "Description", new BigDecimal("207.78"), TransactionType.CREDIT, Month.JANUARY, LocalDate.now()),
-                new Transaction("Title 5", "Description", new BigDecimal("30.25"), TransactionType.EXPENSE, Month.FEBRUARY, LocalDate.now()),
-                new Transaction("Title 7", "Description", new BigDecimal("50.63"), TransactionType.EXPENSE, Month.FEBRUARY, LocalDate.now()),
-                new Transaction("Title 8", "Description", new BigDecimal("470.14"), TransactionType.CREDIT, Month.MARCH, LocalDate.now()),
-                new Transaction("Title 9", "Description", new BigDecimal("89.17"), TransactionType.EXPENSE, Month.MARCH, LocalDate.now()),
-                new Transaction("Title 10", "Description", new BigDecimal("73.02"), TransactionType.CREDIT, Month.APRIL, LocalDate.now()),
-                new Transaction("Title 11", "Description", new BigDecimal("96.01"), TransactionType.EXPENSE, Month.DECEMBER, LocalDate.now()),
-                new Transaction("Title 12", "Description", new BigDecimal("31.34"), TransactionType.EXPENSE, Month.DECEMBER, LocalDate.now())
-        );
     }
 
     private void setUpBorrowings() {

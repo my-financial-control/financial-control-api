@@ -18,9 +18,10 @@ public class TransactionEntity {
     private String type;
     private String currentMonth;
     private LocalDate date;
-    private LocalDateTime time;
+    private LocalDateTime timestamp;
+    private String category;
 
-    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalDateTime time) {
+    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalDateTime timestamp, String category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,7 +29,8 @@ public class TransactionEntity {
         this.type = type;
         this.currentMonth = currentMonth;
         this.date = date;
-        this.time = time;
+        this.timestamp = timestamp;
+        this.category = category;
     }
 
     public String getId() {
@@ -87,11 +89,19 @@ public class TransactionEntity {
         this.date = date;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -1,7 +1,7 @@
 package pedro.almeida.financialcontrol.infra.repositories.nosql.mappers;
 
+import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.TransactionEntity;
 
 import java.time.Month;
@@ -17,20 +17,22 @@ public class TransactionMapper {
                 transaction.getType().name(),
                 transaction.getCurrentMonth().name(),
                 transaction.getDate(),
-                transaction.getTimestamp()
+                transaction.getTimestamp(),
+                transaction.getCategory()
         );
     }
 
     public static Transaction fromEntity(TransactionEntity transaction) {
-        return new Transaction(
+        return TransactionFactory.buildTransaction(
                 UUID.fromString(transaction.getId()),
                 transaction.getTitle(),
+                transaction.getDescription(),
                 transaction.getValue(),
-                TransactionType.valueOf(transaction.getType()),
-                Month.valueOf(transaction.getCurrentMonth()),
+                transaction.getType(),
+                Month.valueOf(transaction.getCurrentMonth()).getValue(),
                 transaction.getDate(),
-                transaction.getTime(),
-                transaction.getDescription()
+                transaction.getTimestamp(),
+                transaction.getCategory()
         );
     }
 }
