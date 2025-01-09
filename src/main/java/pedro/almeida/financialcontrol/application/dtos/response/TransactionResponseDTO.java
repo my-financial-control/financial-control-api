@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.web.dtos.response;
+package pedro.almeida.financialcontrol.application.dtos.response;
 
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionType;
@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public record TransactionResponseDTO(
@@ -20,9 +19,8 @@ public record TransactionResponseDTO(
         Month currentMonth,
         LocalDate date,
         String timestamp,
-        String category
+        TransactionCategoryResponseDTO category
 ) {
-
     public TransactionResponseDTO(Transaction transaction) {
         this(
                 transaction.getId(),
@@ -33,7 +31,7 @@ public record TransactionResponseDTO(
                 transaction.getCurrentMonth(),
                 transaction.getDate(),
                 transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER),
-                transaction.getCategory()
+                new TransactionCategoryResponseDTO(transaction.getCategory())
         );
     }
 

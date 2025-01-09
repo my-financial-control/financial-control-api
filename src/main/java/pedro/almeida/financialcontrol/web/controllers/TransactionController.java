@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pedro.almeida.financialcontrol.web.dtos.request.*;
-import pedro.almeida.financialcontrol.web.dtos.response.*;
-import pedro.almeida.financialcontrol.web.services.*;
+import pedro.almeida.financialcontrol.application.dtos.request.TransactionRequestDTO;
+import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
+import pedro.almeida.financialcontrol.application.usecases.FindAllTransactions;
+import pedro.almeida.financialcontrol.application.usecases.RegisterTransaction;
 
 import java.util.List;
 
@@ -17,16 +18,18 @@ import java.util.List;
 @RequestMapping("/api/v1/transactions")
 public class TransactionController {
 
-    private final TransactionService transactionService;
+    private final RegisterTransaction registerTransaction;
+    private final FindAllTransactions findAllTransactions;
 
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
+    public TransactionController(RegisterTransaction registerTransaction, FindAllTransactions findAllTransactions) {
+        this.registerTransaction = registerTransaction;
+        this.findAllTransactions = findAllTransactions;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TransactionResponseDTO register(@RequestBody TransactionRequestDTO transactionRequestDTO) {
-        return new TransactionResponseDTO(transactionService.register(transactionRequestDTO.toTransaction()));
+    public TransactionResponseDTO register(@RequestBody TransactionRequestDTO request) {
+        return registerTransaction.execute(request);
     }
 
     @GetMapping
@@ -35,7 +38,7 @@ public class TransactionController {
             @RequestParam(value = "month", required = false) @Min(1) @Max(12) Integer month,
             @RequestParam(value = "year", required = false) @Positive @Min(2000) Integer year
     ) {
-        return TransactionResponseDTO.toTransactionDTO(transactionService.findAll(month, year));
+        return findAllTransactions.execute(month, year);
     }
 
 }

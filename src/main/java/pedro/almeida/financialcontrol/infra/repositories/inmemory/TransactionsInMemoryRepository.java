@@ -2,6 +2,7 @@ package pedro.almeida.financialcontrol.infra.repositories.inmemory;
 
 import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
 import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 
@@ -76,7 +77,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 "EXPENSE",
                 9,
                 LocalDate.of(2023, 9, 15),
-                "Categoria 1"
+                new TransactionCategory(UUID.randomUUID(), "Categoria 1", "")
         );
         Transaction transaction2 = TransactionFactory.buildTransaction(
                 "Salário",
@@ -94,7 +95,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 "EXPENSE",
                 10,
                 LocalDate.of(2023, 10, 5),
-                "Categoria 2"
+                new TransactionCategory(UUID.randomUUID(), "Categoria 2", "")
         );
         Transaction transaction4 = TransactionFactory.buildTransaction(
                 "Venda de produtos",
@@ -112,7 +113,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 "EXPENSE",
                 11,
                 LocalDate.of(2023, 11, 12),
-                "Categoria 3"
+                new TransactionCategory(UUID.randomUUID(), "Categoria 3", "")
         );
         transactions.put(transaction1.getId(), transaction1);
         transactions.put(transaction2.getId(), transaction2);

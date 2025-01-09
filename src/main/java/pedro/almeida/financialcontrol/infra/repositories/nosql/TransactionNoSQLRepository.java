@@ -10,62 +10,127 @@ import org.springframework.transaction.annotation.Transactional;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
+import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.TransactionCategoryEntity;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.TransactionEntity;
+import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITransactionCategoryNoSQLRepository;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITransactionNoSQLRepository;
-import pedro.almeida.financialcontrol.infra.repositories.nosql.mappers.TransactionMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-import static pedro.almeida.financialcontrol.infra.repositories.nosql.mappers.TransactionMapper.fromEntity;
-import static pedro.almeida.financialcontrol.infra.repositories.nosql.mappers.TransactionMapper.toEntity;
-
 @Repository
 public class TransactionNoSQLRepository implements Transactions {
-
-    private final ITransactionNoSQLRepository repository;
+    private final ITransactionNoSQLRepository transactionsRepository;
+    private final ITransactionCategoryNoSQLRepository categoriesRepository;
     private final MongoTemplate mongoTemplate;
     private final String transactionsCollection = "transactions";
 
-    public TransactionNoSQLRepository(ITransactionNoSQLRepository repository, MongoTemplate mongoTemplate) {
-        this.repository = repository;
+    public TransactionNoSQLRepository(ITransactionNoSQLRepository repository, ITransactionCategoryNoSQLRepository categoriesRepository, MongoTemplate mongoTemplate) {
+        this.transactionsRepository = repository;
+        this.categoriesRepository = categoriesRepository;
         this.mongoTemplate = mongoTemplate;
     }
 
     @Transactional
     @Override
     public Transaction save(Transaction transaction) {
-        return fromEntity(repository.save(toEntity(transaction)));
+        TransactionEntity entity = new TransactionEntity(transaction);
+        TransactionCategoryEntity category = categoriesRepository.findById(entity.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found")); // TODO: criar excepetion personalizada
+        return transactionsRepository.save(entity).toModel(category.toModel());
     }
 
     @Override
     public List<Transaction> findAll() {
-        List<TransactionEntity> transactions = repository.findAll();
-        return transactions.stream().map(TransactionMapper::fromEntity).toList();
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.lookup(
+                        "categories",
+                        "categoryId",
+                        "_id",
+                        "category"
+                ),
+                Aggregation.unwind("category", true)
+        );
+
+        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
+        List<TransactionEntity> entities = results.getMappedResults();
+
+        return entities.stream()
+                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
+                .toList();
     }
 
     @Override
     public List<Transaction> findAll(TransactionType type) {
-        List<TransactionEntity> transactions = repository.findByType(type.name());
-        return transactions.stream().map(TransactionMapper::fromEntity).toList();
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("type").is(type.name())),
+                Aggregation.lookup(
+                        "categories",
+                        "categoryId",
+                        "_id",
+                        "category"
+                ),
+                Aggregation.unwind("category", true)
+        );
+
+        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
+        List<TransactionEntity> entities = results.getMappedResults();
+
+        return entities.stream()
+                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
+                .toList();
     }
 
     @Override
     public List<Transaction> findAll(Month month, int year) {
-        LocalDate startDate = LocalDate.of(year, 1, 1);
-        LocalDate endDate = LocalDate.of(year, 12, 31);
-        List<TransactionEntity> transactions = repository.findByCurrentMonthAndYear(month.name(), startDate, endDate);
-        return transactions.stream().map(TransactionMapper::fromEntity).toList();
+        LocalDate startOfYear = LocalDate.of(year, 1, 1);
+        LocalDate endOfYear = LocalDate.of(year, 12, 31);
+
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("date").gte(startOfYear).lte(endOfYear)),
+                Aggregation.match(Criteria.where("currentMonth").is(month.name())),
+                Aggregation.lookup(
+                        "categories",
+                        "categoryId",
+                        "_id",
+                        "category"
+                ),
+                Aggregation.unwind("category", true)
+        );
+
+        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
+        List<TransactionEntity> entities = results.getMappedResults();
+
+        return entities.stream()
+                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
+                .toList();
     }
 
     @Override
     public List<Transaction> findAll(Month month, int year, TransactionType type) {
-        LocalDate startDate = LocalDate.of(year, 1, 1);
-        LocalDate endDate = LocalDate.of(year, 12, 31);
-        List<TransactionEntity> transactions = repository.findByCurrentMonthAndYearAndType(month.name(), startDate, endDate, type.name());
-        return transactions.stream().map(TransactionMapper::fromEntity).toList();
+        LocalDate startOfYear = LocalDate.of(year, 1, 1);
+        LocalDate endOfYear = LocalDate.of(year, 12, 31);
+
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("date").gte(startOfYear).lte(endOfYear)),
+                Aggregation.match(Criteria.where("currentMonth").is(month.name())),
+                Aggregation.match(Criteria.where("type").is(type.name())),
+                Aggregation.lookup(
+                        "categories",
+                        "categoryId",
+                        "_id",
+                        "category"
+                ),
+                Aggregation.unwind("category", true)
+        );
+
+        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
+        List<TransactionEntity> entities = results.getMappedResults();
+
+        return entities.stream()
+                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
+                .toList();
     }
 
     @Override

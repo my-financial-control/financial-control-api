@@ -20,9 +20,9 @@ public abstract class Transaction {
     private final Month currentMonth;
     private final LocalDate date;
     private final LocalDateTime timestamp;
-    private final String category;
+    private final TransactionCategory category;
 
-    public Transaction(UUID id, String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date, LocalDateTime timestamp, String category) {
+    public Transaction(UUID id, String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -57,7 +57,7 @@ public abstract class Transaction {
         return this.type;
     }
 
-    public String getCategory() {
+    public TransactionCategory getCategory() {
         return category;
     }
 

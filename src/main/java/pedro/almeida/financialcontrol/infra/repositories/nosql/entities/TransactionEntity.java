@@ -2,10 +2,17 @@ package pedro.almeida.financialcontrol.infra.repositories.nosql.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
+import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.List;
+import java.util.UUID;
 
 @Document(collection = "transactions")
 public class TransactionEntity {
@@ -19,9 +26,14 @@ public class TransactionEntity {
     private String currentMonth;
     private LocalDate date;
     private LocalDateTime timestamp;
-    private String category;
+    private String categoryId;
+    @Field("category")
+    private TransactionCategoryEntity category;
 
-    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalDateTime timestamp, String category) {
+    public TransactionEntity() {
+    }
+
+    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalDateTime timestamp, String categoryId, TransactionCategoryEntity category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -30,7 +42,35 @@ public class TransactionEntity {
         this.currentMonth = currentMonth;
         this.date = date;
         this.timestamp = timestamp;
+        this.categoryId = categoryId;
         this.category = category;
+    }
+
+    public TransactionEntity(Transaction transaction) {
+        this.id = transaction.getId().toString();
+        this.title = transaction.getTitle();
+        this.description = transaction.getDescription();
+        this.value = transaction.getValue();
+        this.type = transaction.getType().name();
+        this.currentMonth = transaction.getCurrentMonth().name();
+        this.date = transaction.getDate();
+        this.timestamp = transaction.getTimestamp();
+        this.categoryId = transaction.getCategory().getId().toString();
+        this.category = new TransactionCategoryEntity(transaction.getCategory());
+    }
+
+    public Transaction toModel(TransactionCategory category) {
+        return TransactionFactory.buildTransaction(
+                UUID.fromString(id),
+                title,
+                description,
+                value,
+                type,
+                Month.valueOf(currentMonth).getValue(),
+                date,
+                timestamp,
+                category
+        );
     }
 
     public String getId() {
@@ -97,11 +137,19 @@ public class TransactionEntity {
         this.timestamp = timestamp;
     }
 
-    public String getCategory() {
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public TransactionCategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(TransactionCategoryEntity category) {
         this.category = category;
     }
 }

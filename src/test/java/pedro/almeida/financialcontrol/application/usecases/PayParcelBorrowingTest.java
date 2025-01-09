@@ -5,16 +5,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.*;
-import pedro.almeida.financialcontrol.domain.repositories.*;
+import pedro.almeida.financialcontrol.application.dtos.request.PayParcelBorrowingRequestDTO;
+import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
+import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PayParcelBorrowingTest {
@@ -26,16 +26,15 @@ class PayParcelBorrowingTest {
 
     @Test
     void executeShouldFindTheBorrowingCallMethodPayParcelAndSaveTheObjectInRepository() {
-        Borrowing borrowing = new Borrowing(new Borrower("Borrower"), new BigDecimal("50.80"), LocalDate.now());
+        Borrowing borrowing = mock(Borrowing.class);
         when(borrowings.findById(any())).thenReturn(borrowing);
-        UUID uuid = UUID.randomUUID();
-        ParcelBorrowing parcelBorrowing = new ParcelBorrowing(new BigDecimal("20.5"));
+        doNothing().when(borrowing).payParcel(any());
+        PayParcelBorrowingRequestDTO parcelBorrowing = new PayParcelBorrowingRequestDTO(new BigDecimal("20.5"), LocalDate.now());
 
-        payParcelBorrowing.execute(uuid, parcelBorrowing);
+        payParcelBorrowing.execute(borrowing.getId(), parcelBorrowing);
 
-        verify(borrowings).findById(uuid);
-        assert borrowing.getParcels().contains(parcelBorrowing);
-        verify(borrowings).save(borrowing);
+        verify(borrowings).findById(borrowing.getId());
+        verify(borrowing).payParcel(new ParcelBorrowing(parcelBorrowing.value(), parcelBorrowing.date()));
     }
 
 }

@@ -12,7 +12,7 @@ public interface Borrowings {
     Borrowing save(Borrowing borrowing);
     List<Borrowing> findAll();
     List<Borrowing> findAll(Month month, int year);
-    Borrowing findById(UUID uuid);
+    Borrowing findById(UUID id);
     BigDecimal sumOfRemainingPayment();
     BigDecimal sumOfRemainingPayment(Month month, int year);
 

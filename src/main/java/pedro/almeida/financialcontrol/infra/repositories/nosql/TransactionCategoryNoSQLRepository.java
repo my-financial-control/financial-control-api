@@ -1,0 +1,26 @@
+package pedro.almeida.financialcontrol.infra.repositories.nosql;
+
+import org.springframework.stereotype.Repository;
+import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
+import pedro.almeida.financialcontrol.domain.repositories.TransactionCategories;
+import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.TransactionCategoryEntity;
+import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITransactionCategoryNoSQLRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Repository
+public class TransactionCategoryNoSQLRepository implements TransactionCategories {
+
+    private final ITransactionCategoryNoSQLRepository repository;
+
+    public TransactionCategoryNoSQLRepository(ITransactionCategoryNoSQLRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public TransactionCategory findById(UUID id) {
+        Optional<TransactionCategoryEntity> tc = repository.findById(id.toString());
+        return tc.orElseThrow(() -> new RuntimeException("Categoria de transação não encontrada")).toModel(); // TODO: criar exception personalizada
+    }
+}

@@ -9,13 +9,13 @@ import java.time.Month;
 import java.util.UUID;
 
 public class Expense extends Transaction {
-    public Expense(UUID id, String title, String description, BigDecimal value, Month currentMonth, LocalDate date, LocalDateTime timestamp, String category) {
+    public Expense(UUID id, String title, String description, BigDecimal value, Month currentMonth, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
         super(id, title, description, value, TransactionType.EXPENSE, currentMonth, date, timestamp, category);
         validCategory(category);
     }
 
-    public void validCategory(String category) {
-        if (category == null || category.isEmpty()) {
+    public void validCategory(TransactionCategory category) {
+        if (category == null || category.getName().isEmpty()) {
             throw TransactionException.categoryIsRequired();
         }
     }

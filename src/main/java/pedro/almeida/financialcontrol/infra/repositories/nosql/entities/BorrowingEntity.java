@@ -2,11 +2,15 @@ package pedro.almeida.financialcontrol.infra.repositories.nosql.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pedro.almeida.financialcontrol.domain.models.Borrower;
+import pedro.almeida.financialcontrol.domain.models.Borrowing;
+import pedro.almeida.financialcontrol.domain.models.ParcelBorrowing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Document(collection = "borrowings")
 public class BorrowingEntity {
@@ -28,6 +32,29 @@ public class BorrowingEntity {
         this.date = date;
         this.parcels = parcels;
         this.timestamp = timestamp;
+    }
+
+    public BorrowingEntity(Borrowing borrowing) {
+        this.id = borrowing.getId().toString();
+        this.borrower = new BorrowerEntity(borrowing.getBorrower().getName());
+        this.value = borrowing.getValue();
+        this.paid = borrowing.getPaid();
+        this.date = borrowing.getDate();
+        this.parcels = borrowing.getParcels().stream().map(p -> new ParcelBorrowingEntity(p.getValue(), p.getDate())).toList();
+        this.timestamp = borrowing.getTimestamp();
+
+    }
+
+    public Borrowing toModel() {
+        return new Borrowing(
+                UUID.fromString(id),
+                new Borrower(borrower.getName()),
+                value,
+                paid,
+                date,
+                parcels.stream().map(p -> new ParcelBorrowing(p.getValue(), p.getDate())).toList(),
+                timestamp
+        );
     }
 
     public String getId() {
