@@ -4,6 +4,7 @@ import pedro.almeida.financialcontrol.domain.errors.ParcelBorrowingException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class ParcelBorrowing {
 
@@ -37,4 +38,15 @@ public class ParcelBorrowing {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ParcelBorrowing that)) return false;
+        return value.equals(that.value) && date.equals(that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, date);
+    }
 }

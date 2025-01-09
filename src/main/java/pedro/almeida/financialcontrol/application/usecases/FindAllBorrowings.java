@@ -1,6 +1,7 @@
 package pedro.almeida.financialcontrol.application.usecases;
 
 import org.springframework.stereotype.Component;
+import pedro.almeida.financialcontrol.application.dtos.response.BorrowingResponseDTO;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 
@@ -16,8 +17,9 @@ public class FindAllBorrowings {
         this.borrowings = borrowings;
     }
 
-    public List<Borrowing> execute() {
-        return borrowings.findAll();
+    public List<BorrowingResponseDTO> execute() {
+        List<Borrowing> bgs = borrowings.findAll();
+        return BorrowingResponseDTO.toBorrowingResponseDTO(bgs);
     }
 
 }

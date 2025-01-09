@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.web.dtos.response;
+package pedro.almeida.financialcontrol.application.dtos.response;
 
 import java.math.BigDecimal;
 

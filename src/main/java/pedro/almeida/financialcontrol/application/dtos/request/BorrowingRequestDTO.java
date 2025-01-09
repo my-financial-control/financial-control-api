@@ -1,4 +1,4 @@
-package pedro.almeida.financialcontrol.web.dtos.request;
+package pedro.almeida.financialcontrol.application.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

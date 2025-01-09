@@ -11,7 +11,6 @@ import pedro.almeida.financialcontrol.domain.models.Borrowing;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.BorrowingEntity;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.IBorrowingNoSQLRepository;
-import pedro.almeida.financialcontrol.infra.repositories.nosql.mappers.BorrowingMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,9 +18,6 @@ import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static pedro.almeida.financialcontrol.infra.repositories.nosql.mappers.BorrowingMapper.fromEntity;
-import static pedro.almeida.financialcontrol.infra.repositories.nosql.mappers.BorrowingMapper.toEntity;
 
 @Repository
 public class BorrowingNoSQLRepository implements Borrowings {
@@ -37,13 +33,14 @@ public class BorrowingNoSQLRepository implements Borrowings {
     @Transactional
     @Override
     public Borrowing save(Borrowing borrowing) {
-        return fromEntity(repository.save(toEntity(borrowing)));
+        BorrowingEntity entity = new BorrowingEntity(borrowing);
+        return repository.save(entity).toModel();
     }
 
     @Override
     public List<Borrowing> findAll() {
         List<BorrowingEntity> borrowings = repository.findAll();
-        return borrowings.stream().map(BorrowingMapper::fromEntity).toList();
+        return borrowings.stream().map(BorrowingEntity::toModel).toList();
     }
 
     @Override
@@ -53,14 +50,13 @@ public class BorrowingNoSQLRepository implements Borrowings {
 
         List<BorrowingEntity> borrowings = repository.findByMonthAndYear(startDate, endDate);
 
-        return borrowings.stream().map(BorrowingMapper::fromEntity).toList();
+        return borrowings.stream().map(BorrowingEntity::toModel).toList();
     }
 
     @Override
-    public Borrowing findById(UUID uuid) {
-        Optional<BorrowingEntity> borrowing = repository.findById(uuid.toString());
-        borrowing.orElseThrow(() -> new RuntimeException("")); // TODO: Criar exception personalizada
-        return fromEntity(borrowing.get());
+    public Borrowing findById(UUID id) {
+        Optional<BorrowingEntity> borrowing = repository.findById(id.toString());
+        return borrowing.orElseThrow(() -> new RuntimeException("Empréstimo não encontrado")).toModel();
     }
 
     @Override

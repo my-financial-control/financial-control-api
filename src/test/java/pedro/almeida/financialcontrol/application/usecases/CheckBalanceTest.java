@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pedro.almeida.financialcontrol.application.dtos.response.CheckBalanceResponseDTO;
 import pedro.almeida.financialcontrol.domain.services.*;
 
 import java.math.BigDecimal;
@@ -18,16 +19,16 @@ import static org.mockito.Mockito.when;
 class CheckBalanceTest {
     @Mock
     private ExtractConsultation extractConsultation;
-    private final BigDecimal balanceExpected = new BigDecimal("1528.46");
+    private final CheckBalanceResponseDTO balanceExpected = new CheckBalanceResponseDTO(BigDecimal.valueOf(1000));
     private final Month byMonth = Month.JANUARY;
     @InjectMocks
     private CheckBalance checkBalance;
 
     @Test
     void executeShouldReturnTheBalanceTest() {
-        when(extractConsultation.checkBalance()).thenReturn(balanceExpected);
+        when(extractConsultation.checkBalance()).thenReturn(balanceExpected.balance());
 
-        BigDecimal balance = checkBalance.execute();
+        CheckBalanceResponseDTO balance = checkBalance.execute();
 
         assertEquals(balanceExpected, balance);
         verify(extractConsultation).checkBalance();
@@ -36,9 +37,9 @@ class CheckBalanceTest {
     @Test
     void executeShouldReturnTheBalanceByMonthTest() {
         int byYear = 2023;
-        when(extractConsultation.checkBalance(byMonth, byYear)).thenReturn(balanceExpected);
+        when(extractConsultation.checkBalance(byMonth, byYear)).thenReturn(balanceExpected.balance());
 
-        BigDecimal balance = checkBalance.execute(byMonth, byYear);
+        CheckBalanceResponseDTO balance = checkBalance.execute(byMonth.getValue(), byYear);
 
         assertEquals(balanceExpected, balance);
         verify(extractConsultation).checkBalance(byMonth, byYear);

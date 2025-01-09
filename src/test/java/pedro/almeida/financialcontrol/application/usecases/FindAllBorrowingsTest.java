@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pedro.almeida.financialcontrol.application.dtos.response.BorrowingResponseDTO;
 import pedro.almeida.financialcontrol.domain.models.*;
 import pedro.almeida.financialcontrol.domain.repositories.*;
 
@@ -37,11 +38,12 @@ class FindAllBorrowingsTest {
     }
 
     @Test
-    @DisplayName("Deve chamar os métodos corretos do repositório e retornar uma lista de Borrowings")
     void executeShouldReturnAListOfBorrowing() {
-        List<Borrowing> borrowingsReturned = findAllBorrowings.execute();
+        List<BorrowingResponseDTO> expected = borrowingsMock.stream().map(BorrowingResponseDTO::new).toList();
 
-        assertEquals(borrowingsMock, borrowingsReturned);
+        List<BorrowingResponseDTO> borrowingsReturned = findAllBorrowings.execute();
+
+        assertEquals(expected, borrowingsReturned);
         verify(borrowings).findAll();
     }
 

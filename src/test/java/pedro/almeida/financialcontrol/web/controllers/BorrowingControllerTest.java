@@ -9,8 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pedro.almeida.financialcontrol.domain.models.*;
-import pedro.almeida.financialcontrol.web.services.*;
+import pedro.almeida.financialcontrol.application.dtos.response.BorrowingResponseDTO;
+import pedro.almeida.financialcontrol.application.usecases.FindAllBorrowings;
+import pedro.almeida.financialcontrol.application.usecases.PayParcelBorrowing;
+import pedro.almeida.financialcontrol.application.usecases.RegisterBorrowing;
+import pedro.almeida.financialcontrol.domain.models.Borrower;
+import pedro.almeida.financialcontrol.domain.models.Borrowing;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,13 +35,17 @@ class BorrowingControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private BorrowingService borrowingService;
+    private RegisterBorrowing registerBorrowing;
+    @MockBean
+    private FindAllBorrowings findAllBorrowings;
+    @MockBean
+    private PayParcelBorrowing payParcelBorrowing;
     private final String uri = "/api/v1/borrowings";
 
     @Test
     void registerWithValidBorrowingShouldReturn201AndTheCreatedBorrowing() throws Exception {
-        Borrowing expectedBorrowing = new Borrowing(new Borrower("Borrower"), new BigDecimal("50.8"), LocalDate.now());
-        when(borrowingService.register(any())).thenReturn(expectedBorrowing);
+        BorrowingResponseDTO expectedBorrowing = new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower"), new BigDecimal("50.8"), LocalDate.now()));
+        when(registerBorrowing.execute(any())).thenReturn(expectedBorrowing);
         String json = """
                     {
                         "borrower": "Borrower",
@@ -52,37 +60,35 @@ class BorrowingControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.id").value(expectedBorrowing.getId().toString()))
-                .andExpect(jsonPath("$.borrower").value(expectedBorrowing.getBorrower().getName()))
-                .andExpect(jsonPath("$.value").value(expectedBorrowing.getValue().toString()))
-                .andExpect(jsonPath("$.paid").value(expectedBorrowing.getPaid()))
-                .andExpect(jsonPath("$.date").value(expectedBorrowing.getDate().toString()))
+                .andExpect(jsonPath("$.id").value(expectedBorrowing.id().toString()))
+                .andExpect(jsonPath("$.borrower").value(expectedBorrowing.borrower()))
+                .andExpect(jsonPath("$.value").value(expectedBorrowing.value().toString()))
+                .andExpect(jsonPath("$.paid").value(expectedBorrowing.paid()))
+                .andExpect(jsonPath("$.date").value(expectedBorrowing.date().toString()))
                 .andExpect(jsonPath("$.parcels").isArray());
     }
 
     @Test
     void findAllShouldReturnAListOfTransactions() throws Exception {
-        List<Borrowing> expectedBorrowings = Arrays.asList(
-                new Borrowing(new Borrower("Borrower 1"), new BigDecimal("50.8")),
-                new Borrowing(new Borrower("Borrower 2"), new BigDecimal("100.7")),
-                new Borrowing(new Borrower("Borrower 3"), new BigDecimal("200")),
-                new Borrowing(new Borrower("Borrower 4"), new BigDecimal("20.89")),
-                new Borrowing(new Borrower("Borrower 5"), new BigDecimal("33.74"))
+        List<BorrowingResponseDTO> expectedBorrowings = Arrays.asList(
+                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower1"), new BigDecimal("50.8"), LocalDate.now())),
+                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower2"), new BigDecimal("100.8"), LocalDate.now())),
+                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower3"), new BigDecimal("150.8"), LocalDate.now()))
         );
-        when(borrowingService.findAll()).thenReturn(expectedBorrowings);
+        when(findAllBorrowings.execute()).thenReturn(expectedBorrowings);
 
         for (int i = 0; i < expectedBorrowings.size(); i++) {
-            Borrowing borrowing = expectedBorrowings.get(i);
+            BorrowingResponseDTO borrowing = expectedBorrowings.get(i);
 
             mockMvc.perform(MockMvcRequestBuilders.get(uri))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(content().contentType("application/json"))
                     .andExpect(jsonPath("$.length()").value(expectedBorrowings.size()))
-                    .andExpect(jsonPath("$[" + i + "].id").value(borrowing.getId().toString()))
-                    .andExpect(jsonPath("$[" + i + "].borrower").value(borrowing.getBorrower().getName()))
-                    .andExpect(jsonPath("$[" + i + "].value").value(borrowing.getValue().toString()))
-                    .andExpect(jsonPath("$[" + i + "].paid").value(borrowing.getPaid()))
-                    .andExpect(jsonPath("$[" + i + "].date").value(borrowing.getDate().toString()))
+                    .andExpect(jsonPath("$[" + i + "].id").value(borrowing.id().toString()))
+                    .andExpect(jsonPath("$[" + i + "].borrower").value(borrowing.borrower()))
+                    .andExpect(jsonPath("$[" + i + "].value").value(borrowing.value().toString()))
+                    .andExpect(jsonPath("$[" + i + "].paid").value(borrowing.paid()))
+                    .andExpect(jsonPath("$[" + i + "].date").value(borrowing.date().toString()))
                     .andExpect(jsonPath("$[" + i + "].parcels").isArray());
         }
     }

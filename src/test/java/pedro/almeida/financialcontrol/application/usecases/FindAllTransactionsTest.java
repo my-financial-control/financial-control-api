@@ -7,7 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
+import pedro.almeida.financialcontrol.domain.repositories.TransactionCategories;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsInMemoryRepository;
 
@@ -22,6 +24,8 @@ class FindAllTransactionsTest {
 
     @Mock
     private Transactions transactions;
+    @Mock
+    private TransactionCategories transactionCategories;
     private List<Transaction> transactionsMock;
     @InjectMocks
     private FindAllTransactions findAllTransactions;
@@ -35,9 +39,11 @@ class FindAllTransactionsTest {
 
     @Test
     void executeShouldReturnAListOfTransaction() {
-        List<Transaction> transactionsReturned = findAllTransactions.execute();
+        List<TransactionResponseDTO> expected = transactionsMock.stream().map(TransactionResponseDTO::new).toList();
 
-        assertEquals(transactionsMock, transactionsReturned);
+        List<TransactionResponseDTO> transactionsReturned = findAllTransactions.execute();
+
+        assertEquals(expected, transactionsReturned);
         verify(transactions).findAll();
     }
 

@@ -5,7 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.services.*;
+import pedro.almeida.financialcontrol.application.dtos.response.CheckBalanceResponseDTO;
+import pedro.almeida.financialcontrol.domain.services.ExtractConsultation;
 
 import java.math.BigDecimal;
 import java.time.Month;
@@ -18,16 +19,16 @@ import static org.mockito.Mockito.when;
 class CheckBalancePlusRemainingPaymentsTest {
     @Mock
     private ExtractConsultation extractConsultation;
-    private final BigDecimal balanceExpected = new BigDecimal("1528.46");
+    private final CheckBalanceResponseDTO balanceExpected = new CheckBalanceResponseDTO(BigDecimal.valueOf(1000));
     private final Month byMonth = Month.JANUARY;
     @InjectMocks
     private CheckBalancePlusRemainingPayments checkBalancePlusRemainingPayments;
 
     @Test
     void executeShouldReturnTheBalanceTest() {
-        when(extractConsultation.checkBalancePlusRemainingPayment()).thenReturn(balanceExpected);
+        when(extractConsultation.checkBalancePlusRemainingPayment()).thenReturn(balanceExpected.balance());
 
-        BigDecimal balance = checkBalancePlusRemainingPayments.execute();
+        CheckBalanceResponseDTO balance = checkBalancePlusRemainingPayments.execute();
 
         assertEquals(balanceExpected, balance);
         verify(extractConsultation).checkBalancePlusRemainingPayment();
@@ -36,9 +37,9 @@ class CheckBalancePlusRemainingPaymentsTest {
     @Test
     void executeShouldReturnTheBalanceByMonthTest() {
         int byYear = 2023;
-        when(extractConsultation.checkBalancePlusRemainingPayment(byMonth, byYear)).thenReturn(balanceExpected);
+        when(extractConsultation.checkBalancePlusRemainingPayment(byMonth, byYear)).thenReturn(balanceExpected.balance());
 
-        BigDecimal balance = checkBalancePlusRemainingPayments.execute(byMonth, byYear);
+        CheckBalanceResponseDTO balance = checkBalancePlusRemainingPayments.execute(byMonth.getValue(), byYear);
 
         assertEquals(balanceExpected, balance);
         verify(extractConsultation).checkBalancePlusRemainingPayment(byMonth, byYear);

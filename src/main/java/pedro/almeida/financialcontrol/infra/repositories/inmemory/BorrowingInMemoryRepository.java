@@ -34,8 +34,8 @@ public class BorrowingInMemoryRepository implements Borrowings {
     }
 
     @Override
-    public Borrowing findById(UUID uuid) {
-        return borrowings.get(uuid);
+    public Borrowing findById(UUID id) {
+        return borrowings.get(id);
     }
 
     @Override
