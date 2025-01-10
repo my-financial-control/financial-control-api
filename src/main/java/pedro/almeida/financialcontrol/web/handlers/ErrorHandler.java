@@ -28,6 +28,12 @@ public class ErrorHandler {
         return new ErrorMessageDTO(exception.getMessage());
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessageDTO handler404(RuntimeException exception) {
+        return new ErrorMessageDTO(exception.getMessage());
+    }
+
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public List<ValidationErrorDTO> handler(MethodArgumentNotValidException exception) {
