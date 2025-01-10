@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pedro.almeida.financialcontrol.domain.errors.NotFoundException;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
@@ -37,7 +38,7 @@ public class TransactionNoSQLRepository implements Transactions {
     @Override
     public Transaction save(Transaction transaction) {
         TransactionEntity entity = new TransactionEntity(transaction);
-        TransactionCategoryEntity category = categoriesRepository.findById(entity.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found")); // TODO: criar excepetion personalizada
+        TransactionCategoryEntity category = categoriesRepository.findById(entity.getCategoryId()).orElseThrow(() -> new NotFoundException("Categoria com id " + entity.getCategoryId() + " não encontrada"));
         return transactionsRepository.save(entity).toModel(category.toModel());
     }
 
