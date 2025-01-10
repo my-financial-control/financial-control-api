@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pedro.almeida.financialcontrol.domain.errors.NotFoundException;
 import pedro.almeida.financialcontrol.domain.models.Borrowing;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.BorrowingEntity;
@@ -56,7 +57,7 @@ public class BorrowingNoSQLRepository implements Borrowings {
     @Override
     public Borrowing findById(UUID id) {
         Optional<BorrowingEntity> borrowing = repository.findById(id.toString());
-        return borrowing.orElseThrow(() -> new RuntimeException("Empréstimo não encontrado")).toModel();
+        return borrowing.orElseThrow(() -> new NotFoundException("Empréstimo com id '" + id.toString() + "' não encontrado")).toModel();
     }
 
     @Override
