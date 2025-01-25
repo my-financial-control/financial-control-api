@@ -1,4 +1,17 @@
 services:
+  api:
+    container_name: api
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
+    environment:
+      - PROFILE=prd
+      - DB_CONN_STR=mongodb://app:pass@mongo:27017/financialcontrol?authSource=admin
+      - DB_NAME=financialcontrol
+      - PORT=8080
+
   mongo:
     container_name: mongo
     restart: always
@@ -13,6 +26,9 @@ services:
       - type: bind
         source: ./data
         target: /data/db
+      - type: bind
+        source: ./init.js
+        target: /docker-entrypoint-initdb.d/init.js
 
   mongo-express:
     image: mongo-express
