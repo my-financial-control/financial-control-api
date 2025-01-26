@@ -50,7 +50,7 @@ class ExtractConsultationTest {
 
     private void setUpTransactions() {
         TransactionsInMemoryRepository repository = new TransactionsInMemoryRepository();
-        List<Transaction> transactionsMock = repository.findAll();
+        List<Transaction> transactionsMock = repository.findAll(null, null, null);
         totalSumOfCredits = transactionsMock.stream().filter(transaction1 -> transaction1.getType().equals(TransactionType.CREDIT)).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfExpenses = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.EXPENSE)).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfCreditsByMonth = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.CREDIT) && transaction.getCurrentMonth().equals(byMonth) && transaction.getDate().getYear() == byYear).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);

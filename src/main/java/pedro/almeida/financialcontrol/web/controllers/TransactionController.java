@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pedro.almeida.financialcontrol.application.dtos.request.TransactionRequestDTO;
-import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionCategoryResponseDTO;
+import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
 import pedro.almeida.financialcontrol.application.usecases.FindAllTransactionCategories;
 import pedro.almeida.financialcontrol.application.usecases.FindAllTransactions;
 import pedro.almeida.financialcontrol.application.usecases.RegisterTransaction;
@@ -39,10 +39,11 @@ public class TransactionController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TransactionResponseDTO> findAll(
+            @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "month", required = false) @Min(1) @Max(12) Integer month,
             @RequestParam(value = "year", required = false) @Positive @Min(2000) Integer year
     ) {
-        return findAllTransactions.execute(month, year);
+        return findAllTransactions.execute(type, month, year);
     }
 
     @GetMapping("/categories")

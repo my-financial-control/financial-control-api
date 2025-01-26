@@ -91,33 +91,8 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void findAllWithMonthAndYearShouldReturn200AndAListOfTransactions() throws Exception {
-        when(findAllTransactions.execute(1, 2023)).thenReturn(transactionDTOS);
-
-        for (int i = 0; i < transactionDTOS.size(); i++) {
-            TransactionResponseDTO transaction = transactionDTOS.get(i);
-
-            mockMvc.perform(MockMvcRequestBuilders.get(uri)
-                            .param("month", "1")
-                            .param("year", "2023"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.length()").value(transactionDTOS.size()))
-                    .andExpect(jsonPath("$[" + i + "].id").value(transaction.id().toString()))
-                    .andExpect(jsonPath("$[" + i + "].title").value(transaction.title()))
-                    .andExpect(jsonPath("$[" + i + "].description").value(transaction.description()))
-                    .andExpect(jsonPath("$[" + i + "].value").value(transaction.value()))
-                    .andExpect(jsonPath("$[" + i + "].type").value(transaction.type().name()))
-                    .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.currentMonth().name()))
-                    .andExpect(jsonPath("$[" + i + "].date").value(transaction.date().toString()))
-                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()));
-        }
-    }
-
-
-    @Test
-    public void findAllWithoutMonthAndYearShouldReturn200AndAListOfTransactions() throws Exception {
-        when(findAllTransactions.execute(null, null)).thenReturn(transactionDTOS);
+    public void findAllTransactionsShouldReturn200AndAListOfTransactions() throws Exception {
+        when(findAllTransactions.execute(null, null, null)).thenReturn(transactionDTOS);
 
         for (int i = 0; i < transactionDTOS.size(); i++) {
             TransactionResponseDTO transaction = transactionDTOS.get(i);

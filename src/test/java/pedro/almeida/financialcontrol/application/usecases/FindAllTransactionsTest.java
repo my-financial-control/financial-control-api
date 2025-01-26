@@ -1,7 +1,6 @@
 package pedro.almeida.financialcontrol.application.usecases;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +15,7 @@ import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsIn
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,18 +33,18 @@ class FindAllTransactionsTest {
     @BeforeEach
     void setUp() {
         TransactionsInMemoryRepository repository = new TransactionsInMemoryRepository();
-        this.transactionsMock = repository.findAll();
-        when(this.transactions.findAll()).thenReturn(transactionsMock);
+        this.transactionsMock = repository.findAll(null, null, null);
+        when(this.transactions.findAll(any(), any(), any())).thenReturn(transactionsMock);
     }
 
     @Test
     void executeShouldReturnAListOfTransaction() {
         List<TransactionResponseDTO> expected = transactionsMock.stream().map(TransactionResponseDTO::new).toList();
 
-        List<TransactionResponseDTO> transactionsReturned = findAllTransactions.execute();
+        List<TransactionResponseDTO> transactionsReturned = findAllTransactions.execute(null, null, null);
 
         assertEquals(expected, transactionsReturned);
-        verify(transactions).findAll();
+        verify(transactions).findAll(null, null, null);
     }
 
 }
