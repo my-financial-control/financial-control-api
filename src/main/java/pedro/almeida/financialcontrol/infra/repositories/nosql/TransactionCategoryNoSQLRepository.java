@@ -7,6 +7,7 @@ import pedro.almeida.financialcontrol.domain.repositories.TransactionCategories;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.entities.TransactionCategoryEntity;
 import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITransactionCategoryNoSQLRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,5 +24,11 @@ public class TransactionCategoryNoSQLRepository implements TransactionCategories
     public TransactionCategory findById(UUID id) {
         Optional<TransactionCategoryEntity> tc = repository.findById(id.toString());
         return tc.orElseThrow(() -> new NotFoundException("Categoria com id " + id.toString() + " não encontrada")).toModel();
+    }
+
+    @Override
+    public List<TransactionCategory> findAll() {
+        List<TransactionCategoryEntity> categories = repository.findAll();
+        return categories.stream().map(TransactionCategoryEntity::toModel).toList();
     }
 }

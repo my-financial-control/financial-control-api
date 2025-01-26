@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import pedro.almeida.financialcontrol.application.dtos.response.TransactionCategoryResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
+import pedro.almeida.financialcontrol.application.usecases.FindAllTransactionCategories;
 import pedro.almeida.financialcontrol.application.usecases.FindAllTransactions;
 import pedro.almeida.financialcontrol.application.usecases.RegisterTransaction;
 import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
@@ -37,6 +39,8 @@ public class TransactionControllerTest {
     private RegisterTransaction registerTransaction;
     @MockBean
     private FindAllTransactions findAllTransactions;
+    @MockBean
+    private FindAllTransactionCategories findAllTransactionCategories;
     private final String uri = "/api/v1/transactions";
     private final List<Transaction> transactions = Arrays.asList(
             TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, LocalDate.now(), null),
@@ -133,4 +137,26 @@ public class TransactionControllerTest {
         }
     }
 
+    @Test
+    public void findAllCategoriesShouldReturn200AndAListOfTransactionCategories() throws Exception {
+        List<TransactionCategory> categories = Arrays.asList(
+                new TransactionCategory(UUID.randomUUID(), "Category 1", ""),
+                new TransactionCategory(UUID.randomUUID(), "Category 2", ""),
+                new TransactionCategory(UUID.randomUUID(), "Category 3", "")
+        );
+        List<TransactionCategoryResponseDTO> categoryDTOS = categories.stream().map(TransactionCategoryResponseDTO::new).toList();
+        when(findAllTransactionCategories.execute()).thenReturn(categoryDTOS);
+
+        for (int i = 0; i < categoryDTOS.size(); i++) {
+            TransactionCategoryResponseDTO category = categoryDTOS.get(i);
+
+            mockMvc.perform(MockMvcRequestBuilders.get(uri + "/categories"))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.length()").value(categoryDTOS.size()))
+                    .andExpect(jsonPath("$[" + i + "].id").value(category.id().toString()))
+                    .andExpect(jsonPath("$[" + i + "].name").value(category.name()))
+                    .andExpect(jsonPath("$[" + i + "].description").value(category.description()));
+        }
+    }
 }
