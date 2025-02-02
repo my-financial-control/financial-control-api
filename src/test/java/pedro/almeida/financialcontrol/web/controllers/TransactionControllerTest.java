@@ -9,12 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import pedro.almeida.financialcontrol.application.dtos.response.ConsolidatedTransactionResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionCategoryResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
+import pedro.almeida.financialcontrol.application.usecases.ConsolidateTransactionsByMonth;
 import pedro.almeida.financialcontrol.application.usecases.FindAllTransactionCategories;
 import pedro.almeida.financialcontrol.application.usecases.FindAllTransactions;
 import pedro.almeida.financialcontrol.application.usecases.RegisterTransaction;
 import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
+import pedro.almeida.financialcontrol.domain.models.ConsolidatedTransaction;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
 
@@ -40,6 +43,8 @@ public class TransactionControllerTest {
     @MockBean
     private FindAllTransactions findAllTransactions;
     @MockBean
+    private ConsolidateTransactionsByMonth consolidateTransactionsByMonth;
+    @MockBean
     private FindAllTransactionCategories findAllTransactionCategories;
     private final String uri = "/api/v1/transactions";
     private final List<Transaction> transactions = Arrays.asList(
@@ -50,6 +55,7 @@ public class TransactionControllerTest {
             TransactionFactory.buildTransaction("Title 5", "", new BigDecimal("108.92"), "CREDIT", 3, LocalDate.now(), null)
     );
     private final List<TransactionResponseDTO> transactionDTOS = TransactionResponseDTO.toTransactionDTO(transactions);
+    private final List<ConsolidatedTransactionResponseDTO> consolidatedTransactionDTOS = ConsolidatedTransactionResponseDTO.toConsolidatedTransactionDTO(List.of(new ConsolidatedTransaction(transactions)));
 
     @Test
     void registerWithAValidTransactionShouldReturn201AndTheCreatedTransaction() throws Exception {
@@ -109,6 +115,22 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.currentMonth().name()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.date().toString()))
                     .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()));
+        }
+    }
+
+    @Test
+    public void consolidatedMonthShouldReturn200AndAListOfConsolidatedTransactions() throws Exception {
+        when(consolidateTransactionsByMonth.execute("CREDIT", 1, 2021)).thenReturn(consolidatedTransactionDTOS);
+
+        for (int i = 0; i < consolidatedTransactionDTOS.size(); i++) {
+            ConsolidatedTransactionResponseDTO consolidatedTransaction = consolidatedTransactionDTOS.get(i);
+
+            mockMvc.perform(MockMvcRequestBuilders.get(uri + "/consolidated?type=CREDIT&month=1&year=2021"))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.length()").value(consolidatedTransactionDTOS.size()))
+                    .andExpect(jsonPath("$[" + i + "].title").value(consolidatedTransaction.title()))
+                    .andExpect(jsonPath("$[" + i + "].total").value(consolidatedTransaction.total()));
         }
     }
 
