@@ -9,13 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import pedro.almeida.financialcontrol.application.dtos.response.CalculateTotalsResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.ConsolidatedTransactionResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionCategoryResponseDTO;
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
-import pedro.almeida.financialcontrol.application.usecases.ConsolidateTransactionsByMonth;
-import pedro.almeida.financialcontrol.application.usecases.FindAllTransactionCategories;
-import pedro.almeida.financialcontrol.application.usecases.FindAllTransactions;
-import pedro.almeida.financialcontrol.application.usecases.RegisterTransaction;
+import pedro.almeida.financialcontrol.application.usecases.*;
 import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
 import pedro.almeida.financialcontrol.domain.models.ConsolidatedTransaction;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
@@ -42,6 +40,8 @@ public class TransactionControllerTest {
     private RegisterTransaction registerTransaction;
     @MockBean
     private FindAllTransactions findAllTransactions;
+    @MockBean
+    private CalculateTransactionsTotals calculateTransactionsTotals;
     @MockBean
     private ConsolidateTransactionsByMonth consolidateTransactionsByMonth;
     @MockBean
@@ -116,6 +116,18 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.date().toString()))
                     .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()));
         }
+    }
+
+    @Test
+    public void calculateTotalsShouldReturn200AndTheTotalOfCreditsAndExpenses() throws Exception {
+        CalculateTotalsResponseDTO expectedTotals = new CalculateTotalsResponseDTO(new BigDecimal("1889.44"), new BigDecimal("348.63"));
+        when(calculateTransactionsTotals.execute(1, 2021)).thenReturn(expectedTotals);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri + "/totals?month=1&year=2021"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.credits").value(expectedTotals.credits()))
+                .andExpect(jsonPath("$.expenses").value(expectedTotals.expenses()));
     }
 
     @Test
