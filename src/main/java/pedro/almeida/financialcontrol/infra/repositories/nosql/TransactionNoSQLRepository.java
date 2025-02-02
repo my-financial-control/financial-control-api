@@ -1,6 +1,7 @@
 package pedro.almeida.financialcontrol.infra.repositories.nosql;
 
 import org.bson.Document;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -140,6 +141,9 @@ public class TransactionNoSQLRepository implements Transactions {
         operations.add(Aggregation.lookup("categories", "categoryId", "_id", "category"));
         operations.add(Aggregation.unwind("category", true));
 
+        operations.add(Aggregation.sort(Sort.by(Sort.Direction.DESC, "date")));
+
         return Aggregation.newAggregation(operations);
     }
+
 }
