@@ -1,11 +1,13 @@
 package pedro.almeida.financialcontrol.application.usecases;
 
+import org.springframework.stereotype.Component;
 import pedro.almeida.financialcontrol.application.dtos.response.ConsolidatedTransactionResponseDTO;
 import pedro.almeida.financialcontrol.domain.models.ConsolidatedTransaction;
 import pedro.almeida.financialcontrol.domain.services.ExtractConsultation;
 
 import java.util.List;
 
+@Component
 public class ConsolidateTransactionsByMonth {
     private final ExtractConsultation extractConsultation;
 
