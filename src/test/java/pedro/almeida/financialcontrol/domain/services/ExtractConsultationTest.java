@@ -138,9 +138,9 @@ class ExtractConsultationTest {
 
     @Test
     void consolidateByMonthShouldReturnTheConsolidatedTransactionsByMonthTest() {
-        TransactionCategory category1 = new TransactionCategory(UUID.randomUUID(), "Category 1", "Description 1");
-        TransactionCategory category2 = new TransactionCategory(UUID.randomUUID(), "Category 2", "Description 2");
-        TransactionCategory category3 = new TransactionCategory(UUID.randomUUID(), "Category 3", "Description 3");
+        TransactionCategory category1 = new TransactionCategory(UUID.randomUUID(), "Category 1", "Description 1", TransactionType.CREDIT);
+        TransactionCategory category2 = new TransactionCategory(UUID.randomUUID(), "Category 2", "Description 2", TransactionType.EXPENSE);
+        TransactionCategory category3 = new TransactionCategory(UUID.randomUUID(), "Category 3", "Description 3", TransactionType.EXPENSE);
         List<Transaction> group1 = Arrays.asList(
                 TransactionFactory.buildTransaction("Salary", "", new BigDecimal("1000.00"), "CREDIT", 1, LocalDate.now(), category1),
                 TransactionFactory.buildTransaction("Salary", "", new BigDecimal("2000.00"), "CREDIT", 1, LocalDate.now(), category1)

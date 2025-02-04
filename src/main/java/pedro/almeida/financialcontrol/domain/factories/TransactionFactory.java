@@ -15,7 +15,7 @@ public class TransactionFactory {
 
     public static Transaction buildTransaction(UUID id, String title, String description, BigDecimal value, String type, Integer currentMonth, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
         if (type.equals(TransactionType.CREDIT.name())) {
-            return new Credit(id, title, description, value, Month.of(currentMonth), date, timestamp);
+            return new Credit(id, title, description, value, Month.of(currentMonth), date, timestamp, category);
         }
         if (type.equals(TransactionType.EXPENSE.name())) {
             return new Expense(id, title, description, value, Month.of(currentMonth), date, timestamp, category);
@@ -26,7 +26,7 @@ public class TransactionFactory {
     public static Transaction buildTransaction(String title, String description, BigDecimal value, String type, Integer currentMonth, LocalDate date, TransactionCategory category) {
         LocalDateTime timestamp = LocalDateTime.now();
         if (type.equals(TransactionType.CREDIT.name())) {
-            return new Credit(UUID.randomUUID(), title, description, value, Month.of(currentMonth), date, timestamp);
+            return new Credit(UUID.randomUUID(), title, description, value, Month.of(currentMonth), date, timestamp, category);
         }
         if (type.equals(TransactionType.EXPENSE.name())) {
             return new Expense(UUID.randomUUID(), title, description, value, Month.of(currentMonth), date, timestamp, category);

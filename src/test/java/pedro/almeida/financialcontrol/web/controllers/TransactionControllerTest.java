@@ -18,6 +18,7 @@ import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
 import pedro.almeida.financialcontrol.domain.models.ConsolidatedTransaction;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
+import pedro.almeida.financialcontrol.domain.models.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -48,11 +49,11 @@ public class TransactionControllerTest {
     private FindAllTransactionCategories findAllTransactionCategories;
     private final String uri = "/api/v1/transactions";
     private final List<Transaction> transactions = Arrays.asList(
-            TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, LocalDate.now(), null),
-            TransactionFactory.buildTransaction("Title 2", "", new BigDecimal("200.0"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 1", "")),
-            TransactionFactory.buildTransaction("Title 3", "", new BigDecimal("780.52"), "CREDIT", 2, LocalDate.now(), null),
-            TransactionFactory.buildTransaction("Title 4", "", new BigDecimal("147.71"), "EXPENSE", 2, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 2", "")),
-            TransactionFactory.buildTransaction("Title 5", "", new BigDecimal("108.92"), "CREDIT", 3, LocalDate.now(), null)
+            TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 0", "", TransactionType.CREDIT)),
+            TransactionFactory.buildTransaction("Title 2", "", new BigDecimal("200.0"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 1", "", TransactionType.EXPENSE)),
+            TransactionFactory.buildTransaction("Title 3", "", new BigDecimal("780.52"), "CREDIT", 2, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 2", "", TransactionType.CREDIT)),
+            TransactionFactory.buildTransaction("Title 4", "", new BigDecimal("147.71"), "EXPENSE", 2, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 3", "", TransactionType.EXPENSE)),
+            TransactionFactory.buildTransaction("Title 5", "", new BigDecimal("108.92"), "CREDIT", 3, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 4", "", TransactionType.CREDIT))
     );
     private final List<TransactionResponseDTO> transactionDTOS = TransactionResponseDTO.toTransactionDTO(transactions);
     private final List<ConsolidatedTransactionResponseDTO> consolidatedTransactionDTOS = ConsolidatedTransactionResponseDTO.toConsolidatedTransactionDTO(List.of(new ConsolidatedTransaction(transactions)));
@@ -149,9 +150,9 @@ public class TransactionControllerTest {
     @Test
     public void findAllCategoriesShouldReturn200AndAListOfTransactionCategories() throws Exception {
         List<TransactionCategory> categories = Arrays.asList(
-                new TransactionCategory(UUID.randomUUID(), "Category 1", ""),
-                new TransactionCategory(UUID.randomUUID(), "Category 2", ""),
-                new TransactionCategory(UUID.randomUUID(), "Category 3", "")
+                new TransactionCategory(UUID.randomUUID(), "Category 1", "", TransactionType.CREDIT),
+                new TransactionCategory(UUID.randomUUID(), "Category 2", "", TransactionType.EXPENSE),
+                new TransactionCategory(UUID.randomUUID(), "Category 3", "", TransactionType.CREDIT)
         );
         List<TransactionCategoryResponseDTO> categoryDTOS = categories.stream().map(TransactionCategoryResponseDTO::new).toList();
         when(findAllTransactionCategories.execute()).thenReturn(categoryDTOS);
