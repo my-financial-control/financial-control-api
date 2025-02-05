@@ -28,7 +28,7 @@ public class TransactionCategoryNoSQLRepository implements TransactionCategories
 
     @Override
     public List<TransactionCategory> findAll() {
-        List<TransactionCategoryEntity> categories = repository.findAll();
+        List<TransactionCategoryEntity> categories = repository.findAllByOrderByNameAsc();
         return categories.stream().map(TransactionCategoryEntity::toModel).toList();
     }
 }
