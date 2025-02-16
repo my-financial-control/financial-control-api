@@ -1,0 +1,12 @@
+target/
+data/
+.*
+Dockerfile
+*.tmp
+*.log
+*.bak
+*.cache
+*.class
+.idea/
+.vscode/
+init.js

@@ -25,46 +25,31 @@ public class TransactionsInMemoryRepository implements Transactions {
     }
 
     @Override
-    public List<Transaction> findAll() {
-        return transactions.values().stream().toList();
-    }
-
-    @Override
-    public List<Transaction> findAll(Month month, int year) {
-        return findAll().stream().filter(transaction -> transaction.getCurrentMonth().equals(month) && transaction.getDate().getYear() == year).toList();
-    }
-
-    @Override
-    public List<Transaction> findAll(TransactionType type) {
-        return findAll().stream().filter(transaction -> transaction.getType().equals(type)).toList();
-    }
-
-    @Override
-    public List<Transaction> findAll(Month month, int year, TransactionType type) {
-        return findAll(month, year).stream().filter(transaction -> transaction.getType().equals(type)).toList();
+    public List<Transaction> findAll(String type, Integer month, Integer year) {
+        return List.of();
     }
 
     @Override
     public BigDecimal sumOfCredits() {
-        List<Transaction> allCredits = findAll(TransactionType.CREDIT);
+        List<Transaction> allCredits = findAll(TransactionType.CREDIT.name(), null, null);
         return allCredits.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public BigDecimal sumOfCredits(Month month, int year) {
-        List<Transaction> allCreditsByMonth = findAll(month, year, TransactionType.CREDIT);
+        List<Transaction> allCreditsByMonth = findAll(TransactionType.CREDIT.name(), month.getValue(), year);
         return allCreditsByMonth.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public BigDecimal sumOfExpenses() {
-        List<Transaction> allExpenses = findAll(TransactionType.EXPENSE);
+        List<Transaction> allExpenses = findAll(TransactionType.EXPENSE.name(), null, null);
         return allExpenses.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public BigDecimal sumOfExpenses(Month month, int year) {
-        List<Transaction> allExpensesByMonth = findAll(month, year, TransactionType.EXPENSE);
+        List<Transaction> allExpensesByMonth = findAll(TransactionType.EXPENSE.name(), month.getValue(), year);
         return allExpensesByMonth.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -77,7 +62,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 "EXPENSE",
                 9,
                 LocalDate.of(2023, 9, 15),
-                new TransactionCategory(UUID.randomUUID(), "Categoria 1", "")
+                new TransactionCategory(UUID.randomUUID(), "Categoria 1", "", TransactionType.EXPENSE)
         );
         Transaction transaction2 = TransactionFactory.buildTransaction(
                 "Salário",
@@ -95,7 +80,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 "EXPENSE",
                 10,
                 LocalDate.of(2023, 10, 5),
-                new TransactionCategory(UUID.randomUUID(), "Categoria 2", "")
+                new TransactionCategory(UUID.randomUUID(), "Categoria 2", "", TransactionType.EXPENSE)
         );
         Transaction transaction4 = TransactionFactory.buildTransaction(
                 "Venda de produtos",
@@ -113,7 +98,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 "EXPENSE",
                 11,
                 LocalDate.of(2023, 11, 12),
-                new TransactionCategory(UUID.randomUUID(), "Categoria 3", "")
+                new TransactionCategory(UUID.randomUUID(), "Categoria 3", "", TransactionType.EXPENSE)
         );
         transactions.put(transaction1.getId(), transaction1);
         transactions.put(transaction2.getId(), transaction2);

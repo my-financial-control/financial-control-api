@@ -6,10 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pedro.almeida.financialcontrol.domain.models.Borrower;
-import pedro.almeida.financialcontrol.domain.models.Borrowing;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
+import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
+import pedro.almeida.financialcontrol.domain.models.*;
 import pedro.almeida.financialcontrol.domain.repositories.Borrowings;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsInMemoryRepository;
@@ -17,8 +15,10 @@ import pedro.almeida.financialcontrol.infra.repositories.inmemory.TransactionsIn
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -50,7 +50,7 @@ class ExtractConsultationTest {
 
     private void setUpTransactions() {
         TransactionsInMemoryRepository repository = new TransactionsInMemoryRepository();
-        List<Transaction> transactionsMock = repository.findAll();
+        List<Transaction> transactionsMock = repository.findAll(null, null, null);
         totalSumOfCredits = transactionsMock.stream().filter(transaction1 -> transaction1.getType().equals(TransactionType.CREDIT)).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfExpenses = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.EXPENSE)).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
         totalSumOfCreditsByMonth = transactionsMock.stream().filter(transaction -> transaction.getType().equals(TransactionType.CREDIT) && transaction.getCurrentMonth().equals(byMonth) && transaction.getDate().getYear() == byYear).map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -134,5 +134,38 @@ class ExtractConsultationTest {
         verify(transactions).sumOfCredits(byMonth, byYear);
         verify(transactions).sumOfExpenses(byMonth, byYear);
         verify(borrowings).sumOfRemainingPayment(byMonth, byYear);
+    }
+
+    @Test
+    void consolidateByMonthShouldReturnTheConsolidatedTransactionsByMonthTest() {
+        TransactionCategory category1 = new TransactionCategory(UUID.randomUUID(), "Category 1", "Description 1", TransactionType.CREDIT);
+        TransactionCategory category2 = new TransactionCategory(UUID.randomUUID(), "Category 2", "Description 2", TransactionType.EXPENSE);
+        TransactionCategory category3 = new TransactionCategory(UUID.randomUUID(), "Category 3", "Description 3", TransactionType.EXPENSE);
+        List<Transaction> group1 = Arrays.asList(
+                TransactionFactory.buildTransaction("Salary", "", new BigDecimal("1000.00"), "CREDIT", 1, LocalDate.now(), category1),
+                TransactionFactory.buildTransaction("Salary", "", new BigDecimal("2000.00"), "CREDIT", 1, LocalDate.now(), category1)
+        );
+        List<Transaction> group2 = Arrays.asList(
+                TransactionFactory.buildTransaction("Rent", "", new BigDecimal("500.00"), "EXPENSE", 1, LocalDate.now(), category2),
+                TransactionFactory.buildTransaction("Rent", "", new BigDecimal("500.00"), "EXPENSE", 1, LocalDate.now(), category2)
+        );
+        List<Transaction> group3 = Arrays.asList(
+                TransactionFactory.buildTransaction("Food", "", new BigDecimal("100.00"), "EXPENSE", 1, LocalDate.now(), category3),
+                TransactionFactory.buildTransaction("Food", "", new BigDecimal("200.00"), "EXPENSE", 1, LocalDate.now(), category3)
+        );
+        List<Transaction> transactionsMock = new ArrayList<>();
+        transactionsMock.addAll(group1);
+        transactionsMock.addAll(group2);
+        transactionsMock.addAll(group3);
+
+        when(transactions.findAll(null, 1, 2023)).thenReturn(transactionsMock);
+
+        List<ConsolidatedTransaction> consolidatedTransactions = extractConsultation.consolidateByMonth(null, 1, 2023);
+
+        assertEquals(3, consolidatedTransactions.size());
+        assertEquals(2, consolidatedTransactions.get(0).getTransactions().size());
+        assertEquals(2, consolidatedTransactions.get(1).getTransactions().size());
+        assertEquals(2, consolidatedTransactions.get(2).getTransactions().size());
+        verify(transactions).findAll(null, 1, 2023);
     }
 }

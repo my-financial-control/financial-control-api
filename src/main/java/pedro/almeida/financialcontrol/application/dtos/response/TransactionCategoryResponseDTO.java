@@ -4,12 +4,13 @@ import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
 
 import java.util.UUID;
 
-public record TransactionCategoryResponseDTO(UUID id, String name, String description) {
+public record TransactionCategoryResponseDTO(UUID id, String name, String description, String type) {
     public TransactionCategoryResponseDTO(TransactionCategory transactionCategory) {
         this(
                 transactionCategory.getId(),
                 transactionCategory.getName(),
-                transactionCategory.getDescription()
+                transactionCategory.getDescription(),
+                transactionCategory.getType().name()
         );
     }
 

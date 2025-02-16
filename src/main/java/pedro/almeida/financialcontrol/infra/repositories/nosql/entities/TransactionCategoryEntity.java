@@ -3,6 +3,7 @@ package pedro.almeida.financialcontrol.infra.repositories.nosql.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
+import pedro.almeida.financialcontrol.domain.models.TransactionType;
 
 import java.util.UUID;
 
@@ -13,14 +14,16 @@ public class TransactionCategoryEntity {
     private String id;
     private String name;
     private String description;
+    private String type;
 
     public TransactionCategoryEntity() {
     }
 
-    public TransactionCategoryEntity(String id, String name, String description) {
+    public TransactionCategoryEntity(String id, String name, String description, String type) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.type = type;
     }
 
     public TransactionCategoryEntity(TransactionCategory transactionCategory) {
@@ -30,7 +33,7 @@ public class TransactionCategoryEntity {
     }
 
     public TransactionCategory toModel() {
-        return new TransactionCategory(UUID.fromString(id), name, description);
+        return new TransactionCategory(UUID.fromString(id), name, description, TransactionType.valueOf(type));
     }
 
     public String getId() {
@@ -55,5 +58,13 @@ public class TransactionCategoryEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

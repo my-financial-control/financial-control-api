@@ -6,7 +6,6 @@ import pedro.almeida.financialcontrol.application.dtos.response.TransactionRespo
 import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
 import pedro.almeida.financialcontrol.domain.models.Transaction;
 import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
 import pedro.almeida.financialcontrol.domain.repositories.TransactionCategories;
 import pedro.almeida.financialcontrol.domain.repositories.Transactions;
 
@@ -24,13 +23,8 @@ public class RegisterTransaction {
     }
 
     public TransactionResponseDTO execute(TransactionRequestDTO transactionDTO) {
-        Transaction transaction;
-        if (transactionDTO.type().equals(TransactionType.CREDIT.name())) {
-            transaction = TransactionFactory.buildTransaction(transactionDTO.title(), transactionDTO.description(), transactionDTO.value(), transactionDTO.type(), transactionDTO.currentMonth(), transactionDTO.date(), null);
-        } else {
-            TransactionCategory category = transactionCategories.findById(UUID.fromString(transactionDTO.categoryId()));
-            transaction = TransactionFactory.buildTransaction(transactionDTO.title(), transactionDTO.description(), transactionDTO.value(), transactionDTO.type(), transactionDTO.currentMonth(), transactionDTO.date(), category);
-        }
+        TransactionCategory category = transactionCategories.findById(UUID.fromString(transactionDTO.categoryId()));
+        Transaction transaction = TransactionFactory.buildTransaction(transactionDTO.title(), transactionDTO.description(), transactionDTO.value(), transactionDTO.type(), transactionDTO.currentMonth(), transactionDTO.date(), category);
         return new TransactionResponseDTO(transactions.save(transaction));
     }
 

@@ -1,8 +1,10 @@
 package pedro.almeida.financialcontrol.infra.repositories.nosql;
 
 import org.bson.Document;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,7 @@ import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITrans
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -43,88 +46,8 @@ public class TransactionNoSQLRepository implements Transactions {
     }
 
     @Override
-    public List<Transaction> findAll() {
-        Aggregation agg = Aggregation.newAggregation(
-                Aggregation.lookup(
-                        "categories",
-                        "categoryId",
-                        "_id",
-                        "category"
-                ),
-                Aggregation.unwind("category", true)
-        );
-
-        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
-        List<TransactionEntity> entities = results.getMappedResults();
-
-        return entities.stream()
-                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
-                .toList();
-    }
-
-    @Override
-    public List<Transaction> findAll(TransactionType type) {
-        Aggregation agg = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("type").is(type.name())),
-                Aggregation.lookup(
-                        "categories",
-                        "categoryId",
-                        "_id",
-                        "category"
-                ),
-                Aggregation.unwind("category", true)
-        );
-
-        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
-        List<TransactionEntity> entities = results.getMappedResults();
-
-        return entities.stream()
-                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
-                .toList();
-    }
-
-    @Override
-    public List<Transaction> findAll(Month month, int year) {
-        LocalDate startOfYear = LocalDate.of(year, 1, 1);
-        LocalDate endOfYear = LocalDate.of(year, 12, 31);
-
-        Aggregation agg = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("date").gte(startOfYear).lte(endOfYear)),
-                Aggregation.match(Criteria.where("currentMonth").is(month.name())),
-                Aggregation.lookup(
-                        "categories",
-                        "categoryId",
-                        "_id",
-                        "category"
-                ),
-                Aggregation.unwind("category", true)
-        );
-
-        AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
-        List<TransactionEntity> entities = results.getMappedResults();
-
-        return entities.stream()
-                .map(entity -> entity.toModel(entity.getCategory() != null ? entity.getCategory().toModel() : null))
-                .toList();
-    }
-
-    @Override
-    public List<Transaction> findAll(Month month, int year, TransactionType type) {
-        LocalDate startOfYear = LocalDate.of(year, 1, 1);
-        LocalDate endOfYear = LocalDate.of(year, 12, 31);
-
-        Aggregation agg = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("date").gte(startOfYear).lte(endOfYear)),
-                Aggregation.match(Criteria.where("currentMonth").is(month.name())),
-                Aggregation.match(Criteria.where("type").is(type.name())),
-                Aggregation.lookup(
-                        "categories",
-                        "categoryId",
-                        "_id",
-                        "category"
-                ),
-                Aggregation.unwind("category", true)
-        );
+    public List<Transaction> findAll(String type, Integer month, Integer year) {
+        Aggregation agg = buildAggregation(type, month, year);
 
         AggregationResults<TransactionEntity> results = mongoTemplate.aggregate(agg, transactionsCollection, TransactionEntity.class);
         List<TransactionEntity> entities = results.getMappedResults();
@@ -191,4 +114,36 @@ public class TransactionNoSQLRepository implements Transactions {
 
         return total != null ? new BigDecimal(total.get("total").toString()) : BigDecimal.ZERO;
     }
+
+    private Aggregation buildAggregation(String type, Integer month, Integer year) {
+        List<AggregationOperation> operations = new ArrayList<>();
+
+        List<Criteria> criteriaList = new ArrayList<>();
+
+        if (year != null) {
+            LocalDate startOfYear = LocalDate.of(year, 1, 1);
+            LocalDate endOfYear = LocalDate.of(year, 12, 31);
+            criteriaList.add(Criteria.where("date").gte(startOfYear).lte(endOfYear));
+        }
+
+        if (month != null) {
+            criteriaList.add(Criteria.where("currentMonth").is(Month.of(month)));
+        }
+
+        if (type != null) {
+            criteriaList.add(Criteria.where("type").is(type));
+        }
+
+        if (!criteriaList.isEmpty()) {
+            operations.add(Aggregation.match(new Criteria().andOperator(criteriaList.toArray(new Criteria[0]))));
+        }
+
+        operations.add(Aggregation.lookup("categories", "categoryId", "_id", "category"));
+        operations.add(Aggregation.unwind("category", true));
+
+        operations.add(Aggregation.sort(Sort.by(Sort.Direction.DESC, "date")));
+
+        return Aggregation.newAggregation(operations);
+    }
+
 }
