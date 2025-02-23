@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.List;
 import java.util.UUID;
 
 @Document(collection = "transactions")
@@ -24,6 +23,7 @@ public class TransactionEntity {
     private BigDecimal value;
     private String type;
     private String currentMonth;
+    private Integer currentYear;
     private LocalDate date;
     private LocalDateTime timestamp;
     private String categoryId;
@@ -33,13 +33,14 @@ public class TransactionEntity {
     public TransactionEntity() {
     }
 
-    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, LocalDate date, LocalDateTime timestamp, String categoryId, TransactionCategoryEntity category) {
+    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, String categoryId, TransactionCategoryEntity category) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
+        this.currentYear = currentYear;
         this.date = date;
         this.timestamp = timestamp;
         this.categoryId = categoryId;
@@ -53,6 +54,7 @@ public class TransactionEntity {
         this.value = transaction.getValue();
         this.type = transaction.getType().name();
         this.currentMonth = transaction.getCurrentMonth().name();
+        this.currentYear = transaction.getCurrentYear();
         this.date = transaction.getDate();
         this.timestamp = transaction.getTimestamp();
         this.categoryId = transaction.getCategory().getId().toString();
@@ -67,6 +69,7 @@ public class TransactionEntity {
                 value,
                 type,
                 Month.valueOf(currentMonth).getValue(),
+                currentYear,
                 date,
                 timestamp,
                 category
@@ -119,6 +122,14 @@ public class TransactionEntity {
 
     public void setCurrentMonth(String currentMonth) {
         this.currentMonth = currentMonth;
+    }
+
+    public Integer getCurrentYear() {
+        return currentYear;
+    }
+
+    public void setCurrentYear(Integer currentYear) {
+        this.currentYear = currentYear;
     }
 
     public LocalDate getDate() {

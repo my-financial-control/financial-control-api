@@ -7,7 +7,7 @@ import java.time.Month;
 import java.util.UUID;
 
 public class Credit extends Transaction {
-    public Credit(UUID id, String title, String description, BigDecimal value, Month currentMonth, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
-        super(id, title, description, value, TransactionType.CREDIT, currentMonth, date, timestamp, category);
+    public Credit(UUID id, String title, String description, BigDecimal value, Month currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
+        super(id, title, description, value, TransactionType.CREDIT, currentMonth, currentYear, date, timestamp, category);
     }
 }

@@ -2,12 +2,10 @@ package pedro.almeida.financialcontrol.domain.models;
 
 import pedro.almeida.financialcontrol.domain.errors.TransactionException;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Optional;
 import java.util.UUID;
 
 public abstract class Transaction {
@@ -18,11 +16,12 @@ public abstract class Transaction {
     private final BigDecimal value;
     private final TransactionType type;
     private final Month currentMonth;
+    private final Integer currentYear;
     private final LocalDate date;
     private final LocalDateTime timestamp;
     private final TransactionCategory category;
 
-    public Transaction(UUID id, String title, String description, BigDecimal value, TransactionType type, Month currentMonth, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
+    public Transaction(UUID id, String title, String description, BigDecimal value, TransactionType type, Month currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -30,6 +29,7 @@ public abstract class Transaction {
         this.value = value;
         this.type = type;
         this.currentMonth = currentMonth;
+        this.currentYear = currentYear;
         this.date = date;
         this.timestamp = timestamp;
         this.category = category;
@@ -63,6 +63,10 @@ public abstract class Transaction {
 
     public Month getCurrentMonth() {
         return currentMonth;
+    }
+
+    public Integer getCurrentYear() {
+        return currentYear;
     }
 
     public BigDecimal getValue() {

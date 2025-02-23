@@ -14,10 +14,10 @@ public interface Transactions {
 
     BigDecimal sumOfCredits();
 
-    BigDecimal sumOfCredits(Month month, int year);
+    BigDecimal sumOfCredits(Month month, Integer year);
 
     BigDecimal sumOfExpenses();
 
-    BigDecimal sumOfExpenses(Month month, int year);
+    BigDecimal sumOfExpenses(Month month, Integer year);
 
 }

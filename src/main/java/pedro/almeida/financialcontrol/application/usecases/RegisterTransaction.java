@@ -24,7 +24,7 @@ public class RegisterTransaction {
 
     public TransactionResponseDTO execute(TransactionRequestDTO transactionDTO) {
         TransactionCategory category = transactionCategories.findById(UUID.fromString(transactionDTO.categoryId()));
-        Transaction transaction = TransactionFactory.buildTransaction(transactionDTO.title(), transactionDTO.description(), transactionDTO.value(), transactionDTO.type(), transactionDTO.currentMonth(), transactionDTO.date(), category);
+        Transaction transaction = TransactionFactory.buildTransaction(transactionDTO.title(), transactionDTO.description(), transactionDTO.value(), transactionDTO.type(), transactionDTO.currentMonth(), transactionDTO.currentYear(), transactionDTO.date(), category);
         return new TransactionResponseDTO(transactions.save(transaction));
     }
 

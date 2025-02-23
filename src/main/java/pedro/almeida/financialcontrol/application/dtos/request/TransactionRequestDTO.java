@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record TransactionRequestDTO(@NotBlank String title, String description, @Positive @NotNull BigDecimal value,
-                                    @NotBlank String type, @Positive @NotNull Integer currentMonth,
+                                    @NotBlank String type, @Positive @NotNull Integer currentMonth, @Positive @NotNull Integer currentYear,
                                     @NotNull LocalDate date, String categoryId) {
 }

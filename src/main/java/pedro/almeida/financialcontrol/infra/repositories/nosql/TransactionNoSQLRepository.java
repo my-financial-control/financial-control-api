@@ -19,7 +19,6 @@ import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITrans
 import pedro.almeida.financialcontrol.infra.repositories.nosql.interfaces.ITransactionNoSQLRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,13 +69,10 @@ public class TransactionNoSQLRepository implements Transactions {
     }
 
     @Override
-    public BigDecimal sumOfCredits(Month month, int year) {
-        LocalDate startOfYear = LocalDate.of(year, 1, 1);
-        LocalDate endOfYear = LocalDate.of(year, 12, 31);
-
+    public BigDecimal sumOfCredits(Month month, Integer year) {
         Aggregation agg = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("date").gte(startOfYear).lte(endOfYear)),
                 Aggregation.match(Criteria.where("type").is(TransactionType.CREDIT.name())),
+                Aggregation.match(Criteria.where("currentYear").is(year)),
                 Aggregation.match(Criteria.where("currentMonth").is(month.name())),
                 Aggregation.group().sum("value").as("total")
         );
@@ -99,13 +95,10 @@ public class TransactionNoSQLRepository implements Transactions {
     }
 
     @Override
-    public BigDecimal sumOfExpenses(Month month, int year) {
-        LocalDate startOfYear = LocalDate.of(year, 1, 1);
-        LocalDate endOfYear = LocalDate.of(year, 12, 31);
-
+    public BigDecimal sumOfExpenses(Month month, Integer year) {
         Aggregation agg = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("date").gte(startOfYear).lte(endOfYear)),
                 Aggregation.match(Criteria.where("type").is(TransactionType.EXPENSE.name())),
+                Aggregation.match(Criteria.where("currentYear").is(year)),
                 Aggregation.match(Criteria.where("currentMonth").is(month.name())),
                 Aggregation.group().sum("value").as("total")
         );
@@ -121,9 +114,7 @@ public class TransactionNoSQLRepository implements Transactions {
         List<Criteria> criteriaList = new ArrayList<>();
 
         if (year != null) {
-            LocalDate startOfYear = LocalDate.of(year, 1, 1);
-            LocalDate endOfYear = LocalDate.of(year, 12, 31);
-            criteriaList.add(Criteria.where("date").gte(startOfYear).lte(endOfYear));
+            criteriaList.add(Criteria.where("currentYear").is(year));
         }
 
         if (month != null) {

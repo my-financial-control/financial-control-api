@@ -36,7 +36,7 @@ public class TransactionsInMemoryRepository implements Transactions {
     }
 
     @Override
-    public BigDecimal sumOfCredits(Month month, int year) {
+    public BigDecimal sumOfCredits(Month month, Integer year) {
         List<Transaction> allCreditsByMonth = findAll(TransactionType.CREDIT.name(), month.getValue(), year);
         return allCreditsByMonth.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -48,7 +48,7 @@ public class TransactionsInMemoryRepository implements Transactions {
     }
 
     @Override
-    public BigDecimal sumOfExpenses(Month month, int year) {
+    public BigDecimal sumOfExpenses(Month month, Integer year) {
         List<Transaction> allExpensesByMonth = findAll(TransactionType.EXPENSE.name(), month.getValue(), year);
         return allExpensesByMonth.stream().map(Transaction::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -61,6 +61,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 new BigDecimal("150.50"),
                 "EXPENSE",
                 9,
+                2025,
                 LocalDate.of(2023, 9, 15),
                 new TransactionCategory(UUID.randomUUID(), "Categoria 1", "", TransactionType.EXPENSE)
         );
@@ -70,6 +71,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 new BigDecimal("2500.00"),
                 "CREDIT",
                 9,
+                2025,
                 LocalDate.of(2023, 9, 30),
                 null
         );
@@ -79,6 +81,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 new BigDecimal("1000.00"),
                 "EXPENSE",
                 10,
+                2025,
                 LocalDate.of(2023, 10, 5),
                 new TransactionCategory(UUID.randomUUID(), "Categoria 2", "", TransactionType.EXPENSE)
         );
@@ -88,6 +91,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 new BigDecimal("800.00"),
                 "CREDIT",
                 10,
+                2025,
                 LocalDate.of(2023, 10, 18),
                 null
         );
@@ -97,6 +101,7 @@ public class TransactionsInMemoryRepository implements Transactions {
                 new BigDecimal("75.80"),
                 "EXPENSE",
                 11,
+                2025,
                 LocalDate.of(2023, 11, 12),
                 new TransactionCategory(UUID.randomUUID(), "Categoria 3", "", TransactionType.EXPENSE)
         );

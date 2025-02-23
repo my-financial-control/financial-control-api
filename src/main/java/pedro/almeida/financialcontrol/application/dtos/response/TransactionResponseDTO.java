@@ -17,6 +17,7 @@ public record TransactionResponseDTO(
         BigDecimal value,
         TransactionType type,
         Month currentMonth,
+        Integer currentYear,
         LocalDate date,
         String timestamp,
         TransactionCategoryResponseDTO category
@@ -29,6 +30,7 @@ public record TransactionResponseDTO(
                 transaction.getValue(),
                 transaction.getType(),
                 transaction.getCurrentMonth(),
+                transaction.getCurrentYear(),
                 transaction.getDate(),
                 transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER),
                 new TransactionCategoryResponseDTO(transaction.getCategory())

@@ -9,8 +9,8 @@ import java.time.Month;
 import java.util.UUID;
 
 public class Expense extends Transaction {
-    public Expense(UUID id, String title, String description, BigDecimal value, Month currentMonth, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
-        super(id, title, description, value, TransactionType.EXPENSE, currentMonth, date, timestamp, category);
+    public Expense(UUID id, String title, String description, BigDecimal value, Month currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
+        super(id, title, description, value, TransactionType.EXPENSE, currentMonth, currentYear, date, timestamp, category);
         validCategory(category);
     }
 
