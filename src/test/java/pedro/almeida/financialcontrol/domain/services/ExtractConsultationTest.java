@@ -142,16 +142,16 @@ class ExtractConsultationTest {
         TransactionCategory category2 = new TransactionCategory(UUID.randomUUID(), "Category 2", "Description 2", TransactionType.EXPENSE);
         TransactionCategory category3 = new TransactionCategory(UUID.randomUUID(), "Category 3", "Description 3", TransactionType.EXPENSE);
         List<Transaction> group1 = Arrays.asList(
-                TransactionFactory.buildTransaction("Salary", "", new BigDecimal("1000.00"), "CREDIT", 1, LocalDate.now(), category1),
-                TransactionFactory.buildTransaction("Salary", "", new BigDecimal("2000.00"), "CREDIT", 1, LocalDate.now(), category1)
+                TransactionFactory.buildTransaction("Salary", "", new BigDecimal("1000.00"), "CREDIT", 1, 2025, LocalDate.now(), category1),
+                TransactionFactory.buildTransaction("Salary", "", new BigDecimal("2000.00"), "CREDIT", 1, 2025, LocalDate.now(), category1)
         );
         List<Transaction> group2 = Arrays.asList(
-                TransactionFactory.buildTransaction("Rent", "", new BigDecimal("500.00"), "EXPENSE", 1, LocalDate.now(), category2),
-                TransactionFactory.buildTransaction("Rent", "", new BigDecimal("500.00"), "EXPENSE", 1, LocalDate.now(), category2)
+                TransactionFactory.buildTransaction("Rent", "", new BigDecimal("500.00"), "EXPENSE", 1, 2025, LocalDate.now(), category2),
+                TransactionFactory.buildTransaction("Rent", "", new BigDecimal("500.00"), "EXPENSE", 1, 2025, LocalDate.now(), category2)
         );
         List<Transaction> group3 = Arrays.asList(
-                TransactionFactory.buildTransaction("Food", "", new BigDecimal("100.00"), "EXPENSE", 1, LocalDate.now(), category3),
-                TransactionFactory.buildTransaction("Food", "", new BigDecimal("200.00"), "EXPENSE", 1, LocalDate.now(), category3)
+                TransactionFactory.buildTransaction("Food", "", new BigDecimal("100.00"), "EXPENSE", 1, 2025, LocalDate.now(), category3),
+                TransactionFactory.buildTransaction("Food", "", new BigDecimal("200.00"), "EXPENSE", 1, 2025, LocalDate.now(), category3)
         );
         List<Transaction> transactionsMock = new ArrayList<>();
         transactionsMock.addAll(group1);

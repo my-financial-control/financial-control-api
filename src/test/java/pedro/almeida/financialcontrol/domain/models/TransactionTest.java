@@ -15,20 +15,20 @@ class TransactionTest {
 
     @Test()
     void shouldThrowAnExceptionWhenAValueLessThanOrEqualToZeroIsProvided() {
-        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("-1"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
-        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("0"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
-        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("-1"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
-        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("0"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
+        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("-1"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
+        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("0"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
+        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("-1"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
+        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("0"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
     }
 
     @Test
     void shouldThrowExceptionWhenTransactionIsTypeOfExpenseAndCategoryIsNullOrEmpty() {
-        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("1000"), "EXPENSE", 1, LocalDate.now(), null));
-        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("1000"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "", "", TransactionType.EXPENSE)));
+        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("1000"), "EXPENSE", 1, 2025, LocalDate.now(), null));
+        assertThrows(TransactionException.class, () -> TransactionFactory.buildTransaction("Title", "", new BigDecimal("1000"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "", "", TransactionType.EXPENSE)));
     }
 
     @Test
     void shouldNotThrowExceptionWhenTransactionIsTypeOfExpenseAndCategoryIsAValidString() {
-        assertInstanceOf(Expense.class, TransactionFactory.buildTransaction("Title", "", new BigDecimal("1000"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
+        assertInstanceOf(Expense.class, TransactionFactory.buildTransaction("Title", "", new BigDecimal("1000"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category", "", TransactionType.EXPENSE)));
     }
 }

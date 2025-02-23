@@ -49,11 +49,11 @@ public class TransactionControllerTest {
     private FindAllTransactionCategories findAllTransactionCategories;
     private final String uri = "/api/v1/transactions";
     private final List<Transaction> transactions = Arrays.asList(
-            TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 0", "", TransactionType.CREDIT)),
-            TransactionFactory.buildTransaction("Title 2", "", new BigDecimal("200.0"), "EXPENSE", 1, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 1", "", TransactionType.EXPENSE)),
-            TransactionFactory.buildTransaction("Title 3", "", new BigDecimal("780.52"), "CREDIT", 2, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 2", "", TransactionType.CREDIT)),
-            TransactionFactory.buildTransaction("Title 4", "", new BigDecimal("147.71"), "EXPENSE", 2, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 3", "", TransactionType.EXPENSE)),
-            TransactionFactory.buildTransaction("Title 5", "", new BigDecimal("108.92"), "CREDIT", 3, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 4", "", TransactionType.CREDIT))
+            TransactionFactory.buildTransaction("Title 1", "", new BigDecimal("1000.0"), "CREDIT", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 0", "", TransactionType.CREDIT)),
+            TransactionFactory.buildTransaction("Title 2", "", new BigDecimal("200.0"), "EXPENSE", 1, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 1", "", TransactionType.EXPENSE)),
+            TransactionFactory.buildTransaction("Title 3", "", new BigDecimal("780.52"), "CREDIT", 2, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 2", "", TransactionType.CREDIT)),
+            TransactionFactory.buildTransaction("Title 4", "", new BigDecimal("147.71"), "EXPENSE", 2, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 3", "", TransactionType.EXPENSE)),
+            TransactionFactory.buildTransaction("Title 5", "", new BigDecimal("108.92"), "CREDIT", 3, 2025, LocalDate.now(), new TransactionCategory(UUID.randomUUID(), "Category 4", "", TransactionType.CREDIT))
     );
     private final List<TransactionResponseDTO> transactionDTOS = TransactionResponseDTO.toTransactionDTO(transactions);
     private final List<ConsolidatedTransactionResponseDTO> consolidatedTransactionDTOS = ConsolidatedTransactionResponseDTO.toConsolidatedTransactionDTO(List.of(new ConsolidatedTransaction(transactions)));
@@ -69,6 +69,7 @@ public class TransactionControllerTest {
                     "value": %s,
                     "type": "%s",
                     "currentMonth": %s,
+                    "currentYear": %s,
                     "date": "%s",
                     "categoryId": "%s"
                 }""".formatted(
@@ -77,6 +78,7 @@ public class TransactionControllerTest {
                 expectedTransaction.value(),
                 expectedTransaction.type().name(),
                 expectedTransaction.currentMonth().getValue(),
+                expectedTransaction.currentYear(),
                 expectedTransaction.date().toString(),
                 expectedTransaction.category().id().toString()
         );
@@ -93,6 +95,7 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.value").value(expectedTransaction.value()))
                 .andExpect(jsonPath("$.type").value(expectedTransaction.type().name()))
                 .andExpect(jsonPath("$.currentMonth").value(expectedTransaction.currentMonth().name()))
+                .andExpect(jsonPath("$.currentYear").value(expectedTransaction.currentYear().toString()))
                 .andExpect(jsonPath("$.date").value(expectedTransaction.date().toString()))
                 .andExpect(jsonPath("$.timestamp").value(expectedTransaction.timestamp()));
     }
@@ -114,6 +117,7 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].value").value(transaction.value()))
                     .andExpect(jsonPath("$[" + i + "].type").value(transaction.type().name()))
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.currentMonth().name()))
+                    .andExpect(jsonPath("$[" + i + "].currentYear").value(transaction.currentYear()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.date().toString()))
                     .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()));
         }
