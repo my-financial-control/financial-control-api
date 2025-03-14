@@ -17,4 +17,8 @@ public class TransactionException extends BadRequestException {
     public static TransactionException categoryIsRequired() {
         return new TransactionException("Transações do tipo EXPENSE devem informar o parâmetro category");
     }
+
+    public static TransactionException genericError() {
+        return new TransactionException("Erro ao processar a transação");
+    }
 }

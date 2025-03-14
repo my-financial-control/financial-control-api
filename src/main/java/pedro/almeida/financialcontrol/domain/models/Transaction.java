@@ -20,8 +20,9 @@ public abstract class Transaction {
     private final LocalDate date;
     private final LocalDateTime timestamp;
     private final TransactionCategory category;
+    private final Boolean hasReceipt;
 
-    public Transaction(UUID id, String title, String description, BigDecimal value, TransactionType type, Month currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, TransactionCategory category) {
+    public Transaction(UUID id, String title, String description, BigDecimal value, TransactionType type, Month currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, TransactionCategory category, Boolean hasReceipt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -33,6 +34,7 @@ public abstract class Transaction {
         this.date = date;
         this.timestamp = timestamp;
         this.category = category;
+        this.hasReceipt = hasReceipt;
     }
 
     private void validateValue(BigDecimal value) {
@@ -81,4 +83,7 @@ public abstract class Transaction {
         return timestamp;
     }
 
+    public Boolean getHasReceipt() {
+        return hasReceipt;
+    }
 }

@@ -29,11 +29,12 @@ public class TransactionEntity {
     private String categoryId;
     @Field("category")
     private TransactionCategoryEntity category;
+    private Boolean hasReceipt;
 
     public TransactionEntity() {
     }
 
-    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, String categoryId, TransactionCategoryEntity category) {
+    public TransactionEntity(String id, String title, String description, BigDecimal value, String type, String currentMonth, Integer currentYear, LocalDate date, LocalDateTime timestamp, String categoryId, TransactionCategoryEntity category, Boolean hasReceipt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -45,6 +46,7 @@ public class TransactionEntity {
         this.timestamp = timestamp;
         this.categoryId = categoryId;
         this.category = category;
+        this.hasReceipt = hasReceipt;
     }
 
     public TransactionEntity(Transaction transaction) {
@@ -59,6 +61,7 @@ public class TransactionEntity {
         this.timestamp = transaction.getTimestamp();
         this.categoryId = transaction.getCategory().getId().toString();
         this.category = new TransactionCategoryEntity(transaction.getCategory());
+        this.hasReceipt = transaction.getHasReceipt();
     }
 
     public Transaction toModel(TransactionCategory category) {
@@ -72,7 +75,8 @@ public class TransactionEntity {
                 currentYear,
                 date,
                 timestamp,
-                category
+                category,
+                hasReceipt
         );
     }
 
@@ -162,5 +166,13 @@ public class TransactionEntity {
 
     public void setCategory(TransactionCategoryEntity category) {
         this.category = category;
+    }
+
+    public Boolean getHasReceipt() {
+        return hasReceipt;
+    }
+
+    public void setHasReceipt(Boolean hasReceipt) {
+        this.hasReceipt = hasReceipt;
     }
 }

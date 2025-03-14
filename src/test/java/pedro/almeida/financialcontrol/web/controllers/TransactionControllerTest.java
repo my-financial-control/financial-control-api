@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -15,12 +17,11 @@ import pedro.almeida.financialcontrol.application.dtos.response.TransactionCateg
 import pedro.almeida.financialcontrol.application.dtos.response.TransactionResponseDTO;
 import pedro.almeida.financialcontrol.application.usecases.*;
 import pedro.almeida.financialcontrol.domain.factories.TransactionFactory;
-import pedro.almeida.financialcontrol.domain.models.ConsolidatedTransaction;
-import pedro.almeida.financialcontrol.domain.models.Transaction;
-import pedro.almeida.financialcontrol.domain.models.TransactionCategory;
-import pedro.almeida.financialcontrol.domain.models.TransactionType;
+import pedro.almeida.financialcontrol.domain.models.*;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +43,8 @@ public class TransactionControllerTest {
     @MockBean
     private FindAllTransactions findAllTransactions;
     @MockBean
+    private FindTransactionReceipt findTransactionReceipt;
+    @MockBean
     private CalculateTransactionsTotals calculateTransactionsTotals;
     @MockBean
     private ConsolidateTransactionsByMonth consolidateTransactionsByMonth;
@@ -62,17 +65,25 @@ public class TransactionControllerTest {
     void registerWithAValidTransactionShouldReturn201AndTheCreatedTransaction() throws Exception {
         TransactionResponseDTO expectedTransaction = transactionDTOS.get(0);
         when(registerTransaction.execute(any())).thenReturn(expectedTransaction);
-        String json = """
-                {
-                    "title": "%s",
-                    "description": "%s",
-                    "value": %s,
-                    "type": "%s",
-                    "currentMonth": %s,
-                    "currentYear": %s,
-                    "date": "%s",
-                    "categoryId": "%s"
-                }""".formatted(
+
+        MockMultipartFile receiptFile = new MockMultipartFile(
+                "receipt",
+                "receipt.pdf",
+                MediaType.APPLICATION_PDF_VALUE,
+                "Dummy PDF content".getBytes()
+        );
+
+        String transactionJson = String.format("""
+                        {
+                            "title": "%s",
+                            "description": "%s",
+                            "value": %s,
+                            "type": "%s",
+                            "currentMonth": %s,
+                            "currentYear": %s,
+                            "date": "%s",
+                            "categoryId": "%s"
+                        }""",
                 expectedTransaction.title(),
                 expectedTransaction.description(),
                 expectedTransaction.value(),
@@ -83,21 +94,21 @@ public class TransactionControllerTest {
                 expectedTransaction.category().id().toString()
         );
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post(uri)
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.multipart(uri)
+                        .file(receiptFile)
+                        .param("transaction", transactionJson)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.id").value(expectedTransaction.id().toString()))
-                .andExpect(jsonPath("$.title").value(expectedTransaction.title()))
-                .andExpect(jsonPath("$.description").value(expectedTransaction.description()))
-                .andExpect(jsonPath("$.value").value(expectedTransaction.value()))
-                .andExpect(jsonPath("$.type").value(expectedTransaction.type().name()))
-                .andExpect(jsonPath("$.currentMonth").value(expectedTransaction.currentMonth().name()))
-                .andExpect(jsonPath("$.currentYear").value(expectedTransaction.currentYear().toString()))
-                .andExpect(jsonPath("$.date").value(expectedTransaction.date().toString()))
-                .andExpect(jsonPath("$.timestamp").value(expectedTransaction.timestamp()));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(expectedTransaction.id().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(expectedTransaction.title()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(expectedTransaction.description()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.value").value(expectedTransaction.value()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value(expectedTransaction.type().name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.currentMonth").value(expectedTransaction.currentMonth().name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.currentYear").value(expectedTransaction.currentYear().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(expectedTransaction.date().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").value(expectedTransaction.timestamp()));
     }
 
     @Test
@@ -122,6 +133,24 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()));
         }
     }
+
+    @Test
+    public void findTransactionReceiptShouldReturn200AndTheTransactionReceipt() throws Exception {
+        String transactionId = UUID.randomUUID().toString();
+        byte[] fileContent = "Dummy PDF content".getBytes(StandardCharsets.UTF_8);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContent);
+
+        Receipt receipt = new Receipt(UUID.fromString(transactionId), "receipt.pdf", MediaType.APPLICATION_PDF_VALUE, inputStream, fileContent.length);
+
+        when(findTransactionReceipt.execute(transactionId)).thenReturn(receipt);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/transactions/{id}/receipt", transactionId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=receipt.pdf"))
+                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE))
+                .andExpect(MockMvcResultMatchers.content().bytes(fileContent));
+    }
+
 
     @Test
     public void calculateTotalsShouldReturn200AndTheTotalOfCreditsAndExpenses() throws Exception {
