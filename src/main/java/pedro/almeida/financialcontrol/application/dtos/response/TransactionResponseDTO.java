@@ -20,7 +20,8 @@ public record TransactionResponseDTO(
         Integer currentYear,
         LocalDate date,
         String timestamp,
-        TransactionCategoryResponseDTO category
+        TransactionCategoryResponseDTO category,
+        Boolean hasReceipt
 ) {
     public TransactionResponseDTO(Transaction transaction) {
         this(
@@ -33,7 +34,8 @@ public record TransactionResponseDTO(
                 transaction.getCurrentYear(),
                 transaction.getDate(),
                 transaction.getTimestamp().format(ConfigConstants.TRANSACTION_TIME_FORMATTER),
-                new TransactionCategoryResponseDTO(transaction.getCategory())
+                new TransactionCategoryResponseDTO(transaction.getCategory()),
+                transaction.getHasReceipt()
         );
     }
 

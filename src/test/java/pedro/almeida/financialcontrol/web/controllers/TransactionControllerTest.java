@@ -108,7 +108,8 @@ public class TransactionControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.currentMonth").value(expectedTransaction.currentMonth().name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.currentYear").value(expectedTransaction.currentYear().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(expectedTransaction.date().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").value(expectedTransaction.timestamp()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").value(expectedTransaction.timestamp()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.hasReceipt").value(expectedTransaction.hasReceipt()));
     }
 
     @Test
@@ -130,7 +131,8 @@ public class TransactionControllerTest {
                     .andExpect(jsonPath("$[" + i + "].currentMonth").value(transaction.currentMonth().name()))
                     .andExpect(jsonPath("$[" + i + "].currentYear").value(transaction.currentYear()))
                     .andExpect(jsonPath("$[" + i + "].date").value(transaction.date().toString()))
-                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()));
+                    .andExpect(jsonPath("$[" + i + "].timestamp").value(transaction.timestamp()))
+                    .andExpect(jsonPath("$[" + i + "].hasReceipt").value(transaction.hasReceipt()));
         }
     }
 
