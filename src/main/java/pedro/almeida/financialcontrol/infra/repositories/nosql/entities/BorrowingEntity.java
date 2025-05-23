@@ -24,6 +24,8 @@ public class BorrowingEntity {
     private List<ParcelBorrowingEntity> parcels;
     private LocalDateTime timestamp;
 
+    public BorrowingEntity() {}
+
     public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels, LocalDateTime timestamp) {
         this.id = id;
         this.borrower = borrower;
