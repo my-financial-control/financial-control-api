@@ -1,6 +1,5 @@
 package pedro.almeida.financialcontrol.application.usecases;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import pedro.almeida.financialcontrol.application.dtos.request.TransactionRequestDTO;
