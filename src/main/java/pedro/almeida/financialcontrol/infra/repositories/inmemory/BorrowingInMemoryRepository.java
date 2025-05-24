@@ -53,27 +53,27 @@ public class BorrowingInMemoryRepository implements Borrowings {
     private static Map<UUID, Borrowing> seed() {
         Map<UUID, Borrowing> borrowings = new HashMap<>();
         Borrower borrower1 = new Borrower("José de Souza");
-        Borrowing borrowing1 = new Borrowing(borrower1, new BigDecimal("50.0"), LocalDate.now());
+        Borrowing borrowing1 = new Borrowing(borrower1, new BigDecimal("50.0"), "Empréstimo para José", LocalDate.now());
         borrowings.put(borrowing1.getId(), borrowing1);
 
         Borrower borrower2 = new Borrower("Maria Silva");
-        Borrowing borrowing2 = new Borrowing(borrower2, new BigDecimal("75.0"), LocalDate.now());
+        Borrowing borrowing2 = new Borrowing(borrower2, new BigDecimal("75.0"), "Empréstimo para Maria", LocalDate.now());
         borrowing2.payParcel(new ParcelBorrowing(new BigDecimal("25.0")));
         borrowing2.payParcel(new ParcelBorrowing(new BigDecimal("10.0")));
         borrowing2.payParcel(new ParcelBorrowing(new BigDecimal("15.0")));
         borrowings.put(borrowing2.getId(), borrowing2);
 
         Borrower borrower3 = new Borrower("João Pereira");
-        Borrowing borrowing3 = new Borrowing(borrower3, new BigDecimal("100.0"), LocalDate.now());
+        Borrowing borrowing3 = new Borrowing(borrower3, new BigDecimal("100.0"), "Empréstimo para João", LocalDate.now());
         borrowing3.payParcel(new ParcelBorrowing(new BigDecimal("100.0")));
         borrowings.put(borrowing3.getId(), borrowing3);
 
         Borrower borrower4 = new Borrower("Ana Santos");
-        Borrowing borrowing4 = new Borrowing(borrower4, new BigDecimal("30.0"), LocalDate.now());
+        Borrowing borrowing4 = new Borrowing(borrower4, new BigDecimal("30.0"), "Empréstimo para Ana", LocalDate.now());
         borrowings.put(borrowing4.getId(), borrowing4);
 
         Borrower borrower5 = new Borrower("Carlos Mendes");
-        Borrowing borrowing5 = new Borrowing(borrower5, new BigDecimal("60.0"), LocalDate.now());
+        Borrowing borrowing5 = new Borrowing(borrower5, new BigDecimal("60.0"), "Empréstimo para Carlos", LocalDate.now());
         borrowings.put(borrowing5.getId(), borrowing5);
 
         return borrowings;

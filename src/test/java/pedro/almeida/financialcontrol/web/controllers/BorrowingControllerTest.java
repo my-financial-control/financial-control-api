@@ -44,12 +44,13 @@ class BorrowingControllerTest {
 
     @Test
     void registerWithValidBorrowingShouldReturn201AndTheCreatedBorrowing() throws Exception {
-        BorrowingResponseDTO expectedBorrowing = new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower"), new BigDecimal("50.8"), LocalDate.now()));
+        BorrowingResponseDTO expectedBorrowing = new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower"), new BigDecimal("50.8"), "Description", LocalDate.now()));
         when(registerBorrowing.execute(any())).thenReturn(expectedBorrowing);
         String json = """
                     {
                         "borrower": "Borrower",
                         "value": 50.80,
+                        "description": "Description",
                         "date": "2023-11-18"
                     }
                 """;
@@ -63,6 +64,7 @@ class BorrowingControllerTest {
                 .andExpect(jsonPath("$.id").value(expectedBorrowing.id().toString()))
                 .andExpect(jsonPath("$.borrower").value(expectedBorrowing.borrower()))
                 .andExpect(jsonPath("$.value").value(expectedBorrowing.value().toString()))
+                .andExpect(jsonPath("$.description").value(expectedBorrowing.description()))
                 .andExpect(jsonPath("$.paid").value(expectedBorrowing.paid()))
                 .andExpect(jsonPath("$.date").value(expectedBorrowing.date().toString()))
                 .andExpect(jsonPath("$.parcels").isArray());
@@ -71,9 +73,9 @@ class BorrowingControllerTest {
     @Test
     void findAllShouldReturnAListOfTransactions() throws Exception {
         List<BorrowingResponseDTO> expectedBorrowings = Arrays.asList(
-                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower1"), new BigDecimal("50.8"), LocalDate.now())),
-                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower2"), new BigDecimal("100.8"), LocalDate.now())),
-                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower3"), new BigDecimal("150.8"), LocalDate.now()))
+                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower1"), new BigDecimal("50.8"), "Description 1", LocalDate.now())),
+                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower2"), new BigDecimal("100.8"), "Description 2", LocalDate.now())),
+                new BorrowingResponseDTO(new Borrowing(new Borrower("Borrower3"), new BigDecimal("150.8"), "Description 3", LocalDate.now()))
         );
         when(findAllBorrowings.execute()).thenReturn(expectedBorrowings);
 
@@ -87,6 +89,7 @@ class BorrowingControllerTest {
                     .andExpect(jsonPath("$[" + i + "].id").value(borrowing.id().toString()))
                     .andExpect(jsonPath("$[" + i + "].borrower").value(borrowing.borrower()))
                     .andExpect(jsonPath("$[" + i + "].value").value(borrowing.value().toString()))
+                    .andExpect(jsonPath("$[" + i + "].description").value(borrowing.description()))
                     .andExpect(jsonPath("$[" + i + "].paid").value(borrowing.paid()))
                     .andExpect(jsonPath("$[" + i + "].date").value(borrowing.date().toString()))
                     .andExpect(jsonPath("$[" + i + "].parcels").isArray());

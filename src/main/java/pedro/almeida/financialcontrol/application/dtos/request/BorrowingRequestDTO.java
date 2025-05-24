@@ -9,13 +9,18 @@ import pedro.almeida.financialcontrol.domain.models.Borrowing;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record BorrowingRequestDTO(@NotBlank String borrower, @Positive @NotNull BigDecimal value, @NotNull LocalDate date) {
+public record BorrowingRequestDTO(
+    @NotBlank String borrower,
+    @Positive @NotNull BigDecimal value,
+    @NotBlank String description,
+    @NotNull LocalDate date
+) {
 
     public Borrowing toBorrowing() {
         if (date != null) {
-            return new Borrowing(new Borrower(borrower), value, date);
+            return new Borrowing(new Borrower(borrower), value, description, date);
         } else {
-            return new Borrowing(new Borrower(borrower), value);
+            return new Borrowing(new Borrower(borrower), value, description);
         }
     }
 

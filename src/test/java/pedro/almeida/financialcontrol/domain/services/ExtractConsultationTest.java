@@ -65,14 +65,16 @@ class ExtractConsultationTest {
 
     private static List<Borrowing> getBorrowings() {
         return Arrays.asList(
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("20.96"), LocalDate.of(2023, Month.JANUARY, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("77.00"), LocalDate.of(2023, Month.JANUARY, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("89.05"), LocalDate.of(2023, Month.FEBRUARY, 1)), new Borrowing(new Borrower("Borrower"), new BigDecimal("20.96"), LocalDate.of(2023, Month.JANUARY, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("55.00"), LocalDate.of(2023, Month.FEBRUARY, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("41.04"), LocalDate.of(2023, Month.MARCH, 1)), new Borrowing(new Borrower("Borrower"), new BigDecimal("20.96"), LocalDate.of(2023, Month.JANUARY, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("30.76"), LocalDate.of(2023, Month.MARCH, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("90.01"), LocalDate.of(2023, Month.APRIL, 1)),
-                new Borrowing(new Borrower("Borrower"), new BigDecimal("47.10"), LocalDate.of(2023, Month.DECEMBER, 1))
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("20.96"), "Description 1", LocalDate.of(2023, Month.JANUARY, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("77.00"), "Description 2", LocalDate.of(2023, Month.JANUARY, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("89.05"), "Description 3", LocalDate.of(2023, Month.FEBRUARY, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("20.96"), "Description 4", LocalDate.of(2023, Month.JANUARY, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("55.00"), "Description 5", LocalDate.of(2023, Month.FEBRUARY, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("41.04"), "Description 6", LocalDate.of(2023, Month.MARCH, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("20.96"), "Description 7", LocalDate.of(2023, Month.JANUARY, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("30.76"), "Description 8", LocalDate.of(2023, Month.MARCH, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("90.01"), "Description 9", LocalDate.of(2023, Month.APRIL, 1)),
+                new Borrowing(new Borrower("Borrower"), new BigDecimal("47.10"), "Description 10", LocalDate.of(2023, Month.DECEMBER, 1))
         );
     }
 

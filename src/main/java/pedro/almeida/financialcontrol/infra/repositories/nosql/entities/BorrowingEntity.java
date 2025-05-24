@@ -19,6 +19,7 @@ public class BorrowingEntity {
     private String id;
     private BorrowerEntity borrower;
     private BigDecimal value;
+    private String description;
     private Boolean paid;
     private LocalDate date;
     private List<ParcelBorrowingEntity> parcels;
@@ -26,10 +27,11 @@ public class BorrowingEntity {
 
     public BorrowingEntity() {}
 
-    public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels, LocalDateTime timestamp) {
+    public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, String description, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels, LocalDateTime timestamp) {
         this.id = id;
         this.borrower = borrower;
         this.value = value;
+        this.description = description;
         this.paid = paid;
         this.date = date;
         this.parcels = parcels;
@@ -40,11 +42,11 @@ public class BorrowingEntity {
         this.id = borrowing.getId().toString();
         this.borrower = new BorrowerEntity(borrowing.getBorrower().getName());
         this.value = borrowing.getValue();
+        this.description = borrowing.getDescription();
         this.paid = borrowing.getPaid();
         this.date = borrowing.getDate();
         this.parcels = borrowing.getParcels().stream().map(p -> new ParcelBorrowingEntity(p.getValue(), p.getDate())).toList();
         this.timestamp = borrowing.getTimestamp();
-
     }
 
     public Borrowing toModel() {
@@ -52,6 +54,7 @@ public class BorrowingEntity {
                 UUID.fromString(id),
                 new Borrower(borrower.getName()),
                 value,
+                description,
                 paid,
                 date,
                 parcels.stream().map(p -> new ParcelBorrowing(p.getValue(), p.getDate())).toList(),
@@ -81,6 +84,14 @@ public class BorrowingEntity {
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Boolean getPaid() {

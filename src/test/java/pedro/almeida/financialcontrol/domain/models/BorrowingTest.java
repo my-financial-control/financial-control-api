@@ -18,17 +18,17 @@ class BorrowingTest {
     @Test()
     @DisplayName("Deve lançar uma exceção quando um valor menor ou igual a zero é fornecido ao empréstimo")
     void shouldThrowAnExceptionWhenAValueLessThanOrEqualToZeroIsProvided() {
-        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("0")));
-        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("-1")));
-        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("0"), LocalDate.now()));
-        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("-1"), LocalDate.now()));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("0"), "Description"));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("-1"), "Description"));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("0"), "Description", LocalDate.now()));
+        assertThrows(BorrowingException.class, () -> new Borrowing(new Borrower("Borrower"), new BigDecimal("-1"), "Description", LocalDate.now()));
     }
 
     @Test
     @DisplayName("Deve adicionar a parcela ao atributo 'parcels' da classe Borrowing")
     void payParcelWhenTheParcelIsNotExceededAndNeitherTheFinalOneTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("200.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("200.0"), "Description"));
 
         List<ParcelBorrowing> parcels = Arrays.asList(
                 new ParcelBorrowing(new BigDecimal("10.0")),
@@ -52,7 +52,7 @@ class BorrowingTest {
     @DisplayName("Deve disparar a exceção BorrowingException")
     void payParcelWithParcelExceededTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("100.0"));
         doReturn(true).when(borrowing).isParcelExceedsBorrowingValue(any());
 
@@ -63,7 +63,7 @@ class BorrowingTest {
     @DisplayName("Deve alterar o valor do atributo 'paid' da classe Borrowing para 'true'")
     void payParcelWhenTheParcelIsNotExceededAndIsTheFinalOneTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
         List<ParcelBorrowing> parcels = Arrays.asList(
                 new ParcelBorrowing(new BigDecimal("25.0")),
                 new ParcelBorrowing(new BigDecimal("25.0"))
@@ -80,7 +80,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar 'true' quando o valor da parcela exceder o valor do empréstimo")
     void isParcelExceedsBorrowingValueTrueTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("100.0"));
 
         assertEquals(borrowing.isParcelExceedsBorrowingValue(parcel), true);
@@ -90,7 +90,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar 'false' quando o valor da parcela não exceder o valor do empréstimo")
     void isParcelExceedsBorrowingValueFalseTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
         ParcelBorrowing parcel = new ParcelBorrowing(new BigDecimal("50.0"));
 
         assertEquals(false, borrowing.isParcelExceedsBorrowingValue(parcel));
@@ -100,7 +100,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar 'true' quando o valor total das parcelas for igual ao valor total do empréstimo")
     void isBorrowingFullPaidEqualsValueTrueTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("50.0"));
 
         assertEquals(true, borrowing.isBorrowingFullPaid());
@@ -110,7 +110,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar 'true' quando o valor total das parcelas for maior que o valor total do empréstimo")
     void isBorrowingFullPaidGreaterValueTrueTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("60.0"));
 
         assertEquals(true, borrowing.isBorrowingFullPaid());
@@ -120,7 +120,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar 'false' quando o valor total das parcelas for menor do que o valor total do empréstimo")
     void isBorrowingFullPaidFalseTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0")));
+        Borrowing borrowing = spy(new Borrowing(borrower, new BigDecimal("50.0"), "Description"));
 
         when(borrowing.sumParcels()).thenReturn(new BigDecimal("40.0"));
 
@@ -131,7 +131,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar zero quando não foi paga nenhuma parcela")
     void sumParcelsShouldReturnZeroTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
+        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"), "Description");
 
         assertEquals(BigDecimal.ZERO, borrowing.sumParcels());
     }
@@ -140,7 +140,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar a soma das parcelas pagas")
     void sumParcelsShouldReturnsTheCorrectSum() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
+        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"), "Description");
         List<ParcelBorrowing> parcels = Arrays.asList(
                 new ParcelBorrowing(new BigDecimal("50.0")),
                 new ParcelBorrowing(new BigDecimal("20.0")),
@@ -157,7 +157,7 @@ class BorrowingTest {
     @DisplayName("Deve retornar qual o valor restante a pagar do empréstimo")
     void remainingPaymentAmountTest() {
         Borrower borrower = new Borrower("Borrower");
-        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"));
+        Borrowing borrowing = new Borrowing(borrower, new BigDecimal("100.0"), "Description");
 
         List<ParcelBorrowing> parcels = Arrays.asList(
                 new ParcelBorrowing(new BigDecimal("50.0")),

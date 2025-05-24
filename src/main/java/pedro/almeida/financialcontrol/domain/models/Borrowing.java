@@ -15,37 +15,41 @@ public class Borrowing {
     private final UUID id;
     private final Borrower borrower;
     private final BigDecimal value;
+    private final String description;
     private Boolean paid;
     private final LocalDate date;
     private final List<ParcelBorrowing> parcels;
     private final LocalDateTime timestamp;
 
-    public Borrowing(UUID id, Borrower borrower, BigDecimal value, Boolean paid, LocalDate date, List<ParcelBorrowing> parcels, LocalDateTime timestamp) {
+    public Borrowing(UUID id, Borrower borrower, BigDecimal value, String description, Boolean paid, LocalDate date, List<ParcelBorrowing> parcels, LocalDateTime timestamp) {
         this.id = id;
         this.borrower = borrower;
         this.value = value;
+        this.description = description;
         this.paid = paid;
         this.date = date;
         this.parcels = parcels != null ? new LinkedList<>(parcels) : new LinkedList<>();
         this.timestamp = timestamp;
     }
 
-    public Borrowing(Borrower borrower, BigDecimal value, LocalDate date) {
+    public Borrowing(Borrower borrower, BigDecimal value, String description, LocalDate date) {
         this.id = UUID.randomUUID();
         this.borrower = borrower;
         validate(value);
         this.value = value;
+        this.description = description;
         this.paid = false;
         this.date = date;
         this.parcels = new LinkedList<>();
         this.timestamp = LocalDateTime.now();
     }
 
-    public Borrowing(Borrower borrower, BigDecimal value) {
+    public Borrowing(Borrower borrower, BigDecimal value, String description) {
         this.id = UUID.randomUUID();
         this.borrower = borrower;
         validate(value);
         this.value = value;
+        this.description = description;
         this.paid = false;
         this.date = LocalDate.now();
         this.parcels = new LinkedList<>();
@@ -108,5 +112,9 @@ public class Borrowing {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
