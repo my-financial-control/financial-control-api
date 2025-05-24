@@ -4,22 +4,22 @@ import java.io.InputStream;
 import java.util.UUID;
 
 public class Receipt {
-    private final UUID transactionId;
+    private final UUID id;
     private final String fileName;
     private final String contentType;
     private final InputStream content;
     private final long size;
 
-    public Receipt(UUID transactionId, String fileName, String contentType, InputStream content, long size) {
-        this.transactionId = transactionId;
+    public Receipt(UUID id, String fileName, String contentType, InputStream content, long size) {
+        this.id = id;
         this.fileName = fileName;
         this.contentType = contentType;
         this.content = content;
         this.size = size;
     }
 
-    public UUID getTransactionId() {
-        return transactionId;
+    public UUID getId() {
+        return id;
     }
 
     public String getFileName() {

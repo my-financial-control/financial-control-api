@@ -58,7 +58,7 @@ public class S3ReceiptHandler implements Storage {
     public void save(Receipt file) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(S3_RECEIPTS_BUCKET)
-                .key(file.getTransactionId().toString())
+                .key(file.getId().toString())
                 .contentType(file.getContentType())
                 .metadata(Map.of("filename", file.getFileName()))
                 .build();
