@@ -17,7 +17,8 @@ public record BorrowingResponseDTO(
         Boolean paid,
         LocalDate date,
         List<ParcelBorrowing> parcels,
-        LocalDateTime timestamp
+        LocalDateTime timestamp,
+        boolean hasReceipt
 ) {
 
     public BorrowingResponseDTO(Borrowing borrowing) {
@@ -29,7 +30,8 @@ public record BorrowingResponseDTO(
                 borrowing.getPaid(),
                 borrowing.getDate(),
                 borrowing.getParcels(),
-                borrowing.getTimestamp()
+                borrowing.getTimestamp(),
+                borrowing.hasReceipt()
         );
     }
 

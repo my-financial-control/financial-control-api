@@ -14,4 +14,7 @@ public class BorrowingException extends BadRequestException {
         return new BorrowingException("O valor do empréstimo deve ser maior que zero");
     }
 
+    public static BorrowingException genericError() {
+        return new BorrowingException("Erro ao processar o empréstimo");
+    }
 }

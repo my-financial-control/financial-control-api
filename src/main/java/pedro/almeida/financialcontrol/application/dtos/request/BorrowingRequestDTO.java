@@ -18,10 +18,17 @@ public record BorrowingRequestDTO(
 
     public Borrowing toBorrowing() {
         if (date != null) {
-            return new Borrowing(new Borrower(borrower), value, description, date);
+            return new Borrowing(new Borrower(borrower), value, description, date, false);
         } else {
             return new Borrowing(new Borrower(borrower), value, description);
         }
     }
 
+    public Borrowing toBorrowing(boolean hasReceipt) {
+        if (date != null) {
+            return new Borrowing(new Borrower(borrower), value, description, date, hasReceipt);
+        } else {
+            return new Borrowing(new Borrower(borrower), value, description);
+        }
+    }
 }

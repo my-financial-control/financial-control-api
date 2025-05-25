@@ -24,10 +24,11 @@ public class BorrowingEntity {
     private LocalDate date;
     private List<ParcelBorrowingEntity> parcels;
     private LocalDateTime timestamp;
+    private boolean hasReceipt;
 
     public BorrowingEntity() {}
 
-    public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, String description, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels, LocalDateTime timestamp) {
+    public BorrowingEntity(String id, BorrowerEntity borrower, BigDecimal value, String description, Boolean paid, LocalDate date, List<ParcelBorrowingEntity> parcels, LocalDateTime timestamp, boolean hasReceipt) {
         this.id = id;
         this.borrower = borrower;
         this.value = value;
@@ -36,6 +37,7 @@ public class BorrowingEntity {
         this.date = date;
         this.parcels = parcels;
         this.timestamp = timestamp;
+        this.hasReceipt = hasReceipt;
     }
 
     public BorrowingEntity(Borrowing borrowing) {
@@ -47,6 +49,7 @@ public class BorrowingEntity {
         this.date = borrowing.getDate();
         this.parcels = borrowing.getParcels().stream().map(p -> new ParcelBorrowingEntity(p.getValue(), p.getDate())).toList();
         this.timestamp = borrowing.getTimestamp();
+        this.hasReceipt = borrowing.hasReceipt();
     }
 
     public Borrowing toModel() {
@@ -58,7 +61,8 @@ public class BorrowingEntity {
                 paid,
                 date,
                 parcels.stream().map(p -> new ParcelBorrowing(p.getValue(), p.getDate())).toList(),
-                timestamp
+                timestamp,
+                hasReceipt
         );
     }
 
@@ -124,5 +128,13 @@ public class BorrowingEntity {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isHasReceipt() {
+        return hasReceipt;
+    }
+
+    public void setHasReceipt(boolean hasReceipt) {
+        this.hasReceipt = hasReceipt;
     }
 }

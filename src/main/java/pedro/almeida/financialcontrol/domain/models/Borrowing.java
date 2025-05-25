@@ -20,8 +20,10 @@ public class Borrowing {
     private final LocalDate date;
     private final List<ParcelBorrowing> parcels;
     private final LocalDateTime timestamp;
+    private final boolean hasReceipt;
 
-    public Borrowing(UUID id, Borrower borrower, BigDecimal value, String description, Boolean paid, LocalDate date, List<ParcelBorrowing> parcels, LocalDateTime timestamp) {
+    public Borrowing(UUID id, Borrower borrower, BigDecimal value, String description, Boolean paid, LocalDate date,
+            List<ParcelBorrowing> parcels, LocalDateTime timestamp, boolean hasReceipt) {
         this.id = id;
         this.borrower = borrower;
         this.value = value;
@@ -30,9 +32,10 @@ public class Borrowing {
         this.date = date;
         this.parcels = parcels != null ? new LinkedList<>(parcels) : new LinkedList<>();
         this.timestamp = timestamp;
+        this.hasReceipt = hasReceipt;
     }
 
-    public Borrowing(Borrower borrower, BigDecimal value, String description, LocalDate date) {
+    public Borrowing(Borrower borrower, BigDecimal value, String description, LocalDate date, boolean hasReceipt) {
         this.id = UUID.randomUUID();
         this.borrower = borrower;
         validate(value);
@@ -42,18 +45,15 @@ public class Borrowing {
         this.date = date;
         this.parcels = new LinkedList<>();
         this.timestamp = LocalDateTime.now();
+        this.hasReceipt = hasReceipt;
     }
 
     public Borrowing(Borrower borrower, BigDecimal value, String description) {
-        this.id = UUID.randomUUID();
-        this.borrower = borrower;
-        validate(value);
-        this.value = value;
-        this.description = description;
-        this.paid = false;
-        this.date = LocalDate.now();
-        this.parcels = new LinkedList<>();
-        this.timestamp = LocalDateTime.now();
+        this(borrower, value, description, LocalDate.now(), false);
+    }
+
+    public Borrowing(Borrower borrower, BigDecimal value, String description, LocalDate date) {
+        this(borrower, value, description, date, false);
     }
 
     public void payParcel(ParcelBorrowing parcel) {
@@ -61,7 +61,9 @@ public class Borrowing {
             throw BorrowingException.parcelExceedsBorrowingValue();
         }
         parcels.add(parcel);
-        if (isBorrowingFullPaid()) paid = true;
+        if (isBorrowingFullPaid()) {
+            paid = true;
+        }
     }
 
     public Boolean isParcelExceedsBorrowingValue(ParcelBorrowing parcel) {
@@ -116,5 +118,9 @@ public class Borrowing {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean hasReceipt() {
+        return hasReceipt;
     }
 }
